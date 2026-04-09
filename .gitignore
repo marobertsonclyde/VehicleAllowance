@@ -1,0 +1,33 @@
+# ─── Packed solution output ───────────────────────────────────────────────────
+out/
+
+# ─── AI model training data (PII — stored in SharePoint, not git) ─────────────
+training-data/*
+!training-data/.gitkeep
+
+# ─── Environment-specific secrets (never commit production values) ─────────────
+config/prod-environment-variables.json
+
+# ─── PAC CLI auth cache ────────────────────────────────────────────────────────
+.pac/
+
+# ─── OS artifacts ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Editor artifacts ─────────────────────────────────────────────────────────
+.vscode/settings.json
+*.swp
+*.swo
+
+# ─── PowerShell ───────────────────────────────────────────────────────────────
+*.ps1.bak
+
+# ─── Node (if any tooling added later) ────────────────────────────────────────
+node_modules/
+npm-debug.log*
+
+# ─── Temporary export ZIPs (in case someone runs export into repo root) ────────
+*.zip
+!out/*.zip

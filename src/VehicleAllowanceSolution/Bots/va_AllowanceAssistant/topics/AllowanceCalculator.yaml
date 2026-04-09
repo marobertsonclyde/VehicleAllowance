@@ -1,0 +1,69 @@
+# Copilot Studio Topic: Allowance Calculator
+# Trigger phrases: "how much would I get", "what is my allowance level",
+#                  "what level am I", "calculate my allowance", "MSRP minimum"
+#
+# Helps employees understand what monthly allowance they'd receive based on
+# their vehicle's MSRP, by querying va_AllowanceLevelConfig from Dataverse.
+#
+# Implementation steps:
+#   1. Create topic "Calculate My Allowance"
+#   2. Add trigger phrases
+#   3. Ask employee for their vehicle's Total MSRP (from window sticker)
+#   4. Call flow action va_GetAllowanceLevelForMsrp with MSRP input
+#   5. Display eligible levels and monthly amounts
+
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: Allowance Calculator
+    triggerQueries:
+      - how much would I get
+      - what is my allowance level
+      - what level am I
+      - calculate my allowance
+      - MSRP minimum
+      - how much is the vehicle allowance
+      - what level does my truck qualify for
+      - does my vehicle qualify
+  actions:
+    - kind: Question
+      id: askMsrp
+      prompt: "What is the Total MSRP from your vehicle's manufacturer's window sticker? (The 'Total Suggested Retail Price' shown at the bottom of the sticker)"
+      entity: Money
+      output: Topic.VehicleMsrp
+    - kind: InvokeFlowAction
+      id: getLevels
+      displayName: Get Allowance Levels for MSRP
+      flowId: va_GetAllowanceLevelForMsrp
+      inputs:
+        - name: VehicleMsrp
+          value: =Topic.VehicleMsrp
+      outputs:
+        - name: EligibleLevels
+          target: Topic.EligibleLevels
+        - name: RecommendedLevel
+          target: Topic.RecommendedLevel
+        - name: MonthlyAmount
+          target: Topic.MonthlyAmount
+        - name: MinimumMsrpForLevel
+          target: Topic.MinMsrp
+    - kind: SendMessage
+      id: showLevels
+      message: "Based on a Total MSRP of {Topic.VehicleMsrp}, here are the allowance levels your vehicle qualifies for."
+      attachments:
+        - kind: AdaptiveCard
+          content:
+            type: AdaptiveCard
+            body:
+              - type: TextBlock
+                text: "Allowance Level Eligibility"
+                weight: Bolder
+              - type: TextBlock
+                text: "{Topic.EligibleLevels}"
+                wrap: true
+              - type: TextBlock
+                text: "Note: Your actual level also depends on your job title. The Equipment Leader confirms the final level during application review."
+                wrap: true
+                isSubtle: true

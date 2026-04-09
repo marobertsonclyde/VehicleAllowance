@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<environmentvariabledefinition>
+  <schemaname>va_OptInWindowDays</schemaname>
+  <displayname>Opt-In Window (Days)</displayname>
+  <description>Number of days after first becoming eligible within which an employee must submit a New Opt-In application. Per policy: 60 days. After this window closes, the employee must wait for the Aug 1 annual election window.</description>
+  <type>Integer</type>
+  <defaultvalue>60</defaultvalue>
+  <isrequired>0</isrequired>
+</environmentvariabledefinition>

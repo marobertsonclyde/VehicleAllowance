@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.0.0.0007" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="PAC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!--
+    This file is the root customizations descriptor for the VehicleAllowanceSolution.
+    It will be fully populated by PAC CLI when the solution is first exported from
+    the Power Platform environment.
+
+    To populate:
+    1. Build the solution components in Power Platform Studio (Dev environment)
+    2. Run: ./scripts/export-solution.ps1 -EnvironmentUrl "https://your-dev.crm.dynamics.com"
+    3. PAC CLI will replace this placeholder with the full customizations XML
+
+    Publisher prefix: va
+    Custom option value prefix: 72000
+  -->
+  <Entities />
+  <Roles />
+  <Workflows />
+  <FieldSecurityProfiles />
+  <Templates />
+  <EntityMaps />
+  <EntityRelationships />
+  <OrganizationSettings />
+  <optionsets>
+    <!--
+      Global option sets (choice fields shared across tables) will appear here.
+      Key option sets to define in Power Platform before export:
+        - va_applicationstatus (Application Status)
+        - va_applicationtype (Application Type)
+        - va_allowancelevel (Allowance Level: A/B/C/D)
+        - va_documenttype (Document Type)
+        - va_policytype (Policy Type)
+        - va_endorsementtype (Endorsement Type)
+        - va_bodytype (Body Type)
+        - va_aiprocessingstatus (AI Processing Status)
+        - va_decisiontype (Equipment Leader/Director Decision: Approved/Returned/Rejected)
+        - va_allowancerecordstatus (AllowanceRecord Status: Active/Suspended/Terminated)
+        - va_policystatus (Policy Status: Active/Expired/Superseded)
+        - va_notificationtype (Notification Type)
+        - va_leadershipTier (Leadership Tier)
+    -->
+  </optionsets>
+  <CustomControls />
+  <EntityDataProviders />
+</ImportExportXml>

@@ -1,0 +1,38 @@
+name: Deploy to Dev
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - 'src/**'
+
+jobs:
+  deploy-dev:
+    name: Pack & Import to Dev
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PAC CLI
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Pack solution
+        uses: microsoft/powerplatform-actions/pack-solution@v1
+        with:
+          solution-folder: src/VehicleAllowanceSolution
+          solution-file: out/VehicleAllowanceSolution.zip
+          solution-type: Unmanaged
+
+      - name: Import solution to Dev
+        uses: microsoft/powerplatform-actions/import-solution@v1
+        with:
+          environment-url: ${{ secrets.PP_DEV_ENVIRONMENT_URL }}
+          app-id: ${{ secrets.PP_CLIENT_ID }}
+          client-secret: ${{ secrets.PP_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.PP_TENANT_ID }}
+          solution-file: out/VehicleAllowanceSolution.zip
+          force-overwrite: true
+          publish-changes: true
+          deployment-settings-file: config/dev-environment-variables.json

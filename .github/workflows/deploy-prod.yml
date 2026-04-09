@@ -1,0 +1,61 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "deploy-prod" to confirm deployment to Production'
+        required: true
+      release-notes:
+        description: 'Brief description of what is being deployed'
+        required: true
+
+jobs:
+  deploy-prod:
+    name: Pack & Import to Production
+    runs-on: windows-latest
+    if: github.event.inputs.confirm == 'deploy-prod'
+    environment: production   # GitHub environment with required reviewers configured
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PAC CLI
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Pack solution (Managed)
+        uses: microsoft/powerplatform-actions/pack-solution@v1
+        with:
+          solution-folder: src/VehicleAllowanceSolution
+          solution-file: out/VehicleAllowanceSolution_managed.zip
+          solution-type: Managed
+
+      - name: Run solution checker before prod deploy
+        uses: microsoft/powerplatform-actions/check-solution@v1
+        with:
+          environment-url: ${{ secrets.PP_PROD_ENVIRONMENT_URL }}
+          app-id: ${{ secrets.PP_CLIENT_ID }}
+          client-secret: ${{ secrets.PP_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.PP_TENANT_ID }}
+          path: out/VehicleAllowanceSolution_managed.zip
+          checker-logs-artifact-name: prod-checker-results
+
+      - name: Import solution to Production
+        uses: microsoft/powerplatform-actions/import-solution@v1
+        with:
+          environment-url: ${{ secrets.PP_PROD_ENVIRONMENT_URL }}
+          app-id: ${{ secrets.PP_CLIENT_ID }}
+          client-secret: ${{ secrets.PP_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.PP_TENANT_ID }}
+          solution-file: out/VehicleAllowanceSolution_managed.zip
+          force-overwrite: true
+          publish-changes: true
+          deployment-settings-file: config/prod-environment-variables.json
+
+      - name: Upload checker results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-checker-results
+          path: prod-checker-results/

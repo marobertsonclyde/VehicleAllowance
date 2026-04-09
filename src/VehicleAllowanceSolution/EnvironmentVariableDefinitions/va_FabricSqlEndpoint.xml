@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<environmentvariabledefinition>
+  <schemaname>va_FabricSqlEndpoint</schemaname>
+  <displayname>Fabric SQL Endpoint</displayname>
+  <description>SQL connection endpoint URL for the Microsoft Fabric Lakehouse that contains employee data from Dynamics (PersonnelNumber, JobTitle, Company/LegalEntity). Used by Power Automate flows to validate employee eligibility and pull identity data on application submission.</description>
+  <type>String</type>
+  <defaultvalue></defaultvalue>
+  <isrequired>1</isrequired>
+  <hint>Find in Microsoft Fabric workspace > Lakehouse > SQL analytics endpoint > Copy SQL connection string. Format: [workspace-id].datawarehouse.fabric.microsoft.com</hint>
+</environmentvariabledefinition>

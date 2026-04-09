@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<environmentvariabledefinition>
+  <schemaname>va_PortalUrl</schemaname>
+  <displayname>Portal URL</displayname>
+  <description>Full URL of the published Vehicle Allowance Portal canvas app. Included in Teams reminder messages sent to employees.</description>
+  <type>String</type>
+  <defaultvalue></defaultvalue>
+  <isrequired>1</isrequired>
+  <hint>Share > Copy link in the canvas app, or find in make.powerapps.com > Apps > [app] > Details > Web link.</hint>
+</environmentvariabledefinition>

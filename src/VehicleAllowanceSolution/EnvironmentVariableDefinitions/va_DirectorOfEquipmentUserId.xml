@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<environmentvariabledefinition>
+  <schemaname>va_DirectorOfEquipmentUserId</schemaname>
+  <displayname>Director of Equipment User ID</displayname>
+  <description>AAD Object ID (GUID) of the CCI Director of Equipment. Used for director-level approval routing and insurance lapse notifications.</description>
+  <type>String</type>
+  <defaultvalue></defaultvalue>
+  <isrequired>1</isrequired>
+  <hint>Find in Azure AD > Users > [Director name] > Object ID.</hint>
+</environmentvariabledefinition>
