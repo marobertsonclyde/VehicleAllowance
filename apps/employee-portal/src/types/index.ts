@@ -97,11 +97,14 @@ export interface AllowanceApplication {
   va_companyEntityId?: string               // va_CompanyEntity lookup GUID
   va_companyEntityName?: string             // Expanded name
   va_equipmentLeaderDecision?: DecisionType
+  va_equipmentLeaderReviewDate?: string
   va_equipmentLeaderNotes?: string
   va_directorDecision?: DecisionType
+  va_directorReviewDate?: string
   va_directorNotes?: string
   va_presidentApprovalRequired?: boolean
   va_presidentDecision?: DecisionType
+  va_presidentApprovalDate?: string
   va_payrollNotifiedDate?: string
   va_aiValidationScore?: number
   va_aiValidationSummary?: string

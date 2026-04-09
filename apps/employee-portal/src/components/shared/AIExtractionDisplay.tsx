@@ -149,7 +149,6 @@ export function WindowStickerExtractionDisplay({ data, confidence, minimumMsrp }
 // ─── Shared subcomponents ──────────────────────────────────────────────────────
 
 function ConfidenceIndicator({ score }: { score: number }) {
-  const level = score >= 85 ? 'high' : score >= 70 ? 'medium' : 'low'
   const label = score >= 85 ? 'High confidence' : score >= 70 ? 'Medium confidence' : 'Low confidence'
   const color = score >= 85 ? 'var(--color-success)' : score >= 70 ? '#7a4f00' : 'var(--color-error)'
   return (
