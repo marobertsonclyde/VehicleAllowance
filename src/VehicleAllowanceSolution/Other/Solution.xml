@@ -38,6 +38,7 @@
     <RootComponents>
       <!--
         NOTE: type="1" = Entity, type="2" = Attribute, type="9" = OptionSet, type="29" = Workflow,
+              type="62" = Sitemap, type="80" = App Module (Model-Driven App),
               type="300" = Canvas App, type="318" = Env Variable Definition, type="380" = AI Model,
               type="419" = Bot (Copilot Studio Agent)
         GUIDs below are placeholders — PAC CLI replaces them with real Dataverse IDs on first export.
@@ -80,6 +81,10 @@
 
       <!-- ── Workflows (Power Automate Flows) ──────────────────────────── -->
       <!-- Added by PAC CLI after flows are created in Power Platform Studio -->
+
+      <!-- ── Model-Driven App ─────────────────────────────────────────── -->
+      <RootComponent type="62" schemaName="va_VehicleAllowanceAdmin_Sitemap" behavior="0" />
+      <RootComponent type="80" schemaName="va_vehicleallowanceadmin" behavior="0" />
 
       <!-- ── Canvas Apps ────────────────────────────────────────────────── -->
       <!-- VehicleAllowancePortal — built as a Code App (React/TypeScript) in apps/employee-portal/ -->

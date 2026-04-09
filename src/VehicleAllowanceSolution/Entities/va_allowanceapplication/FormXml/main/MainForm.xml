@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Main form for va_AllowanceApplication.
+  Used by: Equipment Leaders, Directors, Presidents, Administrators.
+  Tabs: Summary | Vehicle & Insurance | Documents | Decisions | Audit Log
+  Column-level security hides reviewer decision fields from va_Employee role.
+-->
+<form>
+  <formid>va-allowanceapplication-mainform</formid>
+  <name>Application Review Form</name>
+  <objecttypecode>va_allowanceapplication</objecttypecode>
+  <type>2</type>
+  <formactivationstate>1</formactivationstate>
+  <IsAIRMergeEnabled>false</IsAIRMergeEnabled>
+
+  <header>
+    <rows>
+      <row>
+        <cell id="hdr_status" showlabel="true" colspan="1">
+          <labels><label description="Status" languagecode="1033" /></labels>
+          <control id="va_status" classid="{0D2C745A-A054-4A1E-8453-B8AC03BFEB3B}" datafieldname="va_status" />
+        </cell>
+        <cell id="hdr_applicationType" showlabel="true" colspan="1">
+          <labels><label description="Type" languagecode="1033" /></labels>
+          <control id="va_applicationType" classid="{0D2C745A-A054-4A1E-8453-B8AC03BFEB3B}" datafieldname="va_applicationType" />
+        </cell>
+        <cell id="hdr_aiScore" showlabel="true" colspan="1">
+          <labels><label description="AI Score" languagecode="1033" /></labels>
+          <control id="va_aiValidationScore" classid="{AA987274-CE4E-4271-A803-66164311A958}" datafieldname="va_aiValidationScore" />
+        </cell>
+        <cell id="hdr_aiEligible" showlabel="true" colspan="1">
+          <labels><label description="AI Pre-Validated" languagecode="1033" /></labels>
+          <control id="va_aiAutoApprovalEligible" classid="{B0C6723A-8503-4FD7-BB28-C8A06AC933C2}" datafieldname="va_aiAutoApprovalEligible" />
+        </cell>
+      </row>
+    </rows>
+  </header>
+
+  <tabs>
+
+    <!-- ─── TAB 1: Application Summary ─── -->
+    <tab name="tab_summary" expanded="true" showlabel="true" locklevel="0">
+      <labels><label description="Summary" languagecode="1033" /></labels>
+      <columns>
+        <column width="50%">
+          <sections>
+            <section name="sec_applicant" showlabel="true" locklevel="0">
+              <labels><label description="Applicant" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_name" showlabel="true">
+                    <labels><label description="Application #" languagecode="1033" /></labels>
+                    <control id="va_name" classid="{4273B735-4538-468D-8F6F-7F4E3D4C1E85}" datafieldname="va_name" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_applicantName" showlabel="true">
+                    <labels><label description="Applicant Name" languagecode="1033" /></labels>
+                    <control id="va_applicantName" classid="{4273B735-4538-468D-8F6F-7F4E3D4C1E85}" datafieldname="va_applicantName" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_personnelNumber" showlabel="true">
+                    <labels><label description="Personnel #" languagecode="1033" /></labels>
+                    <control id="va_personnelNumber" classid="{4273B735-4538-468D-8F6F-7F4E3D4C1E85}" datafieldname="va_personnelNumber" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_applicantCompany" showlabel="true">
+                    <labels><label description="Company" languagecode="1033" /></labels>
+                    <control id="va_applicantCompany" classid="{4273B735-4538-468D-8F6F-7F4E3D4C1E85}" datafieldname="va_applicantCompany" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_applicantJobTitle" showlabel="true">
+                    <labels><label description="Job Title" languagecode="1033" /></labels>
+                    <control id="va_applicantJobTitle" classid="{4273B735-4538-468D-8F6F-7F4E3D4C1E85}" datafieldname="va_applicantJobTitle" />
+                  </cell>
+                </row>
+              </rows>
+            </section>
+          </sections>
+        </column>
+
+        <column width="50%">
+          <sections>
+            <section name="sec_allowance" showlabel="true" locklevel="0">
+              <labels><label description="Allowance" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_allowanceLevel" showlabel="true">
+                    <labels><label description="Allowance Level" languagecode="1033" /></labels>
+                    <control id="va_allowanceLevel" classid="{0D2C745A-A054-4A1E-8453-B8AC03BFEB3B}" datafieldname="va_allowanceLevel" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_monthlyAllowanceAmount" showlabel="true">
+                    <labels><label description="Monthly Allowance" languagecode="1033" /></labels>
+                    <control id="va_monthlyAllowanceAmount" classid="{AA987274-CE4E-4271-A803-66164311A958}" datafieldname="va_monthlyAllowanceAmount" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_isEV" showlabel="true">
+                    <labels><label description="Electric Vehicle" languagecode="1033" /></labels>
+                    <control id="va_isElectricVehicle" classid="{B0C6723A-8503-4FD7-BB28-C8A06AC933C2}" datafieldname="va_isElectricVehicle" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_evCharging" showlabel="true">
+                    <labels><label description="EV Charging Allowance" languagecode="1033" /></labels>
+                    <control id="va_evChargingAllowance" classid="{AA987274-CE4E-4271-A803-66164311A958}" datafieldname="va_evChargingAllowance" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_totalMonthly" showlabel="true">
+                    <labels><label description="Total Monthly Amount" languagecode="1033" /></labels>
+                    <control id="va_totalMonthlyAmount" classid="{AA987274-CE4E-4271-A803-66164311A958}" datafieldname="va_totalMonthlyAmount" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_effectiveDate" showlabel="true">
+                    <labels><label description="Effective Date" languagecode="1033" /></labels>
+                    <control id="va_effectiveDate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8B7D8}" datafieldname="va_effectiveDate" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_presidentRequired" showlabel="true">
+                    <labels><label description="President Approval Required" languagecode="1033" /></labels>
+                    <control id="va_presidentApprovalRequired" classid="{B0C6723A-8503-4FD7-BB28-C8A06AC933C2}" datafieldname="va_presidentApprovalRequired" />
+                  </cell>
+                </row>
+              </rows>
+            </section>
+          </sections>
+        </column>
+      </columns>
+    </tab>
+
+    <!-- ─── TAB 2: Vehicle & Insurance ─── -->
+    <tab name="tab_vehicle" expanded="false" showlabel="true" locklevel="0">
+      <labels><label description="Vehicle &amp; Insurance" languagecode="1033" /></labels>
+      <columns>
+        <column width="100%">
+          <sections>
+            <!-- Vehicle subgrid -->
+            <section name="sec_vehicles" showlabel="true" locklevel="0">
+              <labels><label description="Vehicle" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_vehicles_grid" showlabel="false" colspan="2">
+                    <control id="Vehicles" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" datafieldname="" uniqueid="{sg-vehicles}">
+                      <parameters>
+                        <TargetEntityType>va_vehicle</TargetEntityType>
+                        <RelationshipName>va_allowanceapplication_va_vehicle</RelationshipName>
+                        <RecordsPerPage>5</RecordsPerPage>
+                        <EnableViewPicker>false</EnableViewPicker>
+                      </parameters>
+                    </control>
+                  </cell>
+                </row>
+              </rows>
+            </section>
+
+            <!-- Insurance Policies subgrid -->
+            <section name="sec_policies" showlabel="true" locklevel="0">
+              <labels><label description="Insurance Policies" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_policies_grid" showlabel="false" colspan="2">
+                    <control id="InsurancePolicies" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" datafieldname="" uniqueid="{sg-policies}">
+                      <parameters>
+                        <TargetEntityType>va_insurancepolicy</TargetEntityType>
+                        <RelationshipName>va_allowanceapplication_va_insurancepolicy</RelationshipName>
+                        <RecordsPerPage>5</RecordsPerPage>
+                        <EnableViewPicker>false</EnableViewPicker>
+                      </parameters>
+                    </control>
+                  </cell>
+                </row>
+              </rows>
+            </section>
+          </sections>
+        </column>
+      </columns>
+    </tab>
+
+    <!-- ─── TAB 3: Documents ─── -->
+    <tab name="tab_documents" expanded="false" showlabel="true" locklevel="0">
+      <labels><label description="Documents" languagecode="1033" /></labels>
+      <columns>
+        <column width="100%">
+          <sections>
+            <section name="sec_checklist" showlabel="true" locklevel="0">
+              <labels><label description="Document Checklist" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_checklist_grid" showlabel="false" colspan="2">
+                    <control id="DocumentChecklist" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" datafieldname="" uniqueid="{sg-checklist}">
+                      <parameters>
+                        <TargetEntityType>va_documentchecklist</TargetEntityType>
+                        <RelationshipName>va_allowanceapplication_va_documentchecklist</RelationshipName>
+                        <RecordsPerPage>10</RecordsPerPage>
+                        <EnableViewPicker>false</EnableViewPicker>
+                      </parameters>
+                    </control>
+                  </cell>
+                </row>
+              </rows>
+            </section>
+
+            <section name="sec_documents" showlabel="true" locklevel="0">
+              <labels><label description="Uploaded Documents" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_docs_grid" showlabel="false" colspan="2">
+                    <control id="Documents" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" datafieldname="" uniqueid="{sg-documents}">
+                      <parameters>
+                        <TargetEntityType>va_document</TargetEntityType>
+                        <RelationshipName>va_allowanceapplication_va_document</RelationshipName>
+                        <RecordsPerPage>10</RecordsPerPage>
+                        <EnableViewPicker>false</EnableViewPicker>
+                      </parameters>
+                    </control>
+                  </cell>
+                </row>
+              </rows>
+            </section>
+
+            <section name="sec_aiextraction" showlabel="true" locklevel="0">
+              <labels><label description="AI Extraction Summary" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_aiExtraction" showlabel="false" colspan="2">
+                    <control id="va_aiExtractionSummary" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="va_aiExtractionSummary" />
+                  </cell>
+                </row>
+              </rows>
+            </section>
+          </sections>
+        </column>
+      </columns>
+    </tab>
+
+    <!-- ─── TAB 4: Decisions ─── -->
+    <!-- Column-level security restricts write access on decision fields.
+         Equipment Leaders see/write va_equipmentLeaderDecision + va_equipmentLeaderNotes.
+         Directors see/write va_directorDecision + va_directorNotes.
+         Presidents see/write va_presidentDecision + va_presidentNotes.
+         Employees cannot read this tab at all. -->
+    <tab name="tab_decisions" expanded="false" showlabel="true" locklevel="0">
+      <labels><label description="Decisions" languagecode="1033" /></labels>
+      <columns>
+        <column width="33%">
+          <sections>
+            <section name="sec_el_decision" showlabel="true" locklevel="0">
+              <labels><label description="Equipment Leader" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_elDecision" showlabel="true">
+                    <labels><label description="Decision" languagecode="1033" /></labels>
+                    <control id="va_equipmentLeaderDecision" classid="{0D2C745A-A054-4A1E-8453-B8AC03BFEB3B}" datafieldname="va_equipmentLeaderDecision" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_elNotes" showlabel="true">
+                    <labels><label description="Notes" languagecode="1033" /></labels>
+                    <control id="va_equipmentLeaderNotes" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="va_equipmentLeaderNotes" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_elReviewDate" showlabel="true">
+                    <labels><label description="Review Date" languagecode="1033" /></labels>
+                    <control id="va_equipmentLeaderReviewDate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8B7D8}" datafieldname="va_equipmentLeaderReviewDate" />
+                  </cell>
+                </row>
+              </rows>
+            </section>
+          </sections>
+        </column>
+
+        <column width="33%">
+          <sections>
+            <section name="sec_dir_decision" showlabel="true" locklevel="0">
+              <labels><label description="Director" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_dirDecision" showlabel="true">
+                    <labels><label description="Decision" languagecode="1033" /></labels>
+                    <control id="va_directorDecision" classid="{0D2C745A-A054-4A1E-8453-B8AC03BFEB3B}" datafieldname="va_directorDecision" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_dirNotes" showlabel="true">
+                    <labels><label description="Notes" languagecode="1033" /></labels>
+                    <control id="va_directorNotes" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="va_directorNotes" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_dirReviewDate" showlabel="true">
+                    <labels><label description="Review Date" languagecode="1033" /></labels>
+                    <control id="va_directorReviewDate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8B7D8}" datafieldname="va_directorReviewDate" />
+                  </cell>
+                </row>
+              </rows>
+            </section>
+          </sections>
+        </column>
+
+        <column width="33%">
+          <sections>
+            <section name="sec_pres_decision" showlabel="true" locklevel="0">
+              <labels><label description="President" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_presDecision" showlabel="true">
+                    <labels><label description="Decision" languagecode="1033" /></labels>
+                    <control id="va_presidentDecision" classid="{0D2C745A-A054-4A1E-8453-B8AC03BFEB3B}" datafieldname="va_presidentDecision" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_presNotes" showlabel="true">
+                    <labels><label description="Notes" languagecode="1033" /></labels>
+                    <control id="va_presidentNotes" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="va_presidentNotes" />
+                  </cell>
+                </row>
+                <row>
+                  <cell id="cell_presReviewDate" showlabel="true">
+                    <labels><label description="Review Date" languagecode="1033" /></labels>
+                    <control id="va_presidentReviewDate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8B7D8}" datafieldname="va_presidentReviewDate" />
+                  </cell>
+                </row>
+              </rows>
+            </section>
+          </sections>
+        </column>
+      </columns>
+    </tab>
+
+    <!-- ─── TAB 5: Audit Log ─── -->
+    <tab name="tab_audit" expanded="false" showlabel="true" locklevel="0">
+      <labels><label description="Audit Log" languagecode="1033" /></labels>
+      <columns>
+        <column width="100%">
+          <sections>
+            <section name="sec_audit" showlabel="false" locklevel="0">
+              <labels><label description="" languagecode="1033" /></labels>
+              <rows>
+                <row>
+                  <cell id="cell_audit_grid" showlabel="false" colspan="2">
+                    <control id="AuditLog" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" datafieldname="" uniqueid="{sg-auditlog}">
+                      <parameters>
+                        <TargetEntityType>va_auditlog</TargetEntityType>
+                        <RelationshipName>va_allowanceapplication_va_auditlog</RelationshipName>
+                        <RecordsPerPage>25</RecordsPerPage>
+                        <EnableViewPicker>false</EnableViewPicker>
+                        <IsReadOnly>true</IsReadOnly>
+                      </parameters>
+                    </control>
+                  </cell>
+                </row>
+              </rows>
+            </section>
+          </sections>
+        </column>
+      </columns>
+    </tab>
+
+  </tabs>
+</form>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AppModule
+  UniqueName="va_vehicleallowanceadmin"
+  Name="Vehicle Allowance Admin"
+  Description="Admin portal for Equipment Leaders, Directors, Presidents, Payroll, and Administrators to review applications, manage active allowances, and administer reference data."
+  IntroducedVersion="1.0.0.0"
+  NavigationType="0"
+  OptimizedFor="0">
+  <AppModuleComponents>
+    <!-- Entities -->
+    <AppModuleComponent type="1" schemaName="va_allowanceapplication" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_allowancerecord" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_vehicle" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_insurancepolicy" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_document" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_documentchecklist" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_auditlog" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_companyentity" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_eligibletitle" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_allowancelevelconfig" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_reminderconfig" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_notification" behavior="0" />
+    <AppModuleComponent type="1" schemaName="va_insurancereminderschedule" behavior="0" />
+    <!-- Site Map -->
+    <AppModuleComponent type="62" schemaName="va_VehicleAllowanceAdmin_Sitemap" behavior="0" />
+  </AppModuleComponents>
+</AppModule>

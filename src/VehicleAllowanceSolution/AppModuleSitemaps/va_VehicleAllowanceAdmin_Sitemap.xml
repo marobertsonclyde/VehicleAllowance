@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SiteMap>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       AREA 1: Review Queue
+       Equipment Leaders, Directors, and Presidents see pending
+       items routed to them. Filtered views by role.
+       ═══════════════════════════════════════════════════════════ -->
+  <Area Id="area_reviewqueue"
+        Title="Review Queue"
+        Icon="/_imgs/svg_icons/area_office.svg"
+        ShowGroups="true">
+
+    <Group Id="group_mywork" Title="My Work" IsProfile="false">
+      <SubArea Id="sub_mypending"
+               Entity="va_allowanceapplication"
+               Title="My Pending Reviews"
+               Icon="/_imgs/svg_icons/entity_application.svg"
+               GetStartedPanePath=""
+               AvailableOffline="false"
+               DefaultDashboard="">
+        <!-- Filtered to applications in Equipment Leader Review / Director Review /
+             President Review status, showing only items at the reviewer's stage.
+             Implemented via a personal view with OData filter on va_status. -->
+      </SubArea>
+
+      <SubArea Id="sub_aiflagged"
+               Entity="va_allowanceapplication"
+               Title="AI Flagged — Needs Review"
+               Icon="/_imgs/svg_icons/entity_application.svg"
+               AvailableOffline="false">
+        <!-- va_aiAutoApprovalEligible eq false AND va_status in active review stages -->
+      </SubArea>
+    </Group>
+
+    <Group Id="group_allpending" Title="All Applications" IsProfile="false">
+      <SubArea Id="sub_allpending"
+               Entity="va_allowanceapplication"
+               Title="All Pending"
+               Icon="/_imgs/svg_icons/entity_application.svg"
+               AvailableOffline="false">
+      </SubArea>
+
+      <SubArea Id="sub_allsubmitted"
+               Entity="va_allowanceapplication"
+               Title="All Applications"
+               Icon="/_imgs/svg_icons/entity_application.svg"
+               AvailableOffline="false">
+      </SubArea>
+    </Group>
+  </Area>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       AREA 2: Applications
+       Full application management — all statuses, all types.
+       ═══════════════════════════════════════════════════════════ -->
+  <Area Id="area_applications"
+        Title="Applications"
+        Icon="/_imgs/svg_icons/area_entities.svg"
+        ShowGroups="true">
+
+    <Group Id="group_bytype" Title="By Type" IsProfile="false">
+      <SubArea Id="sub_newoptins"
+               Entity="va_allowanceapplication"
+               Title="New Opt-Ins"
+               Icon="/_imgs/svg_icons/entity_application.svg"
+               AvailableOffline="false">
+      </SubArea>
+
+      <SubArea Id="sub_vehicleupdates"
+               Entity="va_allowanceapplication"
+               Title="Vehicle Updates"
+               Icon="/_imgs/svg_icons/entity_application.svg"
+               AvailableOffline="false">
+      </SubArea>
+
+      <SubArea Id="sub_renewals"
+               Entity="va_allowanceapplication"
+               Title="Annual Renewals"
+               Icon="/_imgs/svg_icons/entity_application.svg"
+               AvailableOffline="false">
+      </SubArea>
+    </Group>
+
+    <Group Id="group_bystatus" Title="By Status" IsProfile="false">
+      <SubArea Id="sub_draft"       Entity="va_allowanceapplication" Title="Draft"                    AvailableOffline="false" />
+      <SubArea Id="sub_submitted"   Entity="va_allowanceapplication" Title="Submitted"                AvailableOffline="false" />
+      <SubArea Id="sub_aireview"    Entity="va_allowanceapplication" Title="AI Review"                AvailableOffline="false" />
+      <SubArea Id="sub_elreview"    Entity="va_allowanceapplication" Title="Equipment Leader Review"  AvailableOffline="false" />
+      <SubArea Id="sub_dirreview"   Entity="va_allowanceapplication" Title="Director Review"          AvailableOffline="false" />
+      <SubArea Id="sub_presreview"  Entity="va_allowanceapplication" Title="President Review"         AvailableOffline="false" />
+      <SubArea Id="sub_payroll"     Entity="va_allowanceapplication" Title="Payroll Notification"     AvailableOffline="false" />
+      <SubArea Id="sub_returned"    Entity="va_allowanceapplication" Title="Returned to Employee"     AvailableOffline="false" />
+      <SubArea Id="sub_rejected"    Entity="va_allowanceapplication" Title="Rejected"                 AvailableOffline="false" />
+      <SubArea Id="sub_withdrawn"   Entity="va_allowanceapplication" Title="Withdrawn"                AvailableOffline="false" />
+    </Group>
+  </Area>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       AREA 3: Active Allowances
+       Living records for approved recipients. Insurance expiry
+       monitoring and manual termination actions live here.
+       ═══════════════════════════════════════════════════════════ -->
+  <Area Id="area_allowances"
+        Title="Active Allowances"
+        Icon="/_imgs/svg_icons/area_office.svg"
+        ShowGroups="true">
+
+    <Group Id="group_records" Title="Allowance Records" IsProfile="false">
+      <SubArea Id="sub_active"
+               Entity="va_allowancerecord"
+               Title="Active Recipients"
+               Icon="/_imgs/svg_icons/entity_allowancerecord.svg"
+               AvailableOffline="false">
+      </SubArea>
+
+      <SubArea Id="sub_expiring"
+               Entity="va_insurancepolicy"
+               Title="Expiring Insurance (45 days)"
+               Icon="/_imgs/svg_icons/entity_insurancepolicy.svg"
+               AvailableOffline="false">
+        <!-- Filter: va_expirationDate le today+45 AND va_isActive eq true -->
+      </SubArea>
+
+      <SubArea Id="sub_terminated"
+               Entity="va_allowancerecord"
+               Title="Terminated This Year"
+               Icon="/_imgs/svg_icons/entity_allowancerecord.svg"
+               AvailableOffline="false">
+      </SubArea>
+    </Group>
+
+    <Group Id="group_policies" Title="Insurance" IsProfile="false">
+      <SubArea Id="sub_allpolicies"
+               Entity="va_insurancepolicy"
+               Title="All Policies"
+               AvailableOffline="false">
+      </SubArea>
+
+      <SubArea Id="sub_reminderschedules"
+               Entity="va_insurancereminderschedule"
+               Title="Reminder Schedule"
+               AvailableOffline="false">
+      </SubArea>
+    </Group>
+  </Area>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       AREA 4: Reference Data
+       Admin-only. Titles, allowance levels, company entities,
+       reminder configuration.
+       ═══════════════════════════════════════════════════════════ -->
+  <Area Id="area_referencedata"
+        Title="Reference Data"
+        Icon="/_imgs/svg_icons/area_settings.svg"
+        ShowGroups="true">
+
+    <Group Id="group_program" Title="Program Settings" IsProfile="false">
+      <SubArea Id="sub_allowancelevels"
+               Entity="va_allowancelevelconfig"
+               Title="Allowance Levels"
+               AvailableOffline="false">
+      </SubArea>
+
+      <SubArea Id="sub_eligibletitles"
+               Entity="va_eligibletitle"
+               Title="Eligible Job Titles"
+               AvailableOffline="false">
+      </SubArea>
+
+      <SubArea Id="sub_reminderconfig"
+               Entity="va_reminderconfig"
+               Title="Reminder Configuration"
+               AvailableOffline="false">
+      </SubArea>
+    </Group>
+
+    <Group Id="group_entities" Title="Company Entities" IsProfile="false">
+      <SubArea Id="sub_companyentities"
+               Entity="va_companyentity"
+               Title="Company Entities"
+               AvailableOffline="false">
+      </SubArea>
+    </Group>
+  </Area>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       AREA 5: Reports
+       Dashboard views — active recipients, pending pipeline,
+       expiry summary, terminations.
+       ═══════════════════════════════════════════════════════════ -->
+  <Area Id="area_reports"
+        Title="Reports"
+        Icon="/_imgs/svg_icons/area_analytics.svg"
+        ShowGroups="true">
+
+    <Group Id="group_dashboards" Title="Dashboards" IsProfile="false">
+      <SubArea Id="sub_overview"
+               Title="Program Overview"
+               Icon="/_imgs/svg_icons/area_analytics.svg"
+               AvailableOffline="false"
+               Type="Dashboard"
+               Url="/main.aspx?pagetype=dashboard&amp;id=va_VehicleAllowanceOverview">
+      </SubArea>
+    </Group>
+
+    <Group Id="group_auditlog" Title="Audit" IsProfile="false">
+      <SubArea Id="sub_auditlog"
+               Entity="va_auditlog"
+               Title="Audit Log"
+               AvailableOffline="false">
+      </SubArea>
+
+      <SubArea Id="sub_notifications"
+               Entity="va_notification"
+               Title="Notification History"
+               AvailableOffline="false">
+      </SubArea>
+    </Group>
+  </Area>
+
+</SiteMap>
