@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Security Role: va_Payroll
+  Audience: Payroll team members who need to action the allowance payment setup.
+  AAD Group: va-payroll
+
+  Access pattern: Read-only across applications and allowance records.
+  Payroll receives a Teams channel message (not an adaptive card) with the allowance
+  details when an application reaches the Payroll Notification status. They use the
+  model-driven app read-only view to look up details if needed.
+
+  No write access to any table — the Teams message and AllowanceRecord summary
+  contain all the information needed for payroll configuration.
+-->
+<Role uniquename="va_Payroll">
+  <LocalizedNames>
+    <LocalizedName description="Vehicle Allowance — Payroll" languagecode="1033" />
+  </LocalizedNames>
+  <Descriptions>
+    <Description description="Read-only role for payroll team. Provides access to active allowance records and approved applications to support payroll configuration." languagecode="1033" />
+  </Descriptions>
+  <IsInherited>1</IsInherited>
+  <RolePrivileges>
+
+    <!-- va_AllowanceApplication: Read-only org-wide -->
+    <RolePrivilege name="prvReadva_allowanceapplication" level="Global" privilegeobjecttypecode="va_allowanceapplication" />
+
+    <!-- va_AllowanceRecord: Read-only org-wide (primary source for payroll amounts) -->
+    <RolePrivilege name="prvReadva_allowancerecord" level="Global" privilegeobjecttypecode="va_allowancerecord" />
+
+    <!-- va_InsurancePolicy: Read-only (expiry dates visible for awareness) -->
+    <RolePrivilege name="prvReadva_insurancepolicy" level="Global" privilegeobjecttypecode="va_insurancepolicy" />
+
+    <!-- va_AllowanceLevelConfig: Read-only (verify amounts) -->
+    <RolePrivilege name="prvReadva_allowancelevelconfig" level="Global" privilegeobjecttypecode="va_allowancelevelconfig" />
+
+    <!-- va_CompanyEntity: Read-only (identify subsidiary) -->
+    <RolePrivilege name="prvReadva_companyentity" level="Global" privilegeobjecttypecode="va_companyentity" />
+
+  </RolePrivileges>
+</Role>

@@ -1,0 +1,203 @@
+{
+  "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+  "contentVersion": "1.0.0.0",
+  "_comment": "Flow 7: Insurance Expiry Reminder. Scheduled daily at 7:00 AM Mountain Time. Reads active va_ReminderConfig to get current intervals. Queries all unsent va_InsuranceReminderSchedule rows due today or earlier. For each: sends appropriate Teams message. On GracePeriod type: checks if grace period is elapsed and terminates the va_AllowanceRecord if so.",
+  "triggers": {
+    "Daily_7AM_Mountain": {
+      "type": "Recurrence",
+      "recurrence": {
+        "frequency": "Day",
+        "interval": 1,
+        "startTime": "2025-01-01T14:00:00Z",
+        "_comment": "14:00 UTC = 7:00 AM MT (MST UTC-7). Adjust to 13:00 UTC during MDT (UTC-6) summer months. Consider using a timezone-aware trigger or Azure Time Zone conversion."
+      }
+    }
+  },
+  "actions": {
+    "1_Get_active_reminder_config": {
+      "_comment": "Read the single active va_ReminderConfig record to get current reminder intervals and grace period.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "ListRecords" },
+        "parameters": {
+          "entityName": "va_reminderconfigs",
+          "$filter": "va_isActive eq true",
+          "$select": "va_reminderDays1,va_reminderDays2,va_reminderDays3,va_gracePeriodDays",
+          "$top": 1
+        }
+      }
+    },
+    "2_Get_due_reminder_schedules": {
+      "_comment": "All unsent reminder rows where reminderDate <= today. Ordered by reminderDate ascending.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "ListRecords" },
+        "parameters": {
+          "entityName": "va_insurancereminderschedules",
+          "$filter": "va_isSent eq false and va_reminderDate le @{formatDateTime(utcNow(), 'yyyy-MM-dd')}",
+          "$select": "va_insurancereminderscheduleid,va_reminderType,va_reminderDate,va_personnelNumber,va_policyId,va_allowanceRecordId",
+          "$expand": "_va_policyid_value($select=va_carrierName,va_policyType,va_expirationDate,va_policyNumber),_va_allowancerecordid_value($select=va_status,va_applicantName,va_effectiveDate,va_monthlyAllowanceAmount)",
+          "$orderby": "va_reminderDate asc"
+        }
+      }
+    },
+    "3_Process_each_due_reminder": {
+      "type": "Foreach",
+      "foreach": "@outputs('2_Get_due_reminder_schedules')?['body/value']",
+      "actions": {
+        "3a_Switch_on_reminder_type": {
+          "type": "Switch",
+          "expression": "@items('3_Process_each_due_reminder')?['va_reminderType']",
+          "cases": {
+            "Reminder1_2_3": {
+              "_comment": "Covers Reminder1, Reminder2, Reminder3 — standard advance notice to employee.",
+              "case": "Reminder1",
+              "actions": {
+                "Send_advance_reminder_to_employee": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": { "connectionName": "shared_teams", "operationId": "PostMessageToConversation" },
+                    "parameters": {
+                      "poster": "Flow bot",
+                      "location": "Chat with Flow bot",
+                      "body/recipient": "@items('3_Process_each_due_reminder')?['va_personnelNumber']",
+                      "body/messageBody": "<p><strong>Insurance Renewal Reminder:</strong> Your <strong>@{items('3_Process_each_due_reminder')?['_va_policyid_value/va_policyType']}</strong> policy (@{items('3_Process_each_due_reminder')?['_va_policyid_value/va_carrierName']} — @{items('3_Process_each_due_reminder')?['_va_policyid_value/va_policyNumber']}) expires on <strong>@{items('3_Process_each_due_reminder')?['_va_policyid_value/va_expirationDate']}</strong>. Please upload your renewal declaration page to maintain your Vehicle Allowance. <a href=\"@{parameters('$connections')['shared_environmentvariable']['va_PortalUrl']}/renewal\">Upload Renewal</a></p>"
+                    }
+                  }
+                }
+              }
+            },
+            "Expiry": {
+              "case": "Expiry",
+              "actions": {
+                "Send_expiry_urgent_to_employee": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": { "connectionName": "shared_teams", "operationId": "PostMessageToConversation" },
+                    "parameters": {
+                      "poster": "Flow bot",
+                      "location": "Chat with Flow bot",
+                      "body/recipient": "@items('3_Process_each_due_reminder')?['va_personnelNumber']",
+                      "body/messageBody": "<p>⚠️ <strong>URGENT — Insurance Expired:</strong> Your <strong>@{items('3_Process_each_due_reminder')?['_va_policyid_value/va_policyType']}</strong> policy expired today. You have <strong>@{first(outputs('1_Get_active_reminder_config')?['body/value'])?['va_gracePeriodDays']} days</strong> to upload a renewal before your allowance is suspended. <a href=\"@{parameters('$connections')['shared_environmentvariable']['va_PortalUrl']}/renewal\">Upload Now</a></p>"
+                    }
+                  }
+                },
+                "Send_expiry_urgent_to_equipment_leader": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": { "connectionName": "shared_teams", "operationId": "PostMessageToConversation" },
+                    "parameters": {
+                      "poster": "Flow bot",
+                      "location": "Chat with Flow bot",
+                      "body/recipient": "@parameters('$connections')['shared_environmentvariable']['va_EquipmentLeaderUserId']",
+                      "body/messageBody": "<p>⚠️ <strong>Insurance Expired:</strong> @{items('3_Process_each_due_reminder')?['_va_allowancerecordid_value/va_applicantName']}'s @{items('3_Process_each_due_reminder')?['_va_policyid_value/va_policyType']} policy expired today. Grace period: @{first(outputs('1_Get_active_reminder_config')?['body/value'])?['va_gracePeriodDays']} days. Personnel #: @{items('3_Process_each_due_reminder')?['va_personnelNumber']}.</p>"
+                    }
+                  }
+                },
+                "Send_expiry_urgent_to_director": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": { "connectionName": "shared_teams", "operationId": "PostMessageToConversation" },
+                    "parameters": {
+                      "poster": "Flow bot",
+                      "location": "Chat with Flow bot",
+                      "body/recipient": "@parameters('$connections')['shared_environmentvariable']['va_DirectorOfEquipmentUserId']",
+                      "body/messageBody": "<p>⚠️ <strong>Insurance Expired:</strong> @{items('3_Process_each_due_reminder')?['_va_allowancerecordid_value/va_applicantName']}'s @{items('3_Process_each_due_reminder')?['_va_policyid_value/va_policyType']} policy expired. Grace period ends in @{first(outputs('1_Get_active_reminder_config')?['body/value'])?['va_gracePeriodDays']} days. Personnel #: @{items('3_Process_each_due_reminder')?['va_personnelNumber']}.</p>"
+                    }
+                  }
+                }
+              }
+            },
+            "GracePeriod": {
+              "case": "GracePeriod",
+              "actions": {
+                "Grace_period_elapsed_terminate_allowance": {
+                  "_comment": "Grace period has elapsed with no renewal. Terminate the AllowanceRecord.",
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "UpdateItem" },
+                    "parameters": {
+                      "entityName": "va_allowancerecords",
+                      "recordId": "@items('3_Process_each_due_reminder')?['_va_allowancerecordid_value/va_allowancerecordid']",
+                      "item/va_status": 720000402,
+                      "item/va_terminationType": 720000411,
+                      "item/va_terminationDate": "@utcNow()",
+                      "item/va_terminationReason": "Insurance policy @{items('3_Process_each_due_reminder')?['_va_policyid_value/va_policyType']} (@{items('3_Process_each_due_reminder')?['_va_policyid_value/va_carrierName']}) expired @{first(outputs('1_Get_active_reminder_config')?['body/value'])?['va_gracePeriodDays']} days ago. No renewal received."
+                    }
+                  }
+                },
+                "Notify_employee_termination": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": { "connectionName": "shared_teams", "operationId": "PostMessageToConversation" },
+                    "parameters": {
+                      "poster": "Flow bot",
+                      "location": "Chat with Flow bot",
+                      "body/recipient": "@items('3_Process_each_due_reminder')?['va_personnelNumber']",
+                      "body/messageBody": "<p>⛔ <strong>Vehicle Allowance Suspended:</strong> Your allowance has been suspended due to an expired insurance policy. Contact the Equipment Department immediately to discuss reinstatement options.</p>"
+                    }
+                  }
+                },
+                "Notify_equipment_leader_termination": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": { "connectionName": "shared_teams", "operationId": "PostMessageToConversation" },
+                    "parameters": {
+                      "poster": "Flow bot",
+                      "location": "Chat with Flow bot",
+                      "body/recipient": "@parameters('$connections')['shared_environmentvariable']['va_EquipmentLeaderUserId']",
+                      "body/messageBody": "<p>⛔ <strong>Allowance Terminated — Insurance Non-Compliance:</strong> @{items('3_Process_each_due_reminder')?['_va_allowancerecordid_value/va_applicantName']} (Personnel #@{items('3_Process_each_due_reminder')?['va_personnelNumber']}) — grace period elapsed without insurance renewal. Allowance terminated. Payroll notification required.</p>"
+                    }
+                  }
+                },
+                "Notify_payroll_channel_termination": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": { "connectionName": "shared_teams", "operationId": "PostMessageToChannel" },
+                    "parameters": {
+                      "channelId": "@parameters('$connections')['shared_environmentvariable']['va_PayrollTeamsChannelId']",
+                      "body/messageBody": "<p><strong>Vehicle Allowance Terminated — Stop Payment:</strong> Personnel #@{items('3_Process_each_due_reminder')?['va_personnelNumber']} — @{items('3_Process_each_due_reminder')?['_va_allowancerecordid_value/va_applicantName']}. Effective immediately. Reason: Insurance non-compliance.</p>",
+                      "body/subject": "Allowance Stop Payment — @{items('3_Process_each_due_reminder')?['va_personnelNumber']}"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "_comment": "Also handle Reminder2 and Reminder3 — same pattern as Reminder1 case above.",
+            "actions": {
+              "Send_standard_reminder": {
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": { "connectionName": "shared_teams", "operationId": "PostMessageToConversation" },
+                  "parameters": {
+                    "poster": "Flow bot",
+                    "location": "Chat with Flow bot",
+                    "body/recipient": "@items('3_Process_each_due_reminder')?['va_personnelNumber']",
+                    "body/messageBody": "<p><strong>Insurance Renewal Reminder:</strong> Your @{items('3_Process_each_due_reminder')?['_va_policyid_value/va_policyType']} policy expires @{items('3_Process_each_due_reminder')?['_va_policyid_value/va_expirationDate']}. <a href=\"@{parameters('$connections')['shared_environmentvariable']['va_PortalUrl']}/renewal\">Upload Renewal</a></p>"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "3b_Mark_reminder_as_sent": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "UpdateItem" },
+            "parameters": {
+              "entityName": "va_insurancereminderschedules",
+              "recordId": "@items('3_Process_each_due_reminder')?['va_insurancereminderscheduleid']",
+              "item/va_isSent": true,
+              "item/va_sentOn": "@utcNow()"
+            }
+          }
+        }
+      },
+      "runtimeConfiguration": {
+        "concurrency": { "repetitions": 1 }
+      }
+    }
+  }
+}

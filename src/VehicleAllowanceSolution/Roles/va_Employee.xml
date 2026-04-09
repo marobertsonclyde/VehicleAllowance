@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Security Role: va_Employee
+  Audience: All eligible employees who may apply for the Vehicle Allowance Program.
+  AAD Group: va-employees (all eligible-title employees across all 8 subsidiaries)
+
+  Access pattern: User-owned records only (Basic level = own records in own business unit).
+  Employees can create and manage their own applications but cannot see other employees' data.
+
+  Column-level security (configured separately in Power Platform Studio):
+    - va_equipmentLeaderNotes  → hidden from this role
+    - va_directorNotes         → hidden from this role
+    - va_presidentNotes        → hidden from this role
+    - va_presidentDecision     → hidden from this role
+    - va_directorDecision      → hidden from this role
+-->
+<Role uniquename="va_Employee">
+  <LocalizedNames>
+    <LocalizedName description="Vehicle Allowance — Employee" languagecode="1033" />
+  </LocalizedNames>
+  <Descriptions>
+    <Description description="Base role for all eligible employees. Grants access to the Employee Portal (Code App) to submit and track their own allowance applications." languagecode="1033" />
+  </Descriptions>
+  <IsInherited>1</IsInherited>
+  <RolePrivileges>
+
+    <!-- va_AllowanceApplication: Full own-record CRUD (applications they create) -->
+    <RolePrivilege name="prvCreateva_allowanceapplication"   level="Basic"  privilegeobjecttypecode="va_allowanceapplication" />
+    <RolePrivilege name="prvReadva_allowanceapplication"     level="Basic"  privilegeobjecttypecode="va_allowanceapplication" />
+    <RolePrivilege name="prvWriteva_allowanceapplication"    level="Basic"  privilegeobjecttypecode="va_allowanceapplication" />
+    <RolePrivilege name="prvDeleteva_allowanceapplication"   level="Basic"  privilegeobjecttypecode="va_allowanceapplication" />
+    <RolePrivilege name="prvAppendva_allowanceapplication"   level="Basic"  privilegeobjecttypecode="va_allowanceapplication" />
+    <RolePrivilege name="prvAppendTova_allowanceapplication" level="Basic"  privilegeobjecttypecode="va_allowanceapplication" />
+
+    <!-- va_Vehicle: Full own-record CRUD -->
+    <RolePrivilege name="prvCreateva_vehicle"   level="Basic"  privilegeobjecttypecode="va_vehicle" />
+    <RolePrivilege name="prvReadva_vehicle"     level="Basic"  privilegeobjecttypecode="va_vehicle" />
+    <RolePrivilege name="prvWriteva_vehicle"    level="Basic"  privilegeobjecttypecode="va_vehicle" />
+    <RolePrivilege name="prvDeleteva_vehicle"   level="Basic"  privilegeobjecttypecode="va_vehicle" />
+    <RolePrivilege name="prvAppendva_vehicle"   level="Basic"  privilegeobjecttypecode="va_vehicle" />
+    <RolePrivilege name="prvAppendTova_vehicle" level="Basic"  privilegeobjecttypecode="va_vehicle" />
+
+    <!-- va_InsurancePolicy: Full own-record CRUD -->
+    <RolePrivilege name="prvCreateva_insurancepolicy"   level="Basic"  privilegeobjecttypecode="va_insurancepolicy" />
+    <RolePrivilege name="prvReadva_insurancepolicy"     level="Basic"  privilegeobjecttypecode="va_insurancepolicy" />
+    <RolePrivilege name="prvWriteva_insurancepolicy"    level="Basic"  privilegeobjecttypecode="va_insurancepolicy" />
+    <RolePrivilege name="prvDeleteva_insurancepolicy"   level="Basic"  privilegeobjecttypecode="va_insurancepolicy" />
+    <RolePrivilege name="prvAppendva_insurancepolicy"   level="Basic"  privilegeobjecttypecode="va_insurancepolicy" />
+    <RolePrivilege name="prvAppendTova_insurancepolicy" level="Basic"  privilegeobjecttypecode="va_insurancepolicy" />
+
+    <!-- va_Document: Create/Read/Write own (no delete — preserve audit trail) -->
+    <!-- App further filters to only show documents where va_uploadedByUserId = current user -->
+    <RolePrivilege name="prvCreateva_document"   level="Basic"  privilegeobjecttypecode="va_document" />
+    <RolePrivilege name="prvReadva_document"     level="Basic"  privilegeobjecttypecode="va_document" />
+    <RolePrivilege name="prvWriteva_document"    level="Basic"  privilegeobjecttypecode="va_document" />
+    <RolePrivilege name="prvAppendva_document"   level="Basic"  privilegeobjecttypecode="va_document" />
+    <RolePrivilege name="prvAppendTova_document" level="Basic"  privilegeobjecttypecode="va_document" />
+
+    <!-- va_DocumentChecklist: Read-only own (Flow 8 updates these, not the employee directly) -->
+    <RolePrivilege name="prvReadva_documentchecklist"     level="Basic"  privilegeobjecttypecode="va_documentchecklist" />
+    <RolePrivilege name="prvAppendTova_documentchecklist" level="Basic"  privilegeobjecttypecode="va_documentchecklist" />
+
+    <!-- va_AllowanceRecord: Read own active record only -->
+    <RolePrivilege name="prvReadva_allowancerecord"     level="Basic"  privilegeobjecttypecode="va_allowancerecord" />
+    <RolePrivilege name="prvAppendTova_allowancerecord" level="Basic"  privilegeobjecttypecode="va_allowancerecord" />
+
+    <!-- va_CompanyEntity: Read-only global (lookup for endorsement address display) -->
+    <RolePrivilege name="prvReadva_companyentity" level="Global" privilegeobjecttypecode="va_companyentity" />
+
+    <!-- va_EligibleTitle: Read-only global (lookup for eligibility check) -->
+    <RolePrivilege name="prvReadva_eligibletitle" level="Global" privilegeobjecttypecode="va_eligibletitle" />
+
+    <!-- va_AllowanceLevelConfig: Read-only global (level selector screen) -->
+    <RolePrivilege name="prvReadva_allowancelevelconfig" level="Global" privilegeobjecttypecode="va_allowancelevelconfig" />
+
+    <!-- va_AuditLog: Read own (status tracker timeline) -->
+    <RolePrivilege name="prvReadva_auditlog" level="Basic" privilegeobjecttypecode="va_auditlog" />
+
+    <!-- va_Notification: Read own -->
+    <RolePrivilege name="prvReadva_notification" level="Basic" privilegeobjecttypecode="va_notification" />
+
+    <!-- va_InsuranceReminderSchedule: None (system-managed, not visible to employees) -->
+    <!-- va_ReminderConfig: None (admin-only) -->
+
+  </RolePrivileges>
+</Role>

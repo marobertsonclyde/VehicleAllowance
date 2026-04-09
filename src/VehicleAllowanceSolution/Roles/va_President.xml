@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Security Role: va_President
+  Audience: Company Presidents (one per Clyde subsidiary — 8 total).
+  AAD Group: va-presidents (group containing all 8 subsidiary presidents)
+
+  Access pattern: Org-wide read on applications. Write access limited to president
+  decision fields on va_AllowanceApplication.
+
+  Important: The system routes each New Opt-In application to the SPECIFIC president
+  whose company matches the applicant's va_applicantCompany. This routing is enforced
+  by Flow 5 using va_CompanyEntity.va_presidentUserId — not by Dataverse security.
+  All presidents share this single role but only receive Teams notifications for
+  applications from their own subsidiary.
+
+  Key responsibilities:
+  - Final approver for New Opt-In applications (after Director approval)
+  - Receives Teams adaptive card with application summary; approves/rejects via card
+-->
+<Role uniquename="va_President">
+  <LocalizedNames>
+    <LocalizedName description="Vehicle Allowance — Company President" languagecode="1033" />
+  </LocalizedNames>
+  <Descriptions>
+    <Description description="Company President role (one per subsidiary, 8 total). Final approval for New Opt-In applications. Routing to the correct president is managed by Flow 5 via va_CompanyEntity.va_presidentUserId." languagecode="1033" />
+  </Descriptions>
+  <IsInherited>1</IsInherited>
+  <RolePrivileges>
+
+    <!-- va_AllowanceApplication: Global read; write president decision fields only -->
+    <!-- Column-level security further restricts write to: va_presidentDecision, va_presidentApprovalDate, va_presidentNotes -->
+    <RolePrivilege name="prvReadva_allowanceapplication"     level="Global" privilegeobjecttypecode="va_allowanceapplication" />
+    <RolePrivilege name="prvWriteva_allowanceapplication"    level="Global" privilegeobjecttypecode="va_allowanceapplication" />
+    <RolePrivilege name="prvAppendTova_allowanceapplication" level="Global" privilegeobjecttypecode="va_allowanceapplication" />
+
+    <!-- Supporting tables: Read-only -->
+    <RolePrivilege name="prvReadva_vehicle"              level="Global" privilegeobjecttypecode="va_vehicle" />
+    <RolePrivilege name="prvReadva_insurancepolicy"      level="Global" privilegeobjecttypecode="va_insurancepolicy" />
+    <RolePrivilege name="prvReadva_document"             level="Global" privilegeobjecttypecode="va_document" />
+    <RolePrivilege name="prvReadva_documentchecklist"    level="Global" privilegeobjecttypecode="va_documentchecklist" />
+    <RolePrivilege name="prvReadva_allowancerecord"      level="Global" privilegeobjecttypecode="va_allowancerecord" />
+    <RolePrivilege name="prvReadva_companyentity"        level="Global" privilegeobjecttypecode="va_companyentity" />
+    <RolePrivilege name="prvReadva_allowancelevelconfig" level="Global" privilegeobjecttypecode="va_allowancelevelconfig" />
+    <RolePrivilege name="prvReadva_auditlog"             level="Global" privilegeobjecttypecode="va_auditlog" />
+
+  </RolePrivileges>
+</Role>
