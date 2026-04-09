@@ -265,7 +265,7 @@ export function VehicleDetailsScreen() {
               <input type="checkbox" checked={isElectric} onChange={e => setIsElectric(e.target.checked)} />
               <span className="form-label" style={{ margin: 0 }}>⚡ This is an electric vehicle (BEV/PHEV)</span>
             </label>
-            <span className="form-hint">EV recipients receive a $310/month charging allowance in lieu of a fuel card.</span>
+            <span className="form-hint">EV recipients receive a separate monthly charging allowance in lieu of a fuel card.</span>
           </div>
 
           <div className="form-group" style={{ gridColumn: '1 / -1' }}>

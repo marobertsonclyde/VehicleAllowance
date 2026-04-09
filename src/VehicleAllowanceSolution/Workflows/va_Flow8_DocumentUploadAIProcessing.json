@@ -91,14 +91,36 @@
           "case": "Auto Dec Page",
           "actions": {
             "Extract_auto": {
+              "_comment": "AI Builder extracts all vehicles on the policy (ListedVehicles array) plus coverage limits. Employees commonly have 2-4 household vehicles on one policy — we must confirm the qualifying vehicle is actually on it.",
               "type": "OpenApiConnection",
               "inputs": {
                 "host": { "connectionName": "shared_aibuilder", "operationId": "PredictV2" },
                 "parameters": { "modelId": "va_InsuranceDocumentExtractor", "requestv2/inputs/file": { "contentBytes": "@body('3_Get_file_content')" } }
               }
             },
+            "Get_linked_vehicle": {
+              "_comment": "Fetch the qualifying vehicle record so we can check its VIN against the policy's listed vehicles.",
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "GetItem" },
+                "parameters": {
+                  "entityName": "va_vehicles",
+                  "recordId": "@outputs('2_Get_document_details')?['body/_va_linkedvehicleid_value']",
+                  "$select": "va_vin"
+                }
+              }
+            },
+            "Resolve_vin_on_policy": {
+              "_comment": "Check whether the qualifying VIN appears in the extracted ListedVehicles array. Uses string search as Power Automate does not natively filter JSON arrays from AI Builder output. This is sufficient because VINs are unique 17-character strings with no natural language overlap.",
+              "type": "Compose",
+              "inputs": {
+                "qualifyingVin": "@outputs('Get_linked_vehicle')?['body/va_vin']",
+                "listedVehiclesJson": "@string(body('Extract_auto')?['responsev2/predictionOutput/fields/ListedVehicles/value'])",
+                "vinFoundOnPolicy": "@contains(string(body('Extract_auto')?['responsev2/predictionOutput/fields/ListedVehicles/value']), outputs('Get_linked_vehicle')?['body/va_vin'])"
+              }
+            },
             "Validate_and_update_auto_policy": {
-              "_comment": "Validate: CSL >= $500K OR split limits. Update linked InsurancePolicy, mark checklist item satisfied.",
+              "_comment": "Validate coverage limits AND confirm qualifying vehicle is listed on the policy. meetsLiabilityRequirement is only true when BOTH conditions pass: (1) VIN found on policy, (2) limits meet minimums. This catches the common case where an employee submits a dec page for a different vehicle.",
               "type": "OpenApiConnection",
               "inputs": {
                 "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "UpdateItem" },
@@ -112,7 +134,10 @@
                   "item/va_bodilyInjuryPerPerson": "@float(body('Extract_auto')?['responsev2/predictionOutput/fields/BIPerPerson/value'])",
                   "item/va_bodilyInjuryPerAccident": "@float(body('Extract_auto')?['responsev2/predictionOutput/fields/BIPerAccident/value'])",
                   "item/va_propertyDamage": "@float(body('Extract_auto')?['responsev2/predictionOutput/fields/PropertyDamage/value'])",
-                  "item/va_meetsLiabilityRequirement": "@or(greaterOrEquals(float(body('Extract_auto')?['responsev2/predictionOutput/fields/CSLLimit/value']), 500000), and(greaterOrEquals(float(body('Extract_auto')?['responsev2/predictionOutput/fields/BIPerPerson/value']), 250000), greaterOrEquals(float(body('Extract_auto')?['responsev2/predictionOutput/fields/BIPerAccident/value']), 500000), greaterOrEquals(float(body('Extract_auto')?['responsev2/predictionOutput/fields/PropertyDamage/value']), 100000)))",
+                  "item/va_listedVehicles": "@outputs('Resolve_vin_on_policy')?['listedVehiclesJson']",
+                  "item/va_qualifyingVehicleConfirmed": "@outputs('Resolve_vin_on_policy')?['vinFoundOnPolicy']",
+                  "item/va_checkedVin": "@outputs('Resolve_vin_on_policy')?['qualifyingVin']",
+                  "item/va_meetsLiabilityRequirement": "@and(outputs('Resolve_vin_on_policy')?['vinFoundOnPolicy'], or(greaterOrEquals(float(body('Extract_auto')?['responsev2/predictionOutput/fields/CSLLimit/value']), 500000), and(greaterOrEquals(float(body('Extract_auto')?['responsev2/predictionOutput/fields/BIPerPerson/value']), 250000), greaterOrEquals(float(body('Extract_auto')?['responsev2/predictionOutput/fields/BIPerAccident/value']), 500000), greaterOrEquals(float(body('Extract_auto')?['responsev2/predictionOutput/fields/PropertyDamage/value']), 100000))))",
                   "item/va_aiConfidenceScore": "@body('Extract_auto')?['responsev2/predictionOutput/confidence']"
                 }
               }
