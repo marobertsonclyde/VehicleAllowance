@@ -13,6 +13,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
+      // POC branch: redirect @microsoft/power-apps to the mock module so
+      // all hooks work with dummy data and no auth.
+      '@microsoft/power-apps': resolve(__dirname, './src/mocks/power-apps-mock.tsx'),
     },
   },
 })
