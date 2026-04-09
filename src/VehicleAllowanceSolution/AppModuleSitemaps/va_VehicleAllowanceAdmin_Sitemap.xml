@@ -151,12 +151,20 @@
                AvailableOffline="false">
       </SubArea>
     </Group>
+
+    <Group Id="group_programsettings" Title="Program Settings" IsProfile="false">
+      <SubArea Id="sub_programmanager_reminderconfig"
+               Entity="va_reminderconfig"
+               Title="Reminder Configuration (Program Manager)"
+               AvailableOffline="false">
+      </SubArea>
+    </Group>
   </Area>
 
   <!-- ═══════════════════════════════════════════════════════════
        AREA 4: Reference Data
-       Admin-only. Titles, allowance levels, company entities,
-       reminder configuration.
+       Reference data management (admins) + read visibility for
+       reviewer leadership roles where permissions allow.
        ═══════════════════════════════════════════════════════════ -->
   <Area Id="area_referencedata"
         Title="Reference Data"
