@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     Creates the following reference data records in Dataverse:
-    - 8 va_CompanyEntity records (legal entities with endorsement addresses)
+    - 9 va_CompanyEntity records (legal entities with endorsement addresses)
     - 4 va_AllowanceLevelConfig records (A/B/C/D with MSRP minimums and monthly amounts)
     - va_EligibleTitle records (job titles mapped to allowance levels)
     - 1 va_ReminderConfig record (default reminder schedule)
@@ -106,11 +106,18 @@ $CompanyEntities = @(
         presidentName   = "Sunpro President"                       # TODO: Update with actual name
     },
     @{
-        name            = "Sunroc Corporation"
-        shortCode       = "SRC"
+        name            = "HomeBuilt Hardware and Design, LLC"
+        shortCode       = "HHD"
         isActive        = $true
-        presidentUserId = "00000000-0000-0000-0000-000000000000"  # TODO: Sunroc President AAD Object ID
-        presidentName   = "Sunroc President"                       # TODO: Update with actual name
+        presidentUserId = "00000000-0000-0000-0000-000000000000"  # TODO: HomeBuilt President AAD Object ID
+        presidentName   = "HomeBuilt President"                    # TODO: Update with actual name
+    },
+    @{
+        name            = "Suncore Construction and Materials, Inc."
+        shortCode       = "SCM"
+        isActive        = $true
+        presidentUserId = "00000000-0000-0000-0000-000000000000"  # TODO: Suncore President AAD Object ID
+        presidentName   = "Suncore President"                      # TODO: Update with actual name
     },
     @{
         name            = "W.W. Clyde & Co."
@@ -160,10 +167,10 @@ Write-Host ""
 Write-Host "Seeding Allowance Level Configurations..." -ForegroundColor Yellow
 
 $AllowanceLevels = @(
-    @{ name = "Level A"; level = 752370000; minimumMsrp = 70000; monthlyAllowance = 1760; evCharging = 310; isCurrentRate = $true },
-    @{ name = "Level B"; level = 752370001; minimumMsrp = 59000; monthlyAllowance = 1500; evCharging = 310; isCurrentRate = $true },
-    @{ name = "Level C"; level = 752370002; minimumMsrp = 46000; monthlyAllowance = 1260; evCharging = 310; isCurrentRate = $true },
-    @{ name = "Level D"; level = 752370003; minimumMsrp = 43000; monthlyAllowance = 1180; evCharging = 310; isCurrentRate = $true }
+    @{ name = "Level A"; level = 752370000; minimumMsrp = 72000; monthlyAllowance = 1820; evCharging = 330; isCurrentRate = $true },
+    @{ name = "Level B"; level = 752370001; minimumMsrp = 61000; monthlyAllowance = 1550; evCharging = 330; isCurrentRate = $true },
+    @{ name = "Level C"; level = 752370002; minimumMsrp = 47000; monthlyAllowance = 1300; evCharging = 330; isCurrentRate = $true },
+    @{ name = "Level D"; level = 752370003; minimumMsrp = 44000; monthlyAllowance = 1220; evCharging = 330; isCurrentRate = $true }
 )
 # Note: Choice field integer values (752370000 etc.) will be confirmed once the solution is published
 # and the actual option set values are generated. Update these values after first publish.
@@ -232,7 +239,7 @@ Write-Host "  1. Replace all 00000000-0000-0000-0000-000000000000 GUIDs with rea
 Write-Host "     for each subsidiary president (run: az ad user show --id email --query id -o tsv)" -ForegroundColor Gray
 Write-Host ""
 Write-Host "  In the Admin model-driven app (Reference Data section):" -ForegroundColor Cyan
-Write-Host "  2. Verify 8 Company Entity records — confirm presidentUserId and presidentName are set" -ForegroundColor White
+Write-Host "  2. Verify 9 Company Entity records — confirm presidentUserId and presidentName are set" -ForegroundColor White
 Write-Host "  3. Create 4 Allowance Level Config records (A/B/C/D) with current monthly amounts" -ForegroundColor White
 Write-Host "  4. Review and create Eligible Title records, mapping to Dynamics job title strings" -ForegroundColor White
 Write-Host "  5. Create 1 Reminder Config record: intervals (e.g. 30/14/7 days) and grace period" -ForegroundColor White

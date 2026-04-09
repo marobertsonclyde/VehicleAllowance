@@ -165,7 +165,7 @@ Details:
 - Allowance Level: {AllowanceLevel}
 - Monthly Allowance: ${MonthlyAmount}/month
 - Effective Date: {EffectiveDate}
-{if EVehicle: - EV Charging Allowance: $310/month (no fuel card will be issued)}
+{if EVehicle: - EV Charging Allowance: $330/month (no fuel card will be issued)}
 
 Remind them they must maintain required insurance coverage and submit
 updated declaration pages on every policy renewal. Keep the tone
@@ -223,7 +223,7 @@ Personnel Number: {PersonnelNumber}
 Company: {CompanyName}
 Allowance Level: {AllowanceLevel}
 Monthly Amount: ${MonthlyAmount}/month
-{if EV: EV Charging Allowance: $310/month (no fuel card)}
+{if EV: EV Charging Allowance: $330/month (no fuel card)}
 Effective Date: {EffectiveDate}
 
 Action required: Add allowance to first payroll of {EffectiveMonth}.

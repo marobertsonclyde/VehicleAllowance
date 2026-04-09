@@ -28,7 +28,7 @@ If you believe you are eligible but the system says otherwise, contact the Equip
 2. Enter the **model year**, **make**, and **model**.
 3. Upload your **Window Sticker** (the Monroney label from the dealership). The system will read the sticker automatically and fill in the MSRP and powertrain type.
 4. Review the extracted values. If anything looks wrong, correct it manually before continuing.
-5. If your vehicle is electric or plug-in hybrid, the **Electric Vehicle** option will be detected automatically. Confirm it is correct — EV recipients receive a separate $310/month charging allowance.
+5. If your vehicle is electric or plug-in hybrid, the **Electric Vehicle** option will be detected automatically. Confirm it is correct — EV recipients receive a separate $330/month charging allowance.
 
 > **Tip:** The window sticker is required for new applications. It is the manufacturer's original window sticker, not a dealer quote or invoice.
 
@@ -38,10 +38,10 @@ The system shows the allowance levels your vehicle qualifies for based on its MS
 
 | Level | Minimum MSRP | Monthly Allowance |
 |-------|-------------|-------------------|
-| A | $70,000 | $1,760/mo |
-| B | $59,000 | $1,500/mo |
-| C | $46,000 | $1,260/mo |
-| D | $43,000 | $1,180/mo |
+| A | $72,000 | $1,820/mo |
+| B | $61,000 | $1,550/mo |
+| C | $47,000 | $1,300/mo |
+| D | $44,000 | $1,220/mo |
 
 > Levels and amounts are reviewed annually by leadership. Your rate is locked at the time your application is approved.
 

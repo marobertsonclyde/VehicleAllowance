@@ -121,10 +121,10 @@ Create 4 records (A, B, C, D) with the current monthly allowance amounts:
 
 | Level | Minimum MSRP | Monthly Amount | EV Charging |
 |-------|-------------|----------------|-------------|
-| A | $70,000 | $1,760 | $310 |
-| B | $59,000 | $1,500 | $310 |
-| C | $46,000 | $1,260 | $310 |
-| D | $43,000 | $1,180 | $310 |
+| A | $72,000 | $1,820 | $330 |
+| B | $61,000 | $1,550 | $330 |
+| C | $47,000 | $1,300 | $330 |
+| D | $44,000 | $1,220 | $330 |
 
 Set `Is Current Rate = Yes` on all four records.
 

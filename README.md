@@ -102,7 +102,7 @@ Training data (insurance declaration pages, window sticker images) is **not stor
 - **Effective date:** Documents received on or before the 15th → current month; 16th or later → next month
 - **President approval:** Required for New Opt-In applications only
 - **Insurance continuity:** Lapsed coverage triggers allowance termination after configurable grace period
-- **EV vehicles:** Receive $310/month EV Charging Allowance in lieu of fuel card
+- **EV vehicles:** Receive $330/month EV Charging Allowance in lieu of fuel card
 - **Vehicle age:** Must be 5 model years old or newer
 - **Opt-out deadline:** August 1 each year for following calendar year
 
