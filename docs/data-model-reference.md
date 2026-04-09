@@ -181,6 +181,7 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | `va_reminderDays2` | Second Reminder (Days Before) | Integer | Default: 14 |
 | `va_reminderDays3` | Third Reminder (Days Before) | Integer | Default: 7 |
 | `va_gracePeriodDays` | Grace Period After Expiry (Days) | Integer | Default: 30 |
+| `va_vehicleAgeGracePeriodDays` | Vehicle Age Grace Period (Days After Jan 1) | Integer | Default: 30 (Program Manager editable) |
 | `va_isActive` | Is Active | Yes/No | Only one active record used |
 
 ---

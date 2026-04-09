@@ -146,7 +146,7 @@ Write-Host "      and linked to the correct PersonnelNumber/job title values fro
 Write-Host ""
 Write-Host "Seeding Default Reminder Configuration..." -ForegroundColor Yellow
 
-Write-Host "  + Insurance Reminder Schedule: 30 / 14 / 7 days, Grace period: 30 days" -ForegroundColor Green
+Write-Host "  + Insurance Reminder Schedule: 30 / 14 / 7 days, Insurance Grace: 30 days, Vehicle Age Grace: 30 days" -ForegroundColor Green
 Write-Host "NOTE: Create this record manually in Admin app Settings > Reminder Configuration" -ForegroundColor Yellow
 
 Write-Host ""
@@ -157,7 +157,7 @@ Write-Host "  In the Admin model-driven app (Reference Data section):" -Foregrou
 Write-Host "  1. Verify 9 Company Entity records are present with correct endorsement addresses" -ForegroundColor White
 Write-Host "  2. Create 4 Allowance Level Config records (A/B/C/D) with current monthly amounts" -ForegroundColor White
 Write-Host "  3. Review and create Eligible Title records, mapping to Dynamics job title strings" -ForegroundColor White
-Write-Host "  4. Create 1 Reminder Config record: intervals (e.g. 30/14/7 days) and grace period" -ForegroundColor White
+Write-Host "  4. Create 1 Reminder Config record: intervals (e.g. 30/14/7 days), insurance grace period, and vehicle age grace period" -ForegroundColor White
 Write-Host ""
 Write-Host "  In Power Platform admin (Environment Variables):" -ForegroundColor Cyan
 Write-Host "  5. va_EquipmentLeaderUserId     — AAD Object ID of Equipment Leader" -ForegroundColor White
