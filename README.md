@@ -112,5 +112,6 @@ Training data (insurance declaration pages, window sticker images) is **not stor
 - [Data Model Reference](docs/data-model-reference.md)
 - [AI Model Training Guide](docs/ai-model-training-guide.md)
 - [Security Model](docs/security-model.md)
+- [Improvements & Feature Enhancements](docs/improvements-and-enhancements.md)
 - [Employee User Guide](docs/user-guides/employee-guide.md)
 - [Equipment Leader User Guide](docs/user-guides/equipment-leader-guide.md)
