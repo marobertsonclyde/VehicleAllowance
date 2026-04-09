@@ -8,7 +8,7 @@
        Directors:         va_status = 720000014 (Director Review)
        The sitemap entry points to this view; role-based access restricts rows. -->
   <savedquery>
-    <savedqueryid>va-app-view-mypending</savedqueryid>
+    <savedqueryid>931fe61f-e7aa-4ad5-8410-0b6009b0619e</savedqueryid>
     <name>My Pending Reviews</name>
     <description>Applications currently pending review at any stage</description>
     <querytype>0</querytype>
@@ -60,7 +60,7 @@
 
   <!-- ─── AI Flagged — Needs Review ─── -->
   <savedquery>
-    <savedqueryid>va-app-view-aiflagged</savedqueryid>
+    <savedqueryid>6da0a409-626d-4395-9dfd-9ec3bc464aeb</savedqueryid>
     <name>AI Flagged — Needs Review</name>
     <description>Applications where AI could not fully validate documents (score below threshold or flags raised)</description>
     <querytype>0</querytype>
@@ -109,7 +109,7 @@
 
   <!-- ─── Employee Profiles ─── -->
   <savedquery>
-    <savedqueryid>va-app-view-employeeprofiles</savedqueryid>
+    <savedqueryid>553784ca-69b7-49b7-abeb-feb8750cbb7b</savedqueryid>
     <name>Employee Profiles</name>
     <description>Employee-centric profile view. Open a row to see full application data, uploaded documents, and audit history.</description>
     <querytype>0</querytype>
@@ -158,7 +158,7 @@
 
   <!-- ─── All Applications (default view) ─── -->
   <savedquery>
-    <savedqueryid>va-app-view-all</savedqueryid>
+    <savedqueryid>850d6079-c708-4be4-bc8a-f28c11517cb6</savedqueryid>
     <name>All Applications</name>
     <description>All applications across all statuses and types</description>
     <querytype>0</querytype>
@@ -205,7 +205,7 @@
 
   <!-- ─── Active (Approved / Payroll Notification) ─── -->
   <savedquery>
-    <savedqueryid>va-app-view-active</savedqueryid>
+    <savedqueryid>554f3c12-8b88-4f9f-be4a-a205bdf9d35d</savedqueryid>
     <name>Active</name>
     <description>Applications that have been fully approved and are active or pending payroll</description>
     <querytype>0</querytype>

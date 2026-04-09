@@ -3,7 +3,7 @@
 
   <!-- ─── Expiring Insurance — Next 45 Days (default) ─── -->
   <savedquery>
-    <savedqueryid>va-policy-view-expiring45</savedqueryid>
+    <savedqueryid>a6fa8101-cb5b-4bbb-8b98-c302470396a0</savedqueryid>
     <name>Expiring — Next 45 Days</name>
     <description>Active insurance policies expiring within 45 days. Drives the expiry dashboard in Active Allowances area.</description>
     <querytype>0</querytype>
@@ -60,7 +60,7 @@
 
   <!-- ─── All Active Policies ─── -->
   <savedquery>
-    <savedqueryid>va-policy-view-allactive</savedqueryid>
+    <savedqueryid>d5ae9126-e5b9-4ea6-b0d9-2e8dfae813b5</savedqueryid>
     <name>All Active Policies</name>
     <description>All insurance policies currently marked active</description>
     <querytype>0</querytype>

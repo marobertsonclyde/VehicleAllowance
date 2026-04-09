@@ -3,7 +3,7 @@
 
   <!-- ─── Active Recipients (default view) ─── -->
   <savedquery>
-    <savedqueryid>va-record-view-active</savedqueryid>
+    <savedqueryid>3f2a1c6e-7d91-42bf-ba5a-b0eee7c5f21e</savedqueryid>
     <name>Active Recipients</name>
     <description>All currently active allowance records</description>
     <querytype>0</querytype>
@@ -52,7 +52,7 @@
 
   <!-- ─── Terminated This Year ─── -->
   <savedquery>
-    <savedqueryid>va-record-view-terminated</savedqueryid>
+    <savedqueryid>ea95c7e6-5076-4a46-b04b-2faad071f81d</savedqueryid>
     <name>Terminated This Year</name>
     <description>Allowance records terminated in the current calendar year</description>
     <querytype>0</querytype>

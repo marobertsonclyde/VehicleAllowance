@@ -6,7 +6,7 @@
   va_terminationDate, and va_terminationReason then saves the record.
 -->
 <form>
-  <formid>va-allowancerecord-mainform</formid>
+  <formid>c165f16b-057c-498f-8645-fc7095256cd8</formid>
   <name>Allowance Record</name>
   <objecttypecode>va_allowancerecord</objecttypecode>
   <type>2</type>
