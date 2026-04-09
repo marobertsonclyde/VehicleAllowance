@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.0.0.0007" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="PAC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SolutionManifest>
+    <UniqueName>VehicleAllowanceSolution</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="Vehicle Allowance Solution" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Power Platform solution for managing the Clyde Companies Vehicle Allowance Program. Includes Dataverse data model, Employee Canvas App, Admin Model-Driven App, Power Automate flows, AI Builder models, and Copilot Studio agent." languagecode="1033" />
+    </Descriptions>
+    <Version>1.0.0.0</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>VehicleAllowancePublisher</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Vehicle Allowance Publisher" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress>equipment@clydeco.com</EMailAddress>
+      <SupportingWebsiteUrl />
+      <CustomizationPrefix>va</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>72000</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City>Orem</City>
+          <StateOrProvince>UT</StateOrProvince>
+          <PostalCode>84057</PostalCode>
+          <Country>US</Country>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>2</AddressTypeCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <!-- Entities (Tables) will be listed here by PAC CLI after first export -->
+      <!-- EnvironmentVariableDefinitions will be listed here -->
+      <!-- Roles will be listed here -->
+      <!-- Workflows (Flows) will be listed here -->
+      <!-- CanvasApps will be listed here -->
+      <!-- AIModels will be listed here -->
+      <!-- Bots (Copilot Studio) will be listed here -->
+    </RootComponents>
+    <MissingDependencies />
+  </SolutionManifest>
+</ImportExportXml>

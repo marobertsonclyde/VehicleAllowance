@@ -1,0 +1,45 @@
+name: Build & Validate Solution
+
+on:
+  pull_request:
+    branches: [develop, main]
+    paths:
+      - 'src/**'
+      - 'config/**'
+      - 'scripts/**'
+
+jobs:
+  build-validate:
+    name: Pack & Check Solution
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PAC CLI
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
+      - name: Pack solution
+        uses: microsoft/powerplatform-actions/pack-solution@v1
+        with:
+          solution-folder: src/VehicleAllowanceSolution
+          solution-file: out/VehicleAllowanceSolution_validate.zip
+          solution-type: Unmanaged
+
+      - name: Run solution checker
+        uses: microsoft/powerplatform-actions/check-solution@v1
+        with:
+          environment-url: ${{ secrets.PP_DEV_ENVIRONMENT_URL }}
+          app-id: ${{ secrets.PP_CLIENT_ID }}
+          client-secret: ${{ secrets.PP_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.PP_TENANT_ID }}
+          path: out/VehicleAllowanceSolution_validate.zip
+          checker-logs-artifact-name: checker-results
+
+      - name: Upload checker results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: solution-checker-results
+          path: checker-results/

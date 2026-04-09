@@ -1,0 +1,94 @@
+# Copilot Studio Topic: Application Status
+# Trigger phrases: "status of my application", "where is my application",
+#                  "has my application been approved", "application update"
+#
+# This topic queries Dataverse via a Power Automate flow action to return
+# the current status of the employee's most recent application.
+#
+# Implementation steps (in Copilot Studio UI):
+#   1. Create topic "Check Application Status"
+#   2. Add trigger phrases (see above)
+#   3. Add: Call an action → Power Automate flow: va_GetApplicationStatusForUser
+#      Input: SystemUserId (from authentication variable User.Id)
+#      Output: ApplicationNumber, Status, LastUpdated, ReviewerNote
+#   4. Add message card showing status with portal deep link
+#   5. If no open application found: show message with portal link to start one
+
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    displayName: Application Status
+    triggerQueries:
+      - status of my application
+      - where is my application
+      - has my application been approved
+      - application update
+      - check my status
+      - what happened to my application
+      - is my vehicle allowance approved
+  actions:
+    - kind: InvokeFlowAction
+      id: getStatus
+      displayName: Get Application Status
+      flowId: va_GetApplicationStatusForUser
+      inputs:
+        - name: UserId
+          value: =System.User.Id
+      outputs:
+        - name: ApplicationNumber
+          target: Topic.ApplicationNumber
+        - name: ApplicationStatus
+          target: Topic.AppStatus
+        - name: LastUpdated
+          target: Topic.LastUpdated
+        - name: ReviewerNote
+          target: Topic.ReviewerNote
+        - name: PortalLink
+          target: Topic.PortalLink
+    - kind: ConditionGroup
+      conditions:
+        - id: hasApplication
+          condition: =IsBlank(Topic.ApplicationNumber)
+          actions:
+            - kind: SendMessage
+              id: noApplication
+              message: "I didn't find an open application for you. You can start one in the Vehicle Allowance Portal."
+              attachments:
+                - kind: AdaptiveCard
+                  content:
+                    type: AdaptiveCard
+                    body:
+                      - type: TextBlock
+                        text: "No open application found."
+                    actions:
+                      - type: Action.OpenUrl
+                        title: Open Portal
+                        url: =Topic.PortalLink
+      defaultActions:
+        - kind: SendMessage
+          id: showStatus
+          message: "Here is the current status of your application."
+          attachments:
+            - kind: AdaptiveCard
+              content:
+                type: AdaptiveCard
+                body:
+                  - type: TextBlock
+                    text: "Application {Topic.ApplicationNumber}"
+                    weight: Bolder
+                  - type: FactSet
+                    facts:
+                      - title: Status
+                        value: "{Topic.AppStatus}"
+                      - title: Last Updated
+                        value: "{Topic.LastUpdated}"
+                  - type: TextBlock
+                    text: "{Topic.ReviewerNote}"
+                    isVisible: "=!IsBlank(Topic.ReviewerNote)"
+                    wrap: true
+                actions:
+                  - type: Action.OpenUrl
+                    title: Open My Application
+                    url: =Topic.PortalLink

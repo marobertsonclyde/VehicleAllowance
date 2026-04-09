@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<environmentvariabledefinition>
+  <schemaname>va_EquipmentLeaderUserId</schemaname>
+  <displayname>Equipment Leader User ID</displayname>
+  <description>AAD Object ID (GUID) of the Company Equipment Leader user. Used by Power Automate flows to route review notifications.</description>
+  <type>String</type>
+  <defaultvalue></defaultvalue>
+  <isrequired>1</isrequired>
+  <hint>Find in Azure AD (Entra ID) > Users > [Equipment Leader name] > Object ID. Must be a GUID.</hint>
+</environmentvariabledefinition>

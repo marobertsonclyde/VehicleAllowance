@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<environmentvariabledefinition>
+  <schemaname>va_PayrollTeamsChannelId</schemaname>
+  <displayname>Payroll Teams Channel ID</displayname>
+  <description>Microsoft Teams channel ID for payroll notifications. Flows post a message here when a new allowance is approved and ready for payroll processing.</description>
+  <type>String</type>
+  <defaultvalue></defaultvalue>
+  <isrequired>1</isrequired>
+  <hint>In Teams, right-click the payroll channel > Get link to channel. Extract the channel ID from the URL (the segment after "channel/").</hint>
+</environmentvariabledefinition>
