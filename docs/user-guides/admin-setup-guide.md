@@ -85,7 +85,6 @@ Edit `config/environment-variables.json` and replace all `REPLACE-WITH-*` placeh
 |----------|-------------|-------------|
 | `va_EquipmentLeaderUserId` | AAD Object ID of the Equipment Leader | `az ad user show --id email --query id -o tsv` |
 | `va_DirectorOfEquipmentUserId` | AAD Object ID of the Director of Equipment | Same as above |
-| `va_CompanyPresidentUserId` | Fallback president GUID (used if no subsidiary-specific president is set) | Same as above |
 | `va_PayrollTeamsChannelId` | Teams channel ID for payroll notifications | In Teams: right-click channel → Get link to channel, extract the `channel` parameter |
 | `va_PortalUrl` | Base URL of the employee canvas app | Available after publishing the code app |
 | `va_AIAutoApprovalThreshold` | AI score threshold for auto-approval (0–100, default: 85) | Set per your risk tolerance |
@@ -95,19 +94,13 @@ Edit `config/environment-variables.json` and replace all `REPLACE-WITH-*` placeh
 
 ## Step 5 — Seed Reference Data
 
-Edit `scripts/seed-reference-data.ps1` and fill in the AAD Object ID for each subsidiary president before running. Look up each president's Object ID:
-
-```powershell
-az ad user show --id firstname.lastname@clyde.com --query id -o tsv
-```
-
-Update the `presidentUserId` field for each of the 8 companies in the script, then run:
+Run the seed script to create company entity, allowance level, and eligible title records:
 
 ```powershell
 ./scripts/seed-reference-data.ps1 -EnvironmentUrl "https://yourorg.crm.dynamics.com"
 ```
 
-The script creates 8 company entity records and warns you about any placeholder GUIDs that were not replaced.
+The script creates 9 company entity records and prints a summary of what was seeded.
 
 ---
 
@@ -121,10 +114,10 @@ Create 4 records (A, B, C, D) with the current monthly allowance amounts:
 
 | Level | Minimum MSRP | Monthly Amount | EV Charging |
 |-------|-------------|----------------|-------------|
-| A | $70,000 | $1,760 | $310 |
-| B | $59,000 | $1,500 | $310 |
-| C | $46,000 | $1,260 | $310 |
-| D | $43,000 | $1,180 | $310 |
+| A | $72,000 | $1,820 | $330 |
+| B | $61,000 | $1,550 | $330 |
+| C | $47,000 | $1,300 | $330 |
+| D | $44,000 | $1,220 | $330 |
 
 Set `Is Current Rate = Yes` on all four records.
 
@@ -160,7 +153,6 @@ The solution includes 6 security roles. Assign each role to an AAD group so HR c
 | `va_Employee` | `VA-Employees` | All eligible employees currently enrolled or applying |
 | `va_EquipmentLeader` | `VA-EquipmentLeaders` | Equipment Leader(s) |
 | `va_Director` | `VA-Directors` | Director of Equipment |
-| `va_President` | `VA-Presidents` | All 8 subsidiary presidents |
 | `va_Payroll` | `VA-Payroll` | Payroll team members who need read access |
 | `va_Administrator` | `VA-Admins` | Power Platform admins |
 
@@ -181,9 +173,7 @@ Certain fields are restricted from Employee-role users. Configure column-level s
    - `va_allowanceapplication.va_equipmentLeaderDecision`
    - `va_allowanceapplication.va_directorNotes`
    - `va_allowanceapplication.va_directorDecision`
-   - `va_allowanceapplication.va_presidentNotes`
-   - `va_allowanceapplication.va_presidentDecision`
-4. Assign this profile to the `VA-EquipmentLeaders`, `VA-Directors`, `VA-Presidents`, and `VA-Admins` teams.
+4. Assign this profile to the `VA-EquipmentLeaders`, `VA-Directors`, and `VA-Admins` teams.
 
 Employees will not be able to read or write these fields.
 
@@ -268,8 +258,7 @@ In the Admin App → **Reference Data → Eligible Titles**, add a new record wi
 ### Adding a New Subsidiary
 
 1. In the Admin App → **Reference Data → Company Entities**, create a new record.
-2. Set the legal entity code (short code), endorsement address, president user ID, and president name.
-3. Add the president to the `VA-Presidents` AAD group.
+2. Set the legal entity code (short code) and endorsement address.
 
 ### Exporting Solution Changes Back to Git
 
@@ -294,4 +283,4 @@ git push
 
 **Teams messages not sending:** Confirm the Teams connection in Power Automate is authenticated with a service account that has Teams access. Check the `va_EquipmentLeaderUserId` and `va_DirectorOfEquipmentUserId` environment variables contain valid AAD Object IDs (not email addresses).
 
-**Seed script warns about placeholder president GUIDs:** Look up each president's AAD Object ID using `az ad user show --id email --query id -o tsv`, update `scripts/seed-reference-data.ps1`, and re-run the script.
+**Seed script output shows no records created:** Confirm the environment URL is correct and you are authenticated (`pac auth who`). Re-run after fixing authentication.

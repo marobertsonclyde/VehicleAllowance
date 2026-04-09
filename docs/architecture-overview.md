@@ -66,19 +66,12 @@ The Vehicle Allowance Program system digitalizes the intake, approval, and ongoi
               ▼
         [Director Review]
               │
-    ┌─────────┼──────────────┐
-    │         │              │
- New        Update/      Returned/
- Opt-In     Renewal      Rejected
-    │         │
-    ▼         ▼
-[President  [Payroll Notification]
-  Review]        │
-    │            ▼
-    │       [Active]
-    │
- Approved
-    │
+    ┌──────────┼──────────┐
+    │          │          │
+ Approved   Returned   Rejected
+    │          │          │
+    │      (back to    [Rejected]
+    │       employee)
     ▼
 [Payroll Notification]
     │
@@ -99,7 +92,7 @@ The Vehicle Allowance Program system digitalizes the intake, approval, and ongoi
 ### Microsoft Teams
 - **Purpose:** All internal notifications (replaces email for internal stakeholders)
 - **Patterns used:**
-  - Adaptive cards with action buttons (approve/reject inline) for Equipment Leader, Director, President
+  - Adaptive cards with action buttons (approve/reject inline) for Equipment Leader and Director
   - Channel message for Payroll notification
   - Direct message for employees (application status, insurance reminders)
 - **Connection:** Microsoft Teams connector (service principal or delegated)
@@ -113,7 +106,7 @@ The Vehicle Allowance Program system digitalizes the intake, approval, and ongoi
 ### Dynamics / Microsoft Fabric
 - **PersonnelNumber** is the primary employee business key — stored on all employee-related Dataverse records
 - **AssetID** from Dynamics Fixed Assets is assigned to vehicles after approval (manual entry initially, automated via Dynamics connector in future phase)
-- **Company** affiliation from Dynamics determines which of the 8 `va_CompanyEntity` records applies for endorsement addressing
+- **Company** affiliation from Dynamics determines which of the 9 `va_CompanyEntity` records applies for endorsement addressing
 
 ## Security Architecture
 
@@ -130,7 +123,6 @@ The Vehicle Allowance Program system digitalizes the intake, approval, and ongoi
 | `PP-VA-Employee` | `va_Employee` | All eligible employees |
 | `PP-VA-EquipmentLeader` | `va_EquipmentLeader` | Company Equipment Leaders |
 | `PP-VA-Director` | `va_Director` | CCI Director of Equipment |
-| `PP-VA-President` | `va_President` | Company President |
 | `PP-VA-Payroll` | `va_Payroll` | Payroll team members |
 | `PP-VA-Administrator` | `va_Administrator` | IT/Power Platform admins |
 
@@ -153,8 +145,8 @@ Flow 1: Submission Orchestrator
                               └─► Triggers Flow 4 (via Dataverse status change)
 
 Flow 4: Equipment Leader Decision ──► Triggers Flow 5 (via Dataverse)
-Flow 5: Director Decision ──────────► Triggers Flow 6 (via Dataverse)
-Flow 6: President Approval & Payroll ──► Creates AllowanceRecord + ReminderSchedule
+Flow 5: Director Decision ──────────► Triggers Flow 6 (child flow call)
+Flow 6: Payroll Notification ────────► Creates AllowanceRecord + ReminderSchedule
 
 Flow 7: Insurance Reminder (Scheduled daily, reads va_ReminderConfig for intervals)
 Flow 8: Document Upload AI Processing (triggered on every new va_Document row)

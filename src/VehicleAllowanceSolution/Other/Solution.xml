@@ -68,7 +68,6 @@
       <!-- ── Environment Variable Definitions ──────────────────────────── -->
       <RootComponent type="318" schemaName="va_EquipmentLeaderUserId" behavior="0" />
       <RootComponent type="318" schemaName="va_DirectorOfEquipmentUserId" behavior="0" />
-      <RootComponent type="318" schemaName="va_CompanyPresidentUserId" behavior="0" />
       <RootComponent type="318" schemaName="va_PayrollTeamsChannelId" behavior="0" />
       <RootComponent type="318" schemaName="va_PortalUrl" behavior="0" />
       <RootComponent type="318" schemaName="va_AIAutoApprovalThreshold" behavior="0" />
@@ -77,7 +76,7 @@
 
       <!-- ── Security Roles ─────────────────────────────────────────────── -->
       <!-- GUIDs assigned by Dataverse on import; schemaName used for reference -->
-      <!-- va_Employee, va_EquipmentLeader, va_Director, va_President, va_Payroll, va_Administrator -->
+      <!-- va_Employee, va_EquipmentLeader, va_Director, va_Payroll, va_Administrator -->
 
       <!-- ── Workflows (Power Automate Flows) ──────────────────────────── -->
       <!-- Added by PAC CLI after flows are created in Power Platform Studio -->

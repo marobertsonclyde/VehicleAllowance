@@ -6,7 +6,6 @@
        In practice this is filtered further by user context in the app.
        Equipment Leaders: va_status = 720000013 (Equipment Leader Review)
        Directors:         va_status = 720000014 (Director Review)
-       Presidents:        va_status = 720000015 (President Review)
        The sitemap entry points to this view; role-based access restricts rows. -->
   <savedquery>
     <savedqueryid>va-app-view-mypending</savedqueryid>
@@ -33,7 +32,6 @@
             <condition attribute="va_status" operator="in">
               <value>720000013</value>  <!-- Equipment Leader Review -->
               <value>720000014</value>  <!-- Director Review -->
-              <value>720000015</value>  <!-- President Review -->
             </condition>
           </filter>
           <order attribute="createdon" descending="false" />

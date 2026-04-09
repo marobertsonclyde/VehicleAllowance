@@ -87,7 +87,7 @@
             <LocalizedName description="EV Charging Amount" languagecode="1033" />
           </LocalizedNames>
           <Descriptions>
-            <Description description="Additional monthly amount for electric vehicle recipients. Current rate: $310." languagecode="1033" />
+            <Description description="Additional monthly amount for electric vehicle recipients. Set by administrator." languagecode="1033" />
           </Descriptions>
         </attribute>
 

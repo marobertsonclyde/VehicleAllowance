@@ -12,7 +12,7 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | `va_Document` | Document | One row per uploaded file |
 | `va_DocumentChecklist` | Document Checklist | 4 required items per application |
 | `va_AllowanceRecord` | Allowance Record | Living active state once approved |
-| `va_CompanyEntity` | Company Entity | 8 legal entities (pre-seeded) |
+| `va_CompanyEntity` | Company Entity | 9 legal entities (pre-seeded) |
 | `va_EligibleTitle` | Eligible Title | Job titles mapped to allowance levels |
 | `va_AllowanceLevelConfig` | Allowance Level Config | Level → MSRP minimum + monthly amount |
 | `va_AuditLog` | Audit Log | Immutable event trail |
@@ -37,7 +37,7 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | `va_allowanceLevel` | Allowance Level | Choice | A / B / C / D |
 | `va_monthlyAllowanceAmount` | Monthly Allowance Amount | Currency | From va_AllowanceLevelConfig at approval |
 | `va_isElectricVehicle` | Electric Vehicle | Yes/No | Default: No |
-| `va_evChargingAllowance` | EV Charging Allowance | Currency | $310 when EV = Yes |
+| `va_evChargingAllowance` | EV Charging Allowance | Currency | $330 when EV = Yes |
 | `va_totalMonthlyAllowance` | Total Monthly Allowance | Currency | Calculated field |
 | `va_effectiveDate` | Effective Date | Date | 15th/16th rule applied by Flow 6 |
 | `va_submittedOn` | Submitted On | DateTime | Set by Flow 1 |
@@ -49,9 +49,6 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | `va_directorReviewDate` | Director Review Date | DateTime | |
 | `va_directorDecision` | Director Decision | Choice | Approved / Returned / Rejected |
 | `va_directorNotes` | Director Notes | Multiline Text | Hidden from Employee role |
-| `va_presidentApprovalRequired` | President Approval Required | Yes/No | True for New Opt-In |
-| `va_presidentApprovalDate` | President Approval Date | DateTime | |
-| `va_presidentDecision` | President Decision | Choice | Approved / Rejected |
 | `va_payrollNotifiedDate` | Payroll Notified Date | DateTime | |
 | `va_aiValidationScore` | AI Validation Score | Decimal | 0–100 composite |
 | `va_aiValidationSummary` | AI Validation Summary | Multiline Text | AI-generated summary |
@@ -60,7 +57,7 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | `va_parentApplicationId` | Parent Application | Lookup → va_AllowanceApplication | Links renewals/updates to original |
 
 **Status Choice Values (in order):**
-`Draft` → `Submitted` → `AI Review` → `Equipment Leader Review` → `Director Review` → `President Review` → `Payroll Notification` → `Active` | `Rejected` | `Returned to Employee` | `Withdrawn` | `Terminated`
+`Draft` → `Submitted` → `AI Review` → `Equipment Leader Review` → `Director Review` → `Payroll Notification` → `Active` | `Rejected` | `Returned to Employee` | `Withdrawn` | `Terminated`
 
 ---
 
@@ -142,7 +139,7 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | `va_currentVehicleId` | Current Vehicle | Lookup → va_Vehicle | |
 | `va_allowanceLevel` | Allowance Level | Choice | A / B / C / D |
 | `va_monthlyAmount` | Monthly Amount | Currency | Locked at approval time |
-| `va_evChargingAmount` | EV Charging Amount | Currency | $310 for EV |
+| `va_evChargingAmount` | EV Charging Amount | Currency | $330 for EV |
 | `va_totalMonthlyAmount` | Total Monthly Amount | Currency | |
 | `va_effectiveDate` | Effective Date | Date | Per 15th/16th rule |
 | `va_status` | Status | Choice | Active / Suspended / Terminated |
@@ -161,7 +158,7 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | `va_level` | Level | Choice | A / B / C / D |
 | `va_minimumMsrp` | Minimum MSRP | Currency | |
 | `va_monthlyAllowance` | Monthly Allowance | Currency | |
-| `va_evChargingAllowance` | EV Charging Allowance | Currency | $310 |
+| `va_evChargingAllowance` | EV Charging Allowance | Currency | $330 |
 | `va_effectiveFrom` | Effective From | Date | For future rate changes |
 | `va_isCurrentRate` | Is Current Rate | Yes/No | Only one per level should be true |
 
@@ -169,10 +166,10 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 
 | Level | Min MSRP | Monthly | Eligible Titles |
 |---|---|---|---|
-| A | $70,000 | $1,760 | CCI SLT |
-| B | $59,000 | $1,500 | CCI SLT, CCI MLT |
-| C | $46,000 | $1,260 | CCI SLT, CCI MLT |
-| D | $43,000 | $1,180 | Property/Env/Facilities/Mat Res/Sales/Location/Equipment Managers; all Construction titles |
+| A | $72,000 | $1,820 | CCI SLT |
+| B | $61,000 | $1,550 | CCI SLT, CCI MLT |
+| C | $47,000 | $1,300 | CCI SLT, CCI MLT |
+| D | $44,000 | $1,220 | Property/Env/Facilities/Mat Res/Sales/Location/Equipment Managers; all Construction titles |
 
 ---
 
@@ -184,6 +181,7 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | `va_reminderDays2` | Second Reminder (Days Before) | Integer | Default: 14 |
 | `va_reminderDays3` | Third Reminder (Days Before) | Integer | Default: 7 |
 | `va_gracePeriodDays` | Grace Period After Expiry (Days) | Integer | Default: 30 |
+| `va_vehicleAgeGracePeriodDays` | Vehicle Age Grace Period (Days After Jan 1) | Integer | Default: 30 (Program Manager editable) |
 | `va_isActive` | Is Active | Yes/No | Only one active record used |
 
 ---
@@ -198,7 +196,8 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | Clyde Capital Group Management, LLC | CCG | (same address) |
 | Geneva Rock Products, Inc. | GRP | (same address) |
 | Sunpro Corporation | SPC | (same address) |
-| Sunroc Corporation | SRC | (same address) |
+| HomeBuilt Hardware and Design, LLC | HHD | (same address) |
+| Suncore Construction and Materials, Inc. | SCM | (same address) |
 | W.W. Clyde & Co. | WWC | (same address) |
 
 ---
@@ -226,7 +225,7 @@ va_CompanyEntity (1) ─────────── (N) va_AllowanceRecord
 ## Choice Field Definitions
 
 ### Application Status
-`Draft` | `Submitted` | `AI Review` | `Equipment Leader Review` | `Director Review` | `President Review` | `Payroll Notification` | `Active` | `Rejected` | `Returned to Employee` | `Withdrawn` | `Terminated`
+`Draft` | `Submitted` | `AI Review` | `Equipment Leader Review` | `Director Review` | `Payroll Notification` | `Active` | `Rejected` | `Returned to Employee` | `Withdrawn` | `Terminated`
 
 ### Application Type
 `New Opt-In` | `Vehicle Update` | `Annual Renewal`

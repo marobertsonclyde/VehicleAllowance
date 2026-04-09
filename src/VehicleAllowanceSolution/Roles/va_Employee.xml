@@ -2,7 +2,7 @@
 <!--
   Security Role: va_Employee
   Audience: All eligible employees who may apply for the Vehicle Allowance Program.
-  AAD Group: va-employees (all eligible-title employees across all 8 subsidiaries)
+  AAD Group: va-employees (all eligible-title employees across all 9 subsidiaries)
 
   Access pattern: User-owned records only (Basic level = own records in own business unit).
   Employees can create and manage their own applications but cannot see other employees' data.
@@ -10,8 +10,6 @@
   Column-level security (configured separately in Power Platform Studio):
     - va_equipmentLeaderNotes  → hidden from this role
     - va_directorNotes         → hidden from this role
-    - va_presidentNotes        → hidden from this role
-    - va_presidentDecision     → hidden from this role
     - va_directorDecision      → hidden from this role
 -->
 <Role uniquename="va_Employee">

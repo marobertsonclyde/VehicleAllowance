@@ -368,6 +368,58 @@
           </LocalizedNames>
         </attribute>
 
+        <!-- Listed Vehicles (multi-vehicle policy support) -->
+        <attribute PhysicalName="va_listedVehicles">
+          <Type>Memo</Type>
+          <Name>va_listedVehicles</Name>
+          <LogicalName>va_listedVehicles</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>4000</MaxLength>
+          <LocalizedNames>
+            <LocalizedName description="Listed Vehicles (JSON)" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="JSON array of all vehicles listed on this auto dec page. Extracted by AI Builder. Format: [{&quot;vin&quot;:&quot;1FT...&quot;,&quot;year&quot;:2024,&quot;make&quot;:&quot;Ram&quot;,&quot;model&quot;:&quot;1500&quot;},...]. Employees commonly have 2-4 household vehicles on one policy. Only the qualifying vehicle (matching va_Vehicle.va_vin) must be present." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Qualifying Vehicle VIN Confirmed on Policy -->
+        <attribute PhysicalName="va_qualifyingVehicleConfirmed">
+          <Type>Boolean</Type>
+          <Name>va_qualifyingVehicleConfirmed</Name>
+          <LogicalName>va_qualifyingVehicleConfirmed</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Qualifying Vehicle on Policy" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="True when the VIN from va_Vehicle is found in va_listedVehicles. Set by Flow 8 after AI extraction. If false, the employee submitted a dec page that does not cover their qualifying vehicle — flag for manual review. Required true for va_meetsLiabilityRequirement to be true." languagecode="1033" />
+          </Descriptions>
+          <FalseOption>
+            <Labels><Label description="No — Qualifying vehicle not found on policy" languagecode="1033" /></Labels>
+          </FalseOption>
+          <TrueOption>
+            <Labels><Label description="Yes — Qualifying vehicle confirmed on policy" languagecode="1033" /></Labels>
+          </TrueOption>
+        </attribute>
+
+        <!-- VIN That Was Checked -->
+        <attribute PhysicalName="va_checkedVin">
+          <Type>String</Type>
+          <Name>va_checkedVin</Name>
+          <LogicalName>va_checkedVin</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>17</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Checked VIN" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="The VIN that was looked up in va_listedVehicles. Stored so admins can see exactly which VIN was checked if va_qualifyingVehicleConfirmed is false." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
       </attributes>
     </entity>
   </EntityInfo>

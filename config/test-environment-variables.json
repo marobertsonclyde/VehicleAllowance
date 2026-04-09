@@ -9,10 +9,6 @@
       "Value": "REPLACE-WITH-TEST-DIRECTOR-AAD-OBJECT-ID"
     },
     {
-      "SchemaName": "va_CompanyPresidentUserId",
-      "Value": "REPLACE-WITH-TEST-PRESIDENT-AAD-OBJECT-ID"
-    },
-    {
       "SchemaName": "va_PayrollTeamsChannelId",
       "Value": "REPLACE-WITH-TEST-TEAMS-CHANNEL-ID"
     },

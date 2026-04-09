@@ -3,8 +3,8 @@
 
   <!-- ═══════════════════════════════════════════════════════════
        AREA 1: Review Queue
-       Equipment Leaders, Directors, and Presidents see pending
-       items routed to them. Filtered views by role.
+       Equipment Leaders and Directors see pending items
+       routed to them. Filtered views by role.
        ═══════════════════════════════════════════════════════════ -->
   <Area Id="area_reviewqueue"
         Title="Review Queue"
@@ -19,8 +19,8 @@
                GetStartedPanePath=""
                AvailableOffline="false"
                DefaultDashboard="">
-        <!-- Filtered to applications in Equipment Leader Review / Director Review /
-             President Review status, showing only items at the reviewer's stage.
+        <!-- Filtered to applications in Equipment Leader Review / Director Review
+             status, showing only items at the reviewer's stage.
              Implemented via a personal view with OData filter on va_status. -->
       </SubArea>
 
@@ -88,7 +88,6 @@
       <SubArea Id="sub_aireview"    Entity="va_allowanceapplication" Title="AI Review"                AvailableOffline="false" />
       <SubArea Id="sub_elreview"    Entity="va_allowanceapplication" Title="Equipment Leader Review"  AvailableOffline="false" />
       <SubArea Id="sub_dirreview"   Entity="va_allowanceapplication" Title="Director Review"          AvailableOffline="false" />
-      <SubArea Id="sub_presreview"  Entity="va_allowanceapplication" Title="President Review"         AvailableOffline="false" />
       <SubArea Id="sub_payroll"     Entity="va_allowanceapplication" Title="Payroll Notification"     AvailableOffline="false" />
       <SubArea Id="sub_returned"    Entity="va_allowanceapplication" Title="Returned to Employee"     AvailableOffline="false" />
       <SubArea Id="sub_rejected"    Entity="va_allowanceapplication" Title="Rejected"                 AvailableOffline="false" />
@@ -143,12 +142,20 @@
                AvailableOffline="false">
       </SubArea>
     </Group>
+
+    <Group Id="group_programsettings" Title="Program Settings" IsProfile="false">
+      <SubArea Id="sub_programmanager_reminderconfig"
+               Entity="va_reminderconfig"
+               Title="Reminder Configuration (Program Manager)"
+               AvailableOffline="false">
+      </SubArea>
+    </Group>
   </Area>
 
   <!-- ═══════════════════════════════════════════════════════════
        AREA 4: Reference Data
-       Admin-only. Titles, allowance levels, company entities,
-       reminder configuration.
+       Reference data management (admins) + read visibility for
+       reviewer leadership roles where permissions allow.
        ═══════════════════════════════════════════════════════════ -->
   <Area Id="area_referencedata"
         Title="Reference Data"

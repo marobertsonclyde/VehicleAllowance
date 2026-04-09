@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   Main form for va_AllowanceApplication.
-  Used by: Equipment Leaders, Directors, Presidents, Administrators.
+  Used by: Equipment Leaders, Directors, Administrators.
   Tabs: Summary | Vehicle & Insurance | Documents | Decisions | Audit Log
   Column-level security hides reviewer decision fields from va_Employee role.
 -->
@@ -123,12 +123,7 @@
                     <control id="va_effectiveDate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8B7D8}" datafieldname="va_effectiveDate" />
                   </cell>
                 </row>
-                <row>
-                  <cell id="cell_presidentRequired" showlabel="true">
-                    <labels><label description="President Approval Required" languagecode="1033" /></labels>
-                    <control id="va_presidentApprovalRequired" classid="{B0C6723A-8503-4FD7-BB28-C8A06AC933C2}" datafieldname="va_presidentApprovalRequired" />
-                  </cell>
-                </row>
+
               </rows>
             </section>
           </sections>
@@ -245,7 +240,6 @@
     <!-- Column-level security restricts write access on decision fields.
          Equipment Leaders see/write va_equipmentLeaderDecision + va_equipmentLeaderNotes.
          Directors see/write va_directorDecision + va_directorNotes.
-         Presidents see/write va_presidentDecision + va_presidentNotes.
          Employees cannot read this tab at all. -->
     <tab name="tab_decisions" expanded="false" showlabel="true" locklevel="0">
       <labels><label description="Decisions" languagecode="1033" /></labels>
@@ -306,33 +300,6 @@
           </sections>
         </column>
 
-        <column width="33%">
-          <sections>
-            <section name="sec_pres_decision" showlabel="true" locklevel="0">
-              <labels><label description="President" languagecode="1033" /></labels>
-              <rows>
-                <row>
-                  <cell id="cell_presDecision" showlabel="true">
-                    <labels><label description="Decision" languagecode="1033" /></labels>
-                    <control id="va_presidentDecision" classid="{0D2C745A-A054-4A1E-8453-B8AC03BFEB3B}" datafieldname="va_presidentDecision" />
-                  </cell>
-                </row>
-                <row>
-                  <cell id="cell_presNotes" showlabel="true">
-                    <labels><label description="Notes" languagecode="1033" /></labels>
-                    <control id="va_presidentNotes" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="va_presidentNotes" />
-                  </cell>
-                </row>
-                <row>
-                  <cell id="cell_presReviewDate" showlabel="true">
-                    <labels><label description="Review Date" languagecode="1033" /></labels>
-                    <control id="va_presidentReviewDate" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8B7D8}" datafieldname="va_presidentReviewDate" />
-                  </cell>
-                </row>
-              </rows>
-            </section>
-          </sections>
-        </column>
       </columns>
     </tab>
 

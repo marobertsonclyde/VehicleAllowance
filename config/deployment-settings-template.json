@@ -13,11 +13,6 @@
       "Value": "REPLACE-WITH-GUID"
     },
     {
-      "SchemaName": "va_CompanyPresidentUserId",
-      "_description": "AAD Object ID of the Company President.",
-      "Value": "REPLACE-WITH-GUID"
-    },
-    {
       "SchemaName": "va_PayrollTeamsChannelId",
       "_description": "Teams channel ID for the Payroll notification channel. Find in Teams > channel > Get link to channel > extract the groupId and channelId.",
       "Value": "REPLACE-WITH-TEAMS-CHANNEL-ID"
