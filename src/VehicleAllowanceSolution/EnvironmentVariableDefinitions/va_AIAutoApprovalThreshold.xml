@@ -1,10 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<environmentvariabledefinition>
-  <schemaname>va_AIAutoApprovalThreshold</schemaname>
-  <displayname>AI Auto-Approval Threshold</displayname>
-  <description>Minimum composite AI validation score (0-100) required for an application to be eligible for AI fast-track routing. Applications scoring below this threshold always go to Equipment Leader for full manual review.</description>
-  <type>Decimal</type>
-  <defaultvalue>75</defaultvalue>
+<environmentvariabledefinition schemaname="va_AIAutoApprovalThreshold">
+  <displayname default="AI Auto-Approval Threshold">
+    <label description="AI Auto-Approval Threshold" languagecode="1033" />
+  </displayname>
+  <description default="Minimum composite AI validation score (0-100) required for fast-track routing. Applications below this threshold go to Equipment Leader for full manual review.">
+    <label description="Minimum composite AI validation score (0-100) required for fast-track routing. Applications below this threshold go to Equipment Leader for full manual review." languagecode="1033" />
+  </description>
+  <hint default="Default 75. Raise to 85 after AI models are tuned with 3+ months of production data.">
+    <label description="Default 75. Raise to 85 after AI models are tuned with 3+ months of production data." languagecode="1033" />
+  </hint>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
   <isrequired>0</isrequired>
-  <hint>Recommended: 75 during initial deployment, raise to 85 after AI models are tuned with 3+ months of production data.</hint>
+  <secretstore>0</secretstore>
+  <type>100000001</type>
+  <defaultvalue>75</defaultvalue>
 </environmentvariabledefinition>

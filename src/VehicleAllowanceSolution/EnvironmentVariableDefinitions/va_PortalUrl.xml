@@ -1,10 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<environmentvariabledefinition>
-  <schemaname>va_PortalUrl</schemaname>
-  <displayname>Portal URL</displayname>
-  <description>Full URL of the published Vehicle Allowance Portal canvas app. Included in Teams reminder messages sent to employees.</description>
-  <type>String</type>
-  <defaultvalue></defaultvalue>
-  <isrequired>1</isrequired>
-  <hint>Share > Copy link in the canvas app, or find in make.powerapps.com > Apps > [app] > Details > Web link.</hint>
+<environmentvariabledefinition schemaname="va_PortalUrl">
+  <displayname default="Portal URL">
+    <label description="Portal URL" languagecode="1033" />
+  </displayname>
+  <description default="Full URL of the published Vehicle Allowance Portal canvas app. Included in Teams reminder messages sent to employees.">
+    <label description="Full URL of the published Vehicle Allowance Portal canvas app. Included in Teams reminder messages sent to employees." languagecode="1033" />
+  </description>
+  <hint default="Available after publishing the canvas app through Power Apps Studio.">
+    <label description="Available after publishing the canvas app through Power Apps Studio." languagecode="1033" />
+  </hint>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
 </environmentvariabledefinition>

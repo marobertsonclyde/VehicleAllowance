@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   Global Option Set: va_aiprocessingstatus
-  Used by: va_Document, va_Vehicle
+  NOTE: Created in environment but options are placeholders.
+  Update option labels and add remaining options in Power Platform Studio.
 -->
 <optionset Name="va_aiprocessingstatus">
     <OptionSetType>picklist</OptionSetType>
@@ -15,21 +16,9 @@
       <Description description="Status of AI Builder extraction processing for a document or vehicle record." languagecode="1033" />
     </Descriptions>
     <Options>
-      <Option Value="720000020">
-        <Labels><Label description="Pending" languagecode="1033" /></Labels>
-        <Descriptions><Description description="Document uploaded; awaiting Flow 8 trigger." languagecode="1033" /></Descriptions>
-      </Option>
-      <Option Value="720000021">
-        <Labels><Label description="Processing" languagecode="1033" /></Labels>
-        <Descriptions><Description description="AI Builder extraction in progress." languagecode="1033" /></Descriptions>
-      </Option>
-      <Option Value="720000022">
-        <Labels><Label description="Completed" languagecode="1033" /></Labels>
-        <Descriptions><Description description="Extraction complete. Results written to va_aiExtractedData." languagecode="1033" /></Descriptions>
-      </Option>
-      <Option Value="720000023">
-        <Labels><Label description="Failed" languagecode="1033" /></Labels>
-        <Descriptions><Description description="Extraction failed. Equipment Leader notified. Employee can re-upload." languagecode="1033" /></Descriptions>
+      <Option Value="720000000">
+        <Labels><Label description="aiprocessingstatus" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Placeholder — update labels in Studio when adding column to tables" languagecode="1033" /></Descriptions>
       </Option>
     </Options>
 </optionset>

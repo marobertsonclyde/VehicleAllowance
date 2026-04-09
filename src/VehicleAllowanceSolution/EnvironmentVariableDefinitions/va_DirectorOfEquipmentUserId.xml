@@ -1,10 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<environmentvariabledefinition>
-  <schemaname>va_DirectorOfEquipmentUserId</schemaname>
-  <displayname>Director of Equipment User ID</displayname>
-  <description>AAD Object ID (GUID) of the CCI Director of Equipment. Used for director-level approval routing and insurance lapse notifications.</description>
-  <type>String</type>
-  <defaultvalue></defaultvalue>
-  <isrequired>1</isrequired>
-  <hint>Find in Azure AD > Users > [Director name] > Object ID.</hint>
+<environmentvariabledefinition schemaname="va_DirectorOfEquipmentUserId">
+  <displayname default="Director of Equipment User ID">
+    <label description="Director of Equipment User ID" languagecode="1033" />
+  </displayname>
+  <description default="AAD Object ID (GUID) of the CCI Director of Equipment. Used for director-level approval routing and insurance lapse notifications.">
+    <label description="AAD Object ID (GUID) of the CCI Director of Equipment. Used for director-level approval routing and insurance lapse notifications." languagecode="1033" />
+  </description>
+  <hint default="Find in Azure AD (Entra ID) > Users > [Director name] > Object ID. Must be a GUID.">
+    <label description="Find in Azure AD (Entra ID) > Users > [Director name] > Object ID. Must be a GUID." languagecode="1033" />
+  </hint>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
 </environmentvariabledefinition>

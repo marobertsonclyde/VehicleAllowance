@@ -1,10 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<environmentvariabledefinition>
-  <schemaname>va_EquipmentLeaderUserId</schemaname>
-  <displayname>Equipment Leader User ID</displayname>
-  <description>AAD Object ID (GUID) of the Company Equipment Leader user. Used by Power Automate flows to route review notifications.</description>
-  <type>String</type>
-  <defaultvalue></defaultvalue>
-  <isrequired>1</isrequired>
-  <hint>Find in Azure AD (Entra ID) > Users > [Equipment Leader name] > Object ID. Must be a GUID.</hint>
+<environmentvariabledefinition schemaname="va_EquipmentLeaderUserId">
+  <displayname default="Equipment Leader User ID">
+    <label description="Equipment Leader User ID" languagecode="1033" />
+  </displayname>
+  <description default="AAD Object ID (GUID) of the Company Equipment Leader user. Used by Power Automate flows to route review notifications.">
+    <label description="AAD Object ID (GUID) of the Company Equipment Leader user. Used by Power Automate flows to route review notifications." languagecode="1033" />
+  </description>
+  <hint default="Find in Azure AD (Entra ID) > Users > [Equipment Leader name] > Object ID. Must be a GUID.">
+    <label description="Find in Azure AD (Entra ID) > Users > [Equipment Leader name] > Object ID. Must be a GUID." languagecode="1033" />
+  </hint>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
 </environmentvariabledefinition>
