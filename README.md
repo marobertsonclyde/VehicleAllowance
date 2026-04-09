@@ -8,7 +8,7 @@ A Microsoft Power Platform solution for managing the Clyde Companies Vehicle All
 |---|---|
 | **Dataverse** | 13 custom tables (`va_` prefix), security roles, reference data |
 | **Canvas App** | Employee self-service portal (submit applications, upload documents, track status) |
-| **Model-Driven App** | Admin/review interface for Equipment Leaders, Directors, President, Payroll |
+| **Model-Driven App** | Admin/review interface for Equipment Leaders, Directors, Payroll |
 | **Power Automate** | 8 flows covering intake, AI validation, routing, approval chain, insurance monitoring |
 | **AI Builder** | Document extraction models for insurance dec pages and window stickers |
 | **Copilot Studio** | `va_AllowanceAssistant` — embedded help agent with policy knowledge base |
@@ -100,7 +100,7 @@ Training data (insurance declaration pages, window sticker images) is **not stor
 ## Key Business Rules
 
 - **Effective date:** Documents received on or before the 15th → current month; 16th or later → next month
-- **President approval:** Required for New Opt-In applications only
+- **Approval chain:** Equipment Leader → Director (Director is final approver for all application types)
 - **Insurance continuity:** Lapsed coverage triggers allowance termination after configurable grace period
 - **EV vehicles:** Receive $330/month EV Charging Allowance in lieu of fuel card
 - **Vehicle age:** Must be 5 model years old or newer

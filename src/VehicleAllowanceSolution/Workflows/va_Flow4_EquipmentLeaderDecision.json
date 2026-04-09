@@ -25,7 +25,7 @@
         "parameters": {
           "entityName": "va_allowanceapplications",
           "recordId": "@triggerOutputs()?['body/va_allowanceapplicationid']",
-          "$select": "va_name,va_applicantName,va_applicantCompany,va_applicationType,va_allowanceLevel,va_monthlyAllowanceAmount,va_equipmentLeaderDecision,va_equipmentLeaderNotes,va_presidentApprovalRequired,va_aiAutoApprovalEligible"
+          "$select": "va_name,va_applicantName,va_applicantCompany,va_applicationType,va_allowanceLevel,va_monthlyAllowanceAmount,va_equipmentLeaderDecision,va_equipmentLeaderNotes,va_aiAutoApprovalEligible"
         }
       }
     },

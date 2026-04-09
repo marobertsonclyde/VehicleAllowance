@@ -80,13 +80,12 @@ You will receive a Teams message confirming your submission. Your application mo
 Your application goes through the following review stages. You can track progress on the **Status** screen in the portal.
 
 ```
-Submitted → AI Review → Equipment Leader Review → Director Review → [President Review] → Active
+Submitted → AI Review → Equipment Leader Review → Director Review → Active
 ```
 
 - **AI Review** — the system validates your insurance limits and vehicle details automatically (usually completes within a few minutes).
 - **Equipment Leader Review** — the Equipment Leader reviews your application, typically within 2–3 business days.
-- **Director Review** — the Director of Equipment reviews and approves.
-- **President Review** — required for new opt-ins only. Your company's president gives final sign-off.
+- **Director Review** — the Director of Equipment gives final approval.
 
 You will receive a Teams message at each stage when action is taken, including if your application is returned for corrections or rejected.
 

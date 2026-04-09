@@ -49,9 +49,6 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | `va_directorReviewDate` | Director Review Date | DateTime | |
 | `va_directorDecision` | Director Decision | Choice | Approved / Returned / Rejected |
 | `va_directorNotes` | Director Notes | Multiline Text | Hidden from Employee role |
-| `va_presidentApprovalRequired` | President Approval Required | Yes/No | True for New Opt-In |
-| `va_presidentApprovalDate` | President Approval Date | DateTime | |
-| `va_presidentDecision` | President Decision | Choice | Approved / Rejected |
 | `va_payrollNotifiedDate` | Payroll Notified Date | DateTime | |
 | `va_aiValidationScore` | AI Validation Score | Decimal | 0–100 composite |
 | `va_aiValidationSummary` | AI Validation Summary | Multiline Text | AI-generated summary |
@@ -60,7 +57,7 @@ All custom tables use the publisher prefix `va_`. All tables use Standard owners
 | `va_parentApplicationId` | Parent Application | Lookup → va_AllowanceApplication | Links renewals/updates to original |
 
 **Status Choice Values (in order):**
-`Draft` → `Submitted` → `AI Review` → `Equipment Leader Review` → `Director Review` → `President Review` → `Payroll Notification` → `Active` | `Rejected` | `Returned to Employee` | `Withdrawn` | `Terminated`
+`Draft` → `Submitted` → `AI Review` → `Equipment Leader Review` → `Director Review` → `Payroll Notification` → `Active` | `Rejected` | `Returned to Employee` | `Withdrawn` | `Terminated`
 
 ---
 
@@ -227,7 +224,7 @@ va_CompanyEntity (1) ─────────── (N) va_AllowanceRecord
 ## Choice Field Definitions
 
 ### Application Status
-`Draft` | `Submitted` | `AI Review` | `Equipment Leader Review` | `Director Review` | `President Review` | `Payroll Notification` | `Active` | `Rejected` | `Returned to Employee` | `Withdrawn` | `Terminated`
+`Draft` | `Submitted` | `AI Review` | `Equipment Leader Review` | `Director Review` | `Payroll Notification` | `Active` | `Rejected` | `Returned to Employee` | `Withdrawn` | `Terminated`
 
 ### Application Type
 `New Opt-In` | `Vehicle Update` | `Annual Renewal`

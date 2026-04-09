@@ -9,7 +9,6 @@ const STEPS: { label: string; status: ApplicationStatus }[] = [
   { label: 'AI Review',          status: ApplicationStatus.AIReview },
   { label: 'Equipment Leader',   status: ApplicationStatus.EquipmentLeaderReview },
   { label: 'Director',           status: ApplicationStatus.DirectorReview },
-  { label: 'President',          status: ApplicationStatus.PresidentReview },
   { label: 'Payroll',            status: ApplicationStatus.PayrollNotification },
   { label: 'Active',             status: ApplicationStatus.Active },
 ]
@@ -65,7 +64,6 @@ export function StatusTrackerScreen() {
   // For rejected/withdrawn/terminated apps, determine the furthest step actually reached
   // so the step indicator shows which steps completed before the terminal decision.
   const lastReachedIdx = (() => {
-    if (application.va_presidentDecision) return STATUS_ORDER.indexOf(ApplicationStatus.PresidentReview)
     if (application.va_directorDecision) return STATUS_ORDER.indexOf(ApplicationStatus.DirectorReview)
     if (application.va_equipmentLeaderDecision) return STATUS_ORDER.indexOf(ApplicationStatus.EquipmentLeaderReview)
     return STATUS_ORDER.indexOf(ApplicationStatus.Submitted)
@@ -180,13 +178,7 @@ export function StatusTrackerScreen() {
               by="Director of Equipment"
             />
           )}
-          {application.va_presidentApprovalDate && application.va_presidentDecision && (
-            <TimelineEntry
-              date={application.va_presidentApprovalDate}
-              label={`President: ${application.va_presidentDecision}`}
-              by="Company President"
-            />
-          )}
+
           {application.va_payrollNotifiedDate && (
             <TimelineEntry
               date={application.va_payrollNotifiedDate}

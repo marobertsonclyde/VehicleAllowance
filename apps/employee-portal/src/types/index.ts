@@ -15,7 +15,6 @@ export enum ApplicationStatus {
   AIReview = 'AI Review',
   EquipmentLeaderReview = 'Equipment Leader Review',
   DirectorReview = 'Director Review',
-  PresidentReview = 'President Review',
   PayrollNotification = 'Payroll Notification',
   Active = 'Active',
   Rejected = 'Rejected',
@@ -100,8 +99,6 @@ export interface AllowanceApplication {
   va_equipmentLeaderNotes?: string
   va_directorDecision?: DecisionType
   va_directorNotes?: string
-  va_presidentApprovalRequired?: boolean
-  va_presidentDecision?: DecisionType
   va_payrollNotifiedDate?: string
   va_aiValidationScore?: number
   va_aiValidationSummary?: string

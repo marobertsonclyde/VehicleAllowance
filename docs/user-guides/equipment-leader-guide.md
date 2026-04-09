@@ -71,7 +71,7 @@ Select **Rejected** and fill in the **Equipment Leader Notes** field with the re
 
 ## After Your Approval
 
-Once you approve, you have no further action on that application unless it comes back from the Director. The Director and (for new opt-ins) the company President complete their reviews independently. You will receive a Teams notification when the application is fully approved and an Allowance Record is created.
+Once you approve, you have no further action on that application unless it comes back from the Director. The Director completes their review independently. You will receive a Teams notification when the application is fully approved and an Allowance Record is created.
 
 ---
 
@@ -126,7 +126,7 @@ You have access to the **Reference Data** section in the Admin App:
 
 - **Allowance Levels** — view current A/B/C/D monthly amounts. Contact your administrator to update amounts when rates are adjusted.
 - **Eligible Titles** — the list of job titles that qualify for the program. Contact your administrator to add or remove titles.
-- **Company Entities** — the 8 Clyde subsidiaries with endorsement addresses. Each record also stores the subsidiary president's user ID for routing approvals.
+- **Company Entities** — the 9 Clyde subsidiaries with endorsement addresses used for insurance endorsement documentation.
 - **Reminder Configuration** — configure how many days before policy expiration reminders are sent, and how long the grace period is after expiration.
 
 ---
