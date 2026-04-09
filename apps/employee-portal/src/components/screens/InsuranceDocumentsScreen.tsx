@@ -4,7 +4,7 @@ import { useConnectorContext } from '@microsoft/power-apps'
 import { useCurrentApplication } from '@/hooks/useCurrentApplication'
 import { ChecklistItem } from '@/components/shared/ChecklistItem'
 import { InsuranceExtractionDisplay } from '@/components/shared/AIExtractionDisplay'
-import type { DocumentType, InsuranceExtractionResult, VADocument } from '@/types'
+import type { InsuranceExtractionResult, VADocument } from '@/types'
 import { AIProcessingStatus } from '@/types'
 
 /**
