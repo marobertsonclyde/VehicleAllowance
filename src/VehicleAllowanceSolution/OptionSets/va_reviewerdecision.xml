@@ -3,8 +3,7 @@
   Global Option Set: va_reviewerdecision
   Used by: va_AllowanceApplication (va_equipmentLeaderDecision, va_directorDecision)
 -->
-<optionsets>
-  <optionset Name="va_reviewerdecision">
+<optionset Name="va_reviewerdecision">
     <OptionSetType>picklist</OptionSetType>
     <IsGlobal>1</IsGlobal>
     <IntroducedVersion>1.0.0.0</IntroducedVersion>
@@ -29,5 +28,4 @@
         <Descriptions><Description description="Application rejected. Employee notified via Teams with reason." languagecode="1033" /></Descriptions>
       </Option>
     </Options>
-  </optionset>
-</optionsets>
+</optionset>
