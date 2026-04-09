@@ -4,7 +4,7 @@
   <!-- ─── Program Manager Settings (default) ───
        Read-oriented settings view for Director / Program Manager. -->
   <savedquery>
-    <savedqueryid>va-reminderconfig-view-programmgr</savedqueryid>
+    <savedqueryid>c1088bba-8ab4-4ad7-833b-1097103aae33</savedqueryid>
     <name>Program Manager Settings</name>
     <description>Shows active reminder and grace period settings, including vehicle age grace period.</description>
     <querytype>0</querytype>
