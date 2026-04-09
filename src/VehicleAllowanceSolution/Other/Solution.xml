@@ -66,13 +66,12 @@
       <RootComponent type="1" schemaName="va_reminderconfig" behavior="0" />
 
       <!-- ── Environment Variable Definitions ──────────────────────────── -->
-      <RootComponent type="318" schemaName="va_EquipmentLeaderUserId" behavior="0" />
-      <RootComponent type="318" schemaName="va_DirectorOfEquipmentUserId" behavior="0" />
-      <RootComponent type="318" schemaName="va_PayrollTeamsChannelId" behavior="0" />
-      <RootComponent type="318" schemaName="va_PortalUrl" behavior="0" />
-      <RootComponent type="318" schemaName="va_AIAutoApprovalThreshold" behavior="0" />
-      <RootComponent type="318" schemaName="va_OptInWindowDays" behavior="0" />
-      <RootComponent type="318" schemaName="va_FabricSqlEndpoint" behavior="0" />
+      <!--
+        IMPORTANT:
+        Environment variables are intentionally kept out of RootComponents in this scaffold
+        because handcrafted IDs/type mappings fail RootComponent validation during CI packing.
+        Add them by exporting from Dataverse once the solution is initialized in an environment.
+      -->
 
       <!-- ── Security Roles ─────────────────────────────────────────────── -->
       <!-- GUIDs assigned by Dataverse on import; schemaName used for reference -->
@@ -82,8 +81,10 @@
       <!-- Added by PAC CLI after flows are created in Power Platform Studio -->
 
       <!-- ── Model-Driven App ─────────────────────────────────────────── -->
-      <RootComponent type="62" schemaName="va_VehicleAllowanceAdmin_Sitemap" behavior="0" />
-      <RootComponent type="80" schemaName="va_vehicleallowanceadmin" behavior="0" />
+      <!--
+        The app module + sitemap are also excluded from RootComponents in source control until
+        a first real Dataverse export stamps valid metadata and role dependencies.
+      -->
 
       <!-- ── Canvas Apps ────────────────────────────────────────────────── -->
       <!-- VehicleAllowancePortal — built as a Code App (React/TypeScript) in apps/employee-portal/ -->
