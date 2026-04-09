@@ -1,9 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<environmentvariabledefinition>
-  <schemaname>va_OptInWindowDays</schemaname>
-  <displayname>Opt-In Window (Days)</displayname>
-  <description>Number of days after first becoming eligible within which an employee must submit a New Opt-In application. Per policy: 60 days. After this window closes, the employee must wait for the Aug 1 annual election window.</description>
-  <type>Integer</type>
-  <defaultvalue>60</defaultvalue>
+<environmentvariabledefinition schemaname="va_OptInWindowDays">
+  <displayname default="Opt-In Window Days">
+    <label description="Opt-In Window Days" languagecode="1033" />
+  </displayname>
+  <description default="Number of days after first becoming eligible within which an employee must submit a New Opt-In application.">
+    <label description="Number of days after first becoming eligible within which an employee must submit a New Opt-In application." languagecode="1033" />
+  </description>
+  <hint default="Default 60 days per program policy.">
+    <label description="Default 60 days per program policy." languagecode="1033" />
+  </hint>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
   <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000001</type>
+  <defaultvalue>60</defaultvalue>
 </environmentvariabledefinition>
