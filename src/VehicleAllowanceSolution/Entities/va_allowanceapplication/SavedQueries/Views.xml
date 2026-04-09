@@ -107,6 +107,55 @@
     </layoutxml>
   </savedquery>
 
+  <!-- ─── Employee Profiles ─── -->
+  <savedquery>
+    <savedqueryid>va-app-view-employeeprofiles</savedqueryid>
+    <name>Employee Profiles</name>
+    <description>Employee-centric profile view. Open a row to see full application data, uploaded documents, and audit history.</description>
+    <querytype>0</querytype>
+    <isdefault>0</isdefault>
+    <isprivate>0</isprivate>
+    <returnedtypecode>va_allowanceapplication</returnedtypecode>
+    <fetchxml>
+      <![CDATA[
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="va_allowanceapplication">
+          <attribute name="va_name" />
+          <attribute name="va_applicantName" />
+          <attribute name="va_personnelNumber" />
+          <attribute name="va_applicantCompany" />
+          <attribute name="va_applicantJobTitle" />
+          <attribute name="va_status" />
+          <attribute name="va_applicationType" />
+          <attribute name="va_allowanceLevel" />
+          <attribute name="va_effectiveDate" />
+          <attribute name="createdon" />
+          <order attribute="va_applicantName" descending="false" />
+          <order attribute="createdon" descending="true" />
+        </entity>
+      </fetch>
+      ]]>
+    </fetchxml>
+    <layoutxml>
+      <![CDATA[
+      <grid name="resultset" jump="va_applicantName" select="1" preview="1" icon="1">
+        <row name="result" id="va_allowanceapplicationid">
+          <cell name="va_applicantName"       width="170" />
+          <cell name="va_personnelNumber"     width="110" />
+          <cell name="va_applicantCompany"    width="140" />
+          <cell name="va_applicantJobTitle"   width="170" />
+          <cell name="va_status"              width="160" />
+          <cell name="va_applicationType"     width="120" />
+          <cell name="va_allowanceLevel"      width="80"  />
+          <cell name="va_effectiveDate"       width="110" />
+          <cell name="va_name"                width="150" />
+          <cell name="createdon"              width="120" />
+        </row>
+      </grid>
+      ]]>
+    </layoutxml>
+  </savedquery>
+
   <!-- ─── All Applications (default view) ─── -->
   <savedquery>
     <savedqueryid>va-app-view-all</savedqueryid>

@@ -82,6 +82,15 @@
       </SubArea>
     </Group>
 
+    <Group Id="group_employeeprofiles" Title="Employee" IsProfile="false">
+      <SubArea Id="sub_employeeprofiles"
+               Entity="va_allowanceapplication"
+               Title="Employee Profiles"
+               Icon="/_imgs/svg_icons/entity_application.svg"
+               AvailableOffline="false">
+      </SubArea>
+    </Group>
+
     <Group Id="group_bystatus" Title="By Status" IsProfile="false">
       <SubArea Id="sub_draft"       Entity="va_allowanceapplication" Title="Draft"                    AvailableOffline="false" />
       <SubArea Id="sub_submitted"   Entity="va_allowanceapplication" Title="Submitted"                AvailableOffline="false" />
