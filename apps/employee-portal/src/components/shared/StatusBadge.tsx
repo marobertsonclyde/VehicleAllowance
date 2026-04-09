@@ -17,9 +17,7 @@ const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   [ApplicationStatus.ReturnedToEmployee]:     { label: 'Returned — Action Needed', className: 'badge-warning' },
   [ApplicationStatus.Withdrawn]:              { label: 'Withdrawn',              className: 'badge-neutral' },
   [ApplicationStatus.Terminated]:             { label: 'Terminated',             className: 'badge-error' },
-  [AllowanceRecordStatus.Active]:             { label: 'Active',                 className: 'badge-success' },
   [AllowanceRecordStatus.Suspended]:          { label: 'Suspended',              className: 'badge-warning' },
-  [AllowanceRecordStatus.Terminated]:         { label: 'Terminated',             className: 'badge-error' },
 }
 
 export function StatusBadge({ status }: StatusBadgeProps) {
