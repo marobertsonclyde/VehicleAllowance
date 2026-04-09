@@ -16,6 +16,7 @@ export function AllowanceLevelScreen() {
     application?.va_allowanceLevel ?? null,
   )
   const [saving, setSaving] = useState(false)
+  const [configError, setConfigError] = useState<string | null>(null)
 
   useEffect(() => {
     connectors.dataverse
@@ -24,12 +25,13 @@ export function AllowanceLevelScreen() {
         '?$filter=va_isCurrentRate eq true&$orderby=va_monthlyAllowance desc',
       )
       .then(r => setLevelConfigs(r.entities ?? []))
-      .catch(console.error)
+      .catch(err => setConfigError(err instanceof Error ? err.message : 'Failed to load allowance levels. Please refresh.'))
   }, [connectors])
 
   const vehicleMsrp = vehicle?.va_msrpTotal ?? 0
   const eligible = getEligibleLevels(vehicleMsrp, levelConfigs)
   const isElectric = vehicle?.va_isElectric ?? application?.va_isElectricVehicle
+  const selectedConfig = levelConfigs.find(c => c.va_level === selectedLevel)
 
   async function handleContinue() {
     if (!selectedLevel || !application?.va_allowanceapplicationid) return
@@ -43,9 +45,9 @@ export function AllowanceLevelScreen() {
           va_allowanceLevel: selectedLevel,
           va_monthlyAllowanceAmount: config?.va_monthlyAllowance,
           va_isElectricVehicle: isElectric,
-          va_evChargingAllowance: isElectric ? (config?.va_evChargingAllowance ?? 310) : 0,
+          va_evChargingAllowance: isElectric ? (config?.va_evChargingAmount ?? 0) : 0,
           va_totalMonthlyAllowance:
-            (config?.va_monthlyAllowance ?? 0) + (isElectric ? (config?.va_evChargingAllowance ?? 310) : 0),
+            (config?.va_monthlyAllowance ?? 0) + (isElectric ? (config?.va_evChargingAmount ?? 0) : 0),
         },
       )
       await refetch()
@@ -63,6 +65,10 @@ export function AllowanceLevelScreen() {
           Select the allowance level for your vehicle. Levels are filtered to those your vehicle's MSRP qualifies for.
         </p>
       </div>
+
+      {configError && (
+        <div className="alert alert-error">{configError}</div>
+      )}
 
       {vehicleMsrp > 0 && (
         <div className="alert alert-info">
@@ -82,7 +88,7 @@ export function AllowanceLevelScreen() {
         {levelConfigs.map(config => {
           const isEligible = eligible.some(e => e.va_level === config.va_level)
           const isSelected = selectedLevel === config.va_level
-          const totalAmount = (config.va_monthlyAllowance ?? 0) + (isElectric ? (config.va_evChargingAllowance ?? 310) : 0)
+          const totalAmount = (config.va_monthlyAllowance ?? 0) + (isElectric ? (config.va_evChargingAmount ?? 0) : 0)
 
           return (
             <button
@@ -121,7 +127,7 @@ export function AllowanceLevelScreen() {
                   <div className="amount-label">/month</div>
                   {isElectric && (
                     <div style={{ fontSize: 12, color: 'var(--color-primary)', marginTop: 4 }}>
-                      + ⚡ {formatCurrency(config.va_evChargingAllowance)} EV charging
+                      + ⚡ {formatCurrency(config.va_evChargingAmount)} EV charging
                       <br />
                       = {formatCurrency(totalAmount)} total
                     </div>
@@ -135,7 +141,7 @@ export function AllowanceLevelScreen() {
 
       {isElectric && selectedLevel && (
         <div className="alert alert-info" style={{ marginTop: 16 }}>
-          ⚡ As an EV recipient, you'll receive an additional ${310}/month charging allowance
+          ⚡ As an EV recipient, you'll receive an additional {formatCurrency(selectedConfig?.va_evChargingAmount ?? 0)}/month charging allowance
           and will <strong>not</strong> receive a company fuel card. All charging costs are your responsibility.
         </div>
       )}

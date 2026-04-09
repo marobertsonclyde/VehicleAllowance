@@ -10,7 +10,6 @@ const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   [ApplicationStatus.AIReview]:               { label: 'AI Review',              className: 'badge-info' },
   [ApplicationStatus.EquipmentLeaderReview]:  { label: 'Under Review',           className: 'badge-warning' },
   [ApplicationStatus.DirectorReview]:         { label: 'Director Review',        className: 'badge-warning' },
-  [ApplicationStatus.PresidentReview]:        { label: 'President Review',       className: 'badge-warning' },
   [ApplicationStatus.PayrollNotification]:    { label: 'Processing',             className: 'badge-info' },
   [ApplicationStatus.Active]:                 { label: 'Active',                 className: 'badge-success' },
   [ApplicationStatus.Rejected]:               { label: 'Rejected',               className: 'badge-error' },

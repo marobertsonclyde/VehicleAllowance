@@ -2,7 +2,7 @@
 <AppModule
   UniqueName="va_vehicleallowanceadmin"
   Name="Vehicle Allowance Admin"
-  Description="Admin portal for Equipment Leaders, Directors, Presidents, Payroll, and Administrators to review applications, manage active allowances, and administer reference data."
+  Description="Admin portal for Equipment Leaders, Directors, Payroll, and Administrators to review applications, manage active allowances, and administer reference data."
   IntroducedVersion="1.0.0.0"
   NavigationType="0"
   OptimizedFor="0">

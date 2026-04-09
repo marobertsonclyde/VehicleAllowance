@@ -10,7 +10,7 @@
         <LocalizedCollectionName description="Company Entities" languagecode="1033" />
       </LocalizedCollectionNames>
       <Descriptions>
-        <Description description="The 8 Clyde Companies legal subsidiaries. Pre-seeded by scripts/seed-reference-data.ps1. Used by AI Builder for endorsement entity fuzzy matching and by Flow 2 to validate that the correct company is named on the insurance endorsement. Endorsement address: 730 N 1500 W, Orem, UT 84057." languagecode="1033" />
+        <Description description="The 9 Clyde Companies legal subsidiaries. Pre-seeded by scripts/seed-reference-data.ps1. Used by AI Builder for endorsement entity fuzzy matching and by Flow 2 to validate that the correct company is named on the insurance endorsement. Endorsement address: 730 N 1500 W, Orem, UT 84057." languagecode="1033" />
       </Descriptions>
       <ownership>OrganizationOwned</ownership>
       <lookupcollectionname>va_companyentities</lookupcollectionname>
@@ -71,40 +71,6 @@
           </LocalizedNames>
           <Descriptions>
             <Description description="Company code from Dynamics 365 (matches va_applicantCompany value from Fabric Lakehouse lookup)." languagecode="1033" />
-          </Descriptions>
-        </attribute>
-
-        <!-- Company President User ID (AAD Object ID for this subsidiary's president) -->
-        <attribute PhysicalName="va_presidentUserId">
-          <Type>String</Type>
-          <Name>va_presidentUserId</Name>
-          <LogicalName>va_presidentUserId</LogicalName>
-          <RequiredLevel>None</RequiredLevel>
-          <MaxLength>100</MaxLength>
-          <Format>Text</Format>
-          <ImeMode>auto</ImeMode>
-          <LocalizedNames>
-            <LocalizedName description="Company President (User ID)" languagecode="1033" />
-          </LocalizedNames>
-          <Descriptions>
-            <Description description="AAD Object ID of this subsidiary's company president. Flow 5 looks up this value using the applicant's company to route New Opt-In applications to the correct president for final approval." languagecode="1033" />
-          </Descriptions>
-        </attribute>
-
-        <!-- Company President Display Name -->
-        <attribute PhysicalName="va_presidentName">
-          <Type>String</Type>
-          <Name>va_presidentName</Name>
-          <LogicalName>va_presidentName</LogicalName>
-          <RequiredLevel>None</RequiredLevel>
-          <MaxLength>200</MaxLength>
-          <Format>Text</Format>
-          <ImeMode>auto</ImeMode>
-          <LocalizedNames>
-            <LocalizedName description="Company President Name" languagecode="1033" />
-          </LocalizedNames>
-          <Descriptions>
-            <Description description="Display name of the company president. Shown in review history and Teams notification messages." languagecode="1033" />
           </Descriptions>
         </attribute>
 

@@ -15,7 +15,6 @@ export enum ApplicationStatus {
   AIReview = 'AI Review',
   EquipmentLeaderReview = 'Equipment Leader Review',
   DirectorReview = 'Director Review',
-  PresidentReview = 'President Review',
   PayrollNotification = 'Payroll Notification',
   Active = 'Active',
   Rejected = 'Rejected',
@@ -102,9 +101,6 @@ export interface AllowanceApplication {
   va_directorDecision?: DecisionType
   va_directorReviewDate?: string
   va_directorNotes?: string
-  va_presidentApprovalRequired?: boolean
-  va_presidentDecision?: DecisionType
-  va_presidentApprovalDate?: string
   va_payrollNotifiedDate?: string
   va_aiValidationScore?: number
   va_aiValidationSummary?: string
@@ -154,6 +150,10 @@ export interface InsurancePolicy {
   va_meetsLiabilityRequirement?: boolean
   va_meetsUmbrellaRequirement?: boolean
   va_meetsEndorsementRequirement?: boolean
+  // Multi-vehicle policy support
+  va_listedVehicles?: string              // JSON: [{vin, year, make, model}] — all vehicles on policy
+  va_qualifyingVehicleConfirmed?: boolean // qualifying VIN found among listed vehicles
+  va_checkedVin?: string                  // VIN that was looked up (for admin display on failure)
   va_aiExtractionConfidence?: number
   va_status?: 'Active' | 'Expired' | 'Superseded'
 }
@@ -222,7 +222,7 @@ export interface AllowanceLevelConfig {
   va_level?: AllowanceLevel
   va_minimumMsrp?: number
   va_monthlyAllowance?: number
-  va_evChargingAllowance?: number
+  va_evChargingAmount?: number
   va_effectiveFrom?: string
   va_isCurrentRate?: boolean
 }
@@ -246,6 +246,13 @@ export interface ReminderConfig {
 
 // ─── AI extraction result shape (from va_Document.va_aiExtractedData JSON) ────
 
+export interface ListedVehicle {
+  vin?: string
+  year?: number
+  make?: string
+  model?: string
+}
+
 export interface InsuranceExtractionResult {
   carrier_name?: string
   policy_number?: string
@@ -259,6 +266,9 @@ export interface InsuranceExtractionResult {
   umbrella_limit?: number
   endorsement_type?: 'Additional Insured' | 'Additional Interest'
   additional_insured_entity?: string
+  // All vehicles on the policy — employees commonly have 2-4 household vehicles.
+  // The qualifying vehicle's VIN must appear here; Flow 8 checks this automatically.
+  listed_vehicles?: ListedVehicle[]
   confidence_scores?: Record<string, number>
 }
 

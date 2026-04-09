@@ -1,0 +1,203 @@
+{
+  "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+  "contentVersion": "1.0.0.0",
+  "_comment": "Flow 6: Payroll Notification. Called by Flow 5 when Director approves. Calculates effective date, creates va_AllowanceRecord, creates InsuranceReminderSchedule rows, sends Teams payroll channel message, confirms approval to employee.",
+  "triggers": {
+    "manual_invocation_from_Flow5": {
+      "_comment": "Called by Flow 5 on Director approval. Input: applicationId.",
+      "type": "Request",
+      "kind": "Button",
+      "inputs": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "applicationId": { "type": "string" }
+          },
+          "required": ["applicationId"]
+        }
+      }
+    }
+  },
+  "actions": {
+    "1_Get_application": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "GetItem" },
+        "parameters": {
+          "entityName": "va_allowanceapplications",
+          "recordId": "@triggerBody()?['applicationId']",
+          "$select": "va_name,va_applicantName,va_applicantJobTitle,va_applicantCompany,va_personnelNumber,va_allowanceLevel,va_monthlyAllowanceAmount,va_evChargingAllowance,va_totalMonthlyAmount,va_isElectricVehicle"
+        }
+      }
+    },
+    "2_Calculate_effective_date": {
+      "_comment": "15th/16th rule: day <= 15 → first of current month; day >= 16 → first of next month.",
+      "type": "Compose",
+      "inputs": {
+        "effectiveDate": "@if(lessOrEquals(int(formatDateTime(utcNow(), 'dd')), 15), startOfMonth(utcNow()), addMonths(startOfMonth(utcNow()), 1))"
+      }
+    },
+    "3_Calculate_next_renewal_due": {
+      "_comment": "Next Aug 1 that is >= 3 months away.",
+      "type": "Compose",
+      "inputs": {
+        "nextRenewalDue": "@if(lessOrEquals(addMonths(utcNow(), 3), concat(formatDateTime(utcNow(), 'yyyy'), '-08-01T00:00:00Z')), concat(formatDateTime(utcNow(), 'yyyy'), '-08-01'), concat(string(add(int(formatDateTime(utcNow(), 'yyyy')), 1)), '-08-01'))"
+      }
+    },
+    "4_Create_AllowanceRecord": {
+      "_comment": "The living active record for this recipient. Payroll uses this for payment amounts.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "CreateItem" },
+        "parameters": {
+          "entityName": "va_allowancerecords",
+          "item/va_name": "@{outputs('1_Get_application')?['body/va_personnelNumber']} — @{outputs('1_Get_application')?['body/va_applicantName']} — Level @{outputs('1_Get_application')?['body/va_allowanceLevel']}",
+          "item/va_personnelNumber": "@outputs('1_Get_application')?['body/va_personnelNumber']",
+          "item/va_allowanceLevel": "@outputs('1_Get_application')?['body/va_allowanceLevel']",
+          "item/va_monthlyAllowanceAmount": "@outputs('1_Get_application')?['body/va_monthlyAllowanceAmount']",
+          "item/va_evChargingAllowance": "@outputs('1_Get_application')?['body/va_evChargingAllowance']",
+          "item/va_totalMonthlyAmount": "@outputs('1_Get_application')?['body/va_totalMonthlyAmount']",
+          "item/va_isElectricVehicle": "@outputs('1_Get_application')?['body/va_isElectricVehicle']",
+          "item/va_effectiveDate": "@outputs('2_Calculate_effective_date')?['effectiveDate']",
+          "item/va_status": 720000400,
+          "item/va_applicantName": "@outputs('1_Get_application')?['body/va_applicantName']",
+          "item/va_applicantJobTitle": "@outputs('1_Get_application')?['body/va_applicantJobTitle']",
+          "item/va_applicantCompany": "@outputs('1_Get_application')?['body/va_applicantCompany']",
+          "item/va_nextRenewalDue": "@outputs('3_Calculate_next_renewal_due')?['nextRenewalDue']",
+          "item/va_originalApplicationId@odata.bind": "/va_allowanceapplications(@{triggerBody()?['applicationId']})"
+        }
+      }
+    },
+    "5_Transition_application_to_Payroll_Notification": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "UpdateItem" },
+        "parameters": {
+          "entityName": "va_allowanceapplications",
+          "recordId": "@triggerBody()?['applicationId']",
+          "item/va_status": 720000016,
+          "item/va_effectiveDate": "@outputs('2_Calculate_effective_date')?['effectiveDate']",
+          "item/va_nextRenewalDue": "@outputs('3_Calculate_next_renewal_due')?['nextRenewalDue']"
+        }
+      }
+    },
+    "6_Get_active_insurance_policies": {
+      "_comment": "Get all policies linked to this application to create reminder schedules.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "ListRecords" },
+        "parameters": {
+          "entityName": "va_insurancepolicies",
+          "$filter": "_va_applicationid_value eq '@{triggerBody()?['applicationId']}'",
+          "$select": "va_insurancepolicyid,va_policyType,va_expirationDate,va_carrierName"
+        }
+      }
+    },
+    "6b_Get_reminder_config": {
+      "_comment": "Read active reminder intervals from va_ReminderConfig.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "ListRecords" },
+        "parameters": {
+          "entityName": "va_reminderconfigs",
+          "$filter": "va_isActive eq true",
+          "$select": "va_reminderDays1,va_reminderDays2,va_reminderDays3,va_gracePeriodDays",
+          "$top": 1
+        }
+      }
+    },
+    "7_Create_reminder_schedules_for_each_policy": {
+      "_comment": "For each active insurance policy, create InsuranceReminderSchedule rows for Reminder1, Reminder2, Reminder3, Expiry, and GracePeriod.",
+      "type": "Foreach",
+      "foreach": "@outputs('6_Get_active_insurance_policies')?['body/value']",
+      "actions": {
+        "Mark_policy_as_active": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "UpdateItem" },
+            "parameters": {
+              "entityName": "va_insurancepolicies",
+              "recordId": "@items('7_Create_reminder_schedules_for_each_policy')?['va_insurancepolicyid']",
+              "item/va_isActivePolicy": true,
+              "item/va_personnelNumber": "@outputs('1_Get_application')?['body/va_personnelNumber']",
+              "item/va_allowanceRecordId@odata.bind": "/va_allowancerecords(@{outputs('4_Create_AllowanceRecord')?['body/va_allowancerecordid']})"
+            }
+          }
+        },
+        "Create_Reminder1_schedule": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "CreateItem" },
+            "parameters": {
+              "entityName": "va_insurancereminderschedules",
+              "item/va_name": "@{first(outputs('6b_Get_reminder_config')?['body/value'])?['va_reminderDays1']}-day reminder — @{items('7_Create_reminder_schedules_for_each_policy')?['va_carrierName']} — @{outputs('1_Get_application')?['body/va_personnelNumber']}",
+              "item/va_reminderDate": "@addDays(items('7_Create_reminder_schedules_for_each_policy')?['va_expirationDate'], mul(first(outputs('6b_Get_reminder_config')?['body/value'])?['va_reminderDays1'], -1))",
+              "item/va_reminderType": "Reminder1",
+              "item/va_isSent": false,
+              "item/va_personnelNumber": "@outputs('1_Get_application')?['body/va_personnelNumber']",
+              "item/va_policyId@odata.bind": "/va_insurancepolicies(@{items('7_Create_reminder_schedules_for_each_policy')?['va_insurancepolicyid']})",
+              "item/va_allowanceRecordId@odata.bind": "/va_allowancerecords(@{outputs('4_Create_AllowanceRecord')?['body/va_allowancerecordid']})"
+            }
+          }
+        },
+        "Create_Reminder2_schedule": {
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "CreateItem" },
+            "parameters": {
+              "entityName": "va_insurancereminderschedules",
+              "item/va_name": "@{first(outputs('6b_Get_reminder_config')?['body/value'])?['va_reminderDays2']}-day reminder — @{items('7_Create_reminder_schedules_for_each_policy')?['va_carrierName']} — @{outputs('1_Get_application')?['body/va_personnelNumber']}",
+              "item/va_reminderDate": "@addDays(items('7_Create_reminder_schedules_for_each_policy')?['va_expirationDate'], mul(first(outputs('6b_Get_reminder_config')?['body/value'])?['va_reminderDays2'], -1))",
+              "item/va_reminderType": "Reminder2",
+              "item/va_isSent": false,
+              "item/va_personnelNumber": "@outputs('1_Get_application')?['body/va_personnelNumber']",
+              "item/va_policyId@odata.bind": "/va_insurancepolicies(@{items('7_Create_reminder_schedules_for_each_policy')?['va_insurancepolicyid']})",
+              "item/va_allowanceRecordId@odata.bind": "/va_allowancerecords(@{outputs('4_Create_AllowanceRecord')?['body/va_allowancerecordid']})"
+            }
+          }
+        },
+        "Create_Reminder3_and_Expiry_Grace": {
+          "_comment": "Also create Reminder3 (7-day), Expiry (day-of), and GracePeriod (expiry + graceDays) rows.",
+          "type": "Compose",
+          "inputs": "_implement: same pattern as Reminder1/2 for Reminder3, Expiry (addDays=0), GracePeriod (addDays=+gracePeriodDays)"
+        }
+      }
+    },
+    "8_Send_payroll_Teams_channel_message": {
+      "_comment": "Post to the payroll Teams channel with all details needed for payroll setup.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_teams", "operationId": "PostMessageToChannel" },
+        "parameters": {
+          "channelId": "@parameters('$connections')['shared_environmentvariable']['va_PayrollTeamsChannelId']",
+          "body/messageBody": "<h3>New Vehicle Allowance — Payroll Action Required</h3><table><tr><td><b>Personnel #</b></td><td>@{outputs('1_Get_application')?['body/va_personnelNumber']}</td></tr><tr><td><b>Name</b></td><td>@{outputs('1_Get_application')?['body/va_applicantName']}</td></tr><tr><td><b>Company</b></td><td>@{outputs('1_Get_application')?['body/va_applicantCompany']}</td></tr><tr><td><b>Level</b></td><td>Level @{outputs('1_Get_application')?['body/va_allowanceLevel']}</td></tr><tr><td><b>Monthly Allowance</b></td><td>$@{outputs('1_Get_application')?['body/va_monthlyAllowanceAmount']}/mo</td></tr><tr><td><b>EV Charging</b></td><td>@{if(outputs('1_Get_application')?['body/va_isElectricVehicle'], concat('$', outputs('1_Get_application')?['body/va_evChargingAllowance'], '/mo'), 'N/A')}</td></tr><tr><td><b>Total Monthly</b></td><td>$@{outputs('1_Get_application')?['body/va_totalMonthlyAmount']}/mo</td></tr><tr><td><b>Effective Date</b></td><td>@{outputs('2_Calculate_effective_date')?['effectiveDate']}</td></tr><tr><td><b>Application #</b></td><td>@{outputs('1_Get_application')?['body/va_name']}</td></tr></table>",
+          "body/subject": "New Vehicle Allowance — @{outputs('1_Get_application')?['body/va_applicantName']} — @{outputs('1_Get_application')?['body/va_personnelNumber']}"
+        }
+      }
+    },
+    "9_Update_application_payroll_notified_and_active": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "UpdateItem" },
+        "parameters": {
+          "entityName": "va_allowanceapplications",
+          "recordId": "@triggerBody()?['applicationId']",
+          "item/va_status": 720000017,
+          "item/va_payrollNotifiedDate": "@utcNow()"
+        }
+      }
+    },
+    "10_Notify_employee_approved": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_teams", "operationId": "PostMessageToConversation" },
+        "parameters": {
+          "poster": "Flow bot",
+          "location": "Chat with Flow bot",
+          "body/recipient": "@triggerOutputs()?['body/_ownerid_value']",
+          "body/messageBody": "<p>Great news! Your Vehicle Allowance application <strong>@{outputs('1_Get_application')?['body/va_name']}</strong> has been approved. Your allowance of <strong>$@{outputs('1_Get_application')?['body/va_totalMonthlyAmount']}/month</strong> will begin effective <strong>@{outputs('2_Calculate_effective_date')?['effectiveDate']}</strong>. Payroll has been notified.</p>"
+        }
+      }
+    }
+  }
+}

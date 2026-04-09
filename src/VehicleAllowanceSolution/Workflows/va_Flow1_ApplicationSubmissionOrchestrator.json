@@ -47,7 +47,7 @@
       }
     },
     "3_Update_application_name_and_submitted_date": {
-      "_comment": "Set va_name = 'VA-{year}-{sequence:00000}', va_submittedOn = now, va_presidentApprovalRequired based on applicationType.",
+      "_comment": "Set va_name = 'VA-{year}-{sequence:00000}' and va_submittedOn = now.",
       "type": "OpenApiConnection",
       "inputs": {
         "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "UpdateItem" },
@@ -55,8 +55,7 @@
           "entityName": "va_allowanceapplications",
           "recordId": "@triggerOutputs()?['body/va_allowanceapplicationid']",
           "item/va_name": "VA-@{formatDateTime(utcNow(), 'yyyy')}-@{padLeft(string(add(length(outputs('2_Generate_application_number')?['body/value']), 1)), 5, '0')}",
-          "item/va_submittedOn": "@utcNow()",
-          "item/va_presidentApprovalRequired": "@equals(triggerOutputs()?['body/va_applicationType'], 720000000)"
+          "item/va_submittedOn": "@utcNow()"
         }
       }
     },

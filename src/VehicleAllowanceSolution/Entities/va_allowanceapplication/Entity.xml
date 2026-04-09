@@ -97,9 +97,6 @@
               <Option Value="720000014">
                 <Labels><Label description="Director Review" languagecode="1033" /></Labels>
               </Option>
-              <Option Value="720000015">
-                <Labels><Label description="President Review" languagecode="1033" /></Labels>
-              </Option>
               <Option Value="720000016">
                 <Labels><Label description="Payroll Notification" languagecode="1033" /></Labels>
               </Option>
@@ -254,26 +251,6 @@
           </FalseOption>
           <TrueOption>
             <Labels><Label description="Yes — AI Pre-Validated" languagecode="1033" /></Labels>
-          </TrueOption>
-        </attribute>
-
-        <!-- President Approval Required -->
-        <attribute PhysicalName="va_presidentApprovalRequired">
-          <Type>Boolean</Type>
-          <Name>va_presidentApprovalRequired</Name>
-          <LogicalName>va_presidentApprovalRequired</LogicalName>
-          <RequiredLevel>None</RequiredLevel>
-          <LocalizedNames>
-            <LocalizedName description="President Approval Required" languagecode="1033" />
-          </LocalizedNames>
-          <Descriptions>
-            <Description description="True for New Opt-In applications. False for Vehicle Update and Annual Renewal." languagecode="1033" />
-          </Descriptions>
-          <FalseOption>
-            <Labels><Label description="No" languagecode="1033" /></Labels>
-          </FalseOption>
-          <TrueOption>
-            <Labels><Label description="Yes" languagecode="1033" /></Labels>
           </TrueOption>
         </attribute>
 
@@ -436,55 +413,6 @@
           <ImeMode>auto</ImeMode>
           <LocalizedNames>
             <LocalizedName description="Director Notes" languagecode="1033" />
-          </LocalizedNames>
-        </attribute>
-
-        <!-- President Decision -->
-        <attribute PhysicalName="va_presidentDecision">
-          <Type>Picklist</Type>
-          <Name>va_presidentDecision</Name>
-          <LogicalName>va_presidentDecision</LogicalName>
-          <RequiredLevel>None</RequiredLevel>
-          <LocalizedNames>
-            <LocalizedName description="President Decision" languagecode="1033" />
-          </LocalizedNames>
-          <optionset Name="va_presidentdecision">
-            <OptionSetType>picklist</OptionSetType>
-            <IsGlobal>0</IsGlobal>
-            <Options>
-              <Option Value="720000050">
-                <Labels><Label description="Approved" languagecode="1033" /></Labels>
-              </Option>
-              <Option Value="720000051">
-                <Labels><Label description="Rejected" languagecode="1033" /></Labels>
-              </Option>
-            </Options>
-          </optionset>
-        </attribute>
-
-        <!-- President Approval Date -->
-        <attribute PhysicalName="va_presidentApprovalDate">
-          <Type>DateTime</Type>
-          <Name>va_presidentApprovalDate</Name>
-          <LogicalName>va_presidentApprovalDate</LogicalName>
-          <RequiredLevel>None</RequiredLevel>
-          <Format>DateAndTime</Format>
-          <LocalizedNames>
-            <LocalizedName description="President Approval Date" languagecode="1033" />
-          </LocalizedNames>
-        </attribute>
-
-        <!-- President Notes -->
-        <attribute PhysicalName="va_presidentNotes">
-          <Type>Memo</Type>
-          <Name>va_presidentNotes</Name>
-          <LogicalName>va_presidentNotes</LogicalName>
-          <RequiredLevel>None</RequiredLevel>
-          <MaxLength>4000</MaxLength>
-          <Format>TextArea</Format>
-          <ImeMode>auto</ImeMode>
-          <LocalizedNames>
-            <LocalizedName description="President Notes" languagecode="1033" />
           </LocalizedNames>
         </attribute>
 

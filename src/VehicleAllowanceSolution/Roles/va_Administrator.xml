@@ -5,12 +5,11 @@
   AAD Group: va-administrators
 
   Access pattern: Full CRUD on all tables at Global level. Also has access to
-  reference data management (CompanyEntity presidents, EligibleTitles, AllowanceLevelConfig,
-  ReminderConfig) which are hidden from other roles.
+  reference data management (EligibleTitles, AllowanceLevelConfig, ReminderConfig)
+  which are hidden from other roles.
 
   Key responsibilities:
   - Seed and maintain reference data (company entities, eligible titles, level configs)
-  - Configure per-company president User IDs (va_CompanyEntity.va_presidentUserId)
   - Configure reminder schedule intervals (va_ReminderConfig)
   - Migrate existing allowance recipients from SharePoint (data migration screen in admin app)
   - Enter Dynamics Asset IDs on va_Vehicle records after approval
@@ -22,7 +21,7 @@
     <LocalizedName description="Vehicle Allowance — Administrator" languagecode="1033" />
   </LocalizedNames>
   <Descriptions>
-    <Description description="System administrator role. Full CRUD on all tables. Manages reference data, president assignments, reminder configuration, and data migration." languagecode="1033" />
+    <Description description="System administrator role. Full CRUD on all tables. Manages reference data, reminder configuration, and data migration." languagecode="1033" />
   </Descriptions>
   <IsInherited>1</IsInherited>
   <RolePrivileges>
@@ -77,7 +76,7 @@
     <RolePrivilege name="prvAppendva_allowancerecord"   level="Global" privilegeobjecttypecode="va_allowancerecord" />
     <RolePrivilege name="prvAppendTova_allowancerecord" level="Global" privilegeobjecttypecode="va_allowancerecord" />
 
-    <!-- va_CompanyEntity (admin manages: president IDs, endorsement addresses) -->
+    <!-- va_CompanyEntity (admin manages: endorsement addresses, legal entity codes) -->
     <RolePrivilege name="prvCreateva_companyentity"   level="Global" privilegeobjecttypecode="va_companyentity" />
     <RolePrivilege name="prvReadva_companyentity"     level="Global" privilegeobjecttypecode="va_companyentity" />
     <RolePrivilege name="prvWriteva_companyentity"    level="Global" privilegeobjecttypecode="va_companyentity" />
