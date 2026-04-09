@@ -4,8 +4,7 @@
   Used by: va_AllowanceApplication, va_AllowanceRecord, va_EligibleTitle, va_AllowanceLevelConfig
   A = highest (Level A, ≥ $70k MSRP), D = lowest (Level D, ≥ $43k MSRP)
 -->
-<optionsets>
-  <optionset Name="va_allowancelevel">
+<optionset Name="va_allowancelevel">
     <OptionSetType>picklist</OptionSetType>
     <IsGlobal>1</IsGlobal>
     <IntroducedVersion>1.0.0.0</IntroducedVersion>
@@ -34,5 +33,4 @@
         <Descriptions><Description description="Entry level. Vehicle MSRP ≥ $43,000. Monthly amount: $1,180." languagecode="1033" /></Descriptions>
       </Option>
     </Options>
-  </optionset>
-</optionsets>
+</optionset>
