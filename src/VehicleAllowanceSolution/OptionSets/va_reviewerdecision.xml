@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Global Option Set: va_reviewerdecision
+  Used by: va_AllowanceApplication (va_equipmentLeaderDecision, va_directorDecision)
+-->
+<optionsets>
+  <optionset Name="va_reviewerdecision">
+    <OptionSetType>picklist</OptionSetType>
+    <IsGlobal>1</IsGlobal>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <IsCustomizable>1</IsCustomizable>
+    <LocalizedNames>
+      <LocalizedName description="Reviewer Decision" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Decision outcome for Equipment Leader and Director review steps." languagecode="1033" />
+    </Descriptions>
+    <Options>
+      <Option Value="720000010">
+        <Labels><Label description="Approved" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Application approved; advances to next review stage." languagecode="1033" /></Descriptions>
+      </Option>
+      <Option Value="720000011">
+        <Labels><Label description="Returned to Employee" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Application returned with corrections required. Employee notified via Teams." languagecode="1033" /></Descriptions>
+      </Option>
+      <Option Value="720000012">
+        <Labels><Label description="Rejected" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Application rejected. Employee notified via Teams with reason." languagecode="1033" /></Descriptions>
+      </Option>
+    </Options>
+  </optionset>
+</optionsets>

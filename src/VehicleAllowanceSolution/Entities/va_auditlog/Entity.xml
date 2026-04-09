@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name LocalizedName="Audit Log" OriginalName="va_auditlog">va_auditlog</Name>
+  <EntityInfo>
+    <entity Name="va_auditlog">
+      <LocalizedNames>
+        <LocalizedName description="Audit Log" languagecode="1033" />
+      </LocalizedNames>
+      <LocalizedCollectionNames>
+        <LocalizedCollectionName description="Audit Logs" languagecode="1033" />
+      </LocalizedCollectionNames>
+      <Descriptions>
+        <Description description="Immutable event log of all status transitions and key decisions for each application. Written by Power Automate flows. Displayed in the StatusTrackerScreen review history timeline. Records should never be updated or deleted." languagecode="1033" />
+      </Descriptions>
+      <ownership>OrganizationOwned</ownership>
+      <lookupcollectionname>va_auditlogs</lookupcollectionname>
+      <primaryattribute>va_name</primaryattribute>
+      <IsActivity>0</IsActivity>
+      <IsAuditEnabled>0</IsAuditEnabled>
+      <IsAvailableOffline>0</IsAvailableOffline>
+      <IsDocumentManagementEnabled>0</IsDocumentManagementEnabled>
+      <IsQuickCreateEnabled>0</IsQuickCreateEnabled>
+      <IsVisibleInMobile>0</IsVisibleInMobile>
+      <attributes>
+
+        <!-- Event Description -->
+        <attribute PhysicalName="va_name">
+          <Type>String</Type>
+          <Name>va_name</Name>
+          <LogicalName>va_name</LogicalName>
+          <RequiredLevel>SystemRequired</RequiredLevel>
+          <MaxLength>300</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Event" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Human-readable event description, e.g.: Status changed from Equipment Leader Review to Director Review." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Event Type -->
+        <attribute PhysicalName="va_eventType">
+          <Type>String</Type>
+          <Name>va_eventType</Name>
+          <LogicalName>va_eventType</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>100</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Event Type" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Programmatic event type: StatusChange, DecisionMade, DocumentUploaded, AllowanceCreated, AllowanceTerminated, etc." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Previous Status -->
+        <attribute PhysicalName="va_previousStatus">
+          <Type>String</Type>
+          <Name>va_previousStatus</Name>
+          <LogicalName>va_previousStatus</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>100</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Previous Status" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- New Status -->
+        <attribute PhysicalName="va_newStatus">
+          <Type>String</Type>
+          <Name>va_newStatus</Name>
+          <LogicalName>va_newStatus</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>100</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="New Status" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Performed By User ID -->
+        <attribute PhysicalName="va_performedByUserId">
+          <Type>String</Type>
+          <Name>va_performedByUserId</Name>
+          <LogicalName>va_performedByUserId</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>100</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Performed By (ID)" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Performed By Name -->
+        <attribute PhysicalName="va_performedByName">
+          <Type>String</Type>
+          <Name>va_performedByName</Name>
+          <LogicalName>va_performedByName</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>200</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Performed By" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Event Date -->
+        <attribute PhysicalName="va_eventDate">
+          <Type>DateTime</Type>
+          <Name>va_eventDate</Name>
+          <LogicalName>va_eventDate</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <Format>DateAndTime</Format>
+          <LocalizedNames>
+            <LocalizedName description="Event Date" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Notes -->
+        <attribute PhysicalName="va_notes">
+          <Type>Memo</Type>
+          <Name>va_notes</Name>
+          <LogicalName>va_notes</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>4000</MaxLength>
+          <Format>TextArea</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Notes" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Application Lookup -->
+        <attribute PhysicalName="va_applicationId">
+          <Type>Lookup</Type>
+          <Name>va_applicationId</Name>
+          <LogicalName>va_applicationId</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Application" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+      </attributes>
+    </entity>
+  </EntityInfo>
+</Entity>

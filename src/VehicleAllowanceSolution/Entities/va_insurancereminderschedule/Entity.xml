@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name LocalizedName="Insurance Reminder Schedule" OriginalName="va_insurancereminderschedule">va_insurancereminderschedule</Name>
+  <EntityInfo>
+    <entity Name="va_insurancereminderschedule">
+      <LocalizedNames>
+        <LocalizedName description="Insurance Reminder Schedule" languagecode="1033" />
+      </LocalizedNames>
+      <LocalizedCollectionNames>
+        <LocalizedCollectionName description="Insurance Reminder Schedules" languagecode="1033" />
+      </LocalizedCollectionNames>
+      <Descriptions>
+        <Description description="One row per scheduled reminder event per active insurance policy. Created by Flow 6 when an allowance record becomes active. Queried by Flow 7 (daily at 7:00 AM Mountain Time). Reminder intervals are read from va_ReminderConfig at runtime." languagecode="1033" />
+      </Descriptions>
+      <ownership>OrganizationOwned</ownership>
+      <lookupcollectionname>va_insurancereminderschedules</lookupcollectionname>
+      <primaryattribute>va_name</primaryattribute>
+      <IsActivity>0</IsActivity>
+      <IsAuditEnabled>0</IsAuditEnabled>
+      <IsAvailableOffline>0</IsAvailableOffline>
+      <IsDocumentManagementEnabled>0</IsDocumentManagementEnabled>
+      <IsQuickCreateEnabled>0</IsQuickCreateEnabled>
+      <IsVisibleInMobile>0</IsVisibleInMobile>
+      <attributes>
+
+        <!-- Reminder Description -->
+        <attribute PhysicalName="va_name">
+          <Type>String</Type>
+          <Name>va_name</Name>
+          <LogicalName>va_name</LogicalName>
+          <RequiredLevel>SystemRequired</RequiredLevel>
+          <MaxLength>300</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Reminder" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Display name, e.g.: 30-day reminder — State Farm Auto — P12345 — expires 2025-08-15." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Scheduled Reminder Date -->
+        <attribute PhysicalName="va_reminderDate">
+          <Type>DateTime</Type>
+          <Name>va_reminderDate</Name>
+          <LogicalName>va_reminderDate</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <Format>DateOnly</Format>
+          <LocalizedNames>
+            <LocalizedName description="Reminder Date" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Date Flow 7 should send this reminder. Calculated from policy expiry minus interval days from va_ReminderConfig." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Reminder Type -->
+        <attribute PhysicalName="va_reminderType">
+          <Type>String</Type>
+          <Name>va_reminderType</Name>
+          <LogicalName>va_reminderType</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>50</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Reminder Type" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="One of: Reminder1, Reminder2, Reminder3, Expiry, GracePeriod. Corresponds to va_ReminderConfig intervals." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Is Sent -->
+        <attribute PhysicalName="va_isSent">
+          <Type>Boolean</Type>
+          <Name>va_isSent</Name>
+          <LogicalName>va_isSent</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Is Sent" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Set to true by Flow 7 after the reminder Teams message is successfully sent. Prevents duplicate sends." languagecode="1033" />
+          </Descriptions>
+          <FalseOption>
+            <Labels><Label description="Not Sent" languagecode="1033" /></Labels>
+          </FalseOption>
+          <TrueOption>
+            <Labels><Label description="Sent" languagecode="1033" /></Labels>
+          </TrueOption>
+        </attribute>
+
+        <!-- Sent On -->
+        <attribute PhysicalName="va_sentOn">
+          <Type>DateTime</Type>
+          <Name>va_sentOn</Name>
+          <LogicalName>va_sentOn</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <Format>DateAndTime</Format>
+          <LocalizedNames>
+            <LocalizedName description="Sent On" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Policy Lookup -->
+        <attribute PhysicalName="va_policyId">
+          <Type>Lookup</Type>
+          <Name>va_policyId</Name>
+          <LogicalName>va_policyId</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Insurance Policy" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Allowance Record Lookup -->
+        <attribute PhysicalName="va_allowanceRecordId">
+          <Type>Lookup</Type>
+          <Name>va_allowanceRecordId</Name>
+          <LogicalName>va_allowanceRecordId</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Allowance Record" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Personnel Number -->
+        <attribute PhysicalName="va_personnelNumber">
+          <Type>String</Type>
+          <Name>va_personnelNumber</Name>
+          <LogicalName>va_personnelNumber</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>50</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Personnel Number" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Denormalized from AllowanceRecord for efficient query in Flow 7." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+      </attributes>
+    </entity>
+  </EntityInfo>
+</Entity>

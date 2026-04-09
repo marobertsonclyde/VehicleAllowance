@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name LocalizedName="Document Checklist" OriginalName="va_documentchecklist">va_documentchecklist</Name>
+  <EntityInfo>
+    <entity Name="va_documentchecklist">
+      <LocalizedNames>
+        <LocalizedName description="Document Checklist" languagecode="1033" />
+      </LocalizedNames>
+      <LocalizedCollectionNames>
+        <LocalizedCollectionName description="Document Checklists" languagecode="1033" />
+      </LocalizedCollectionNames>
+      <Descriptions>
+        <Description description="4 required checklist items per application, created by Flow 1 on submission. Drives the Insurance Documents screen checklist UI. All 4 must be satisfied (va_isSatisfied = true) before the employee can proceed to Review and Submit." languagecode="1033" />
+      </Descriptions>
+      <ownership>UserOwned</ownership>
+      <lookupcollectionname>va_documentchecklists</lookupcollectionname>
+      <primaryattribute>va_name</primaryattribute>
+      <IsActivity>0</IsActivity>
+      <IsAuditEnabled>0</IsAuditEnabled>
+      <IsAvailableOffline>0</IsAvailableOffline>
+      <IsDocumentManagementEnabled>0</IsDocumentManagementEnabled>
+      <IsQuickCreateEnabled>0</IsQuickCreateEnabled>
+      <IsVisibleInMobile>0</IsVisibleInMobile>
+      <attributes>
+
+        <!-- Primary Name (checklist item description) -->
+        <attribute PhysicalName="va_name">
+          <Type>String</Type>
+          <Name>va_name</Name>
+          <LogicalName>va_name</LogicalName>
+          <RequiredLevel>SystemRequired</RequiredLevel>
+          <MaxLength>300</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Checklist Item" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="One of 4 required items: (1) Auto Insurance Dec Page, (2) Umbrella Insurance Dec Page, (3) Clyde Entity Endorsement, (4) Window Sticker." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Is Satisfied -->
+        <attribute PhysicalName="va_isSatisfied">
+          <Type>Boolean</Type>
+          <Name>va_isSatisfied</Name>
+          <LogicalName>va_isSatisfied</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Is Satisfied" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Set to true by Flow 8 after AI processing completes and all validation rules pass for this document type." languagecode="1033" />
+          </Descriptions>
+          <FalseOption>
+            <Labels><Label description="No — Outstanding" languagecode="1033" /></Labels>
+          </FalseOption>
+          <TrueOption>
+            <Labels><Label description="Yes — Satisfied" languagecode="1033" /></Labels>
+          </TrueOption>
+        </attribute>
+
+        <!-- Satisfied By Document -->
+        <attribute PhysicalName="va_satisfiedByDocumentId">
+          <Type>Lookup</Type>
+          <Name>va_satisfiedByDocumentId</Name>
+          <LogicalName>va_satisfiedByDocumentId</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Satisfied By Document" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Satisfied On -->
+        <attribute PhysicalName="va_satisfiedOn">
+          <Type>DateTime</Type>
+          <Name>va_satisfiedOn</Name>
+          <LogicalName>va_satisfiedOn</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <Format>DateAndTime</Format>
+          <LocalizedNames>
+            <LocalizedName description="Satisfied On" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Application Lookup -->
+        <attribute PhysicalName="va_applicationId">
+          <Type>Lookup</Type>
+          <Name>va_applicationId</Name>
+          <LogicalName>va_applicationId</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Application" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+      </attributes>
+    </entity>
+  </EntityInfo>
+</Entity>

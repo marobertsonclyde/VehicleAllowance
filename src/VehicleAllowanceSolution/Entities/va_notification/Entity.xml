@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name LocalizedName="Notification" OriginalName="va_notification">va_notification</Name>
+  <EntityInfo>
+    <entity Name="va_notification">
+      <LocalizedNames>
+        <LocalizedName description="Notification" languagecode="1033" />
+      </LocalizedNames>
+      <LocalizedCollectionNames>
+        <LocalizedCollectionName description="Notifications" languagecode="1033" />
+      </LocalizedCollectionNames>
+      <Descriptions>
+        <Description description="Record of all outbound Teams notifications sent by the system. Used for audit trail and retry logic. All notifications use Microsoft Teams (no email for internal communications)." languagecode="1033" />
+      </Descriptions>
+      <ownership>OrganizationOwned</ownership>
+      <lookupcollectionname>va_notifications</lookupcollectionname>
+      <primaryattribute>va_name</primaryattribute>
+      <IsActivity>0</IsActivity>
+      <IsAuditEnabled>0</IsAuditEnabled>
+      <IsAvailableOffline>0</IsAvailableOffline>
+      <IsDocumentManagementEnabled>0</IsDocumentManagementEnabled>
+      <IsQuickCreateEnabled>0</IsQuickCreateEnabled>
+      <IsVisibleInMobile>0</IsVisibleInMobile>
+      <attributes>
+
+        <!-- Notification Subject -->
+        <attribute PhysicalName="va_name">
+          <Type>String</Type>
+          <Name>va_name</Name>
+          <LogicalName>va_name</LogicalName>
+          <RequiredLevel>SystemRequired</RequiredLevel>
+          <MaxLength>300</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Subject" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Notification Type -->
+        <attribute PhysicalName="va_notificationType">
+          <Type>String</Type>
+          <Name>va_notificationType</Name>
+          <LogicalName>va_notificationType</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>100</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Notification Type" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="e.g.: ReviewRequest, ApprovalConfirmation, RejectionNotice, InsuranceReminder, PayrollNotification." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Recipient User ID -->
+        <attribute PhysicalName="va_recipientId">
+          <Type>String</Type>
+          <Name>va_recipientId</Name>
+          <LogicalName>va_recipientId</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>100</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Recipient (ID)" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Recipient Name -->
+        <attribute PhysicalName="va_recipientName">
+          <Type>String</Type>
+          <Name>va_recipientName</Name>
+          <LogicalName>va_recipientName</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>200</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Recipient Name" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Sent On -->
+        <attribute PhysicalName="va_sentOn">
+          <Type>DateTime</Type>
+          <Name>va_sentOn</Name>
+          <LogicalName>va_sentOn</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <Format>DateAndTime</Format>
+          <LocalizedNames>
+            <LocalizedName description="Sent On" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Status -->
+        <attribute PhysicalName="va_status">
+          <Type>Picklist</Type>
+          <Name>va_status</Name>
+          <LogicalName>va_status</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Status" languagecode="1033" />
+          </LocalizedNames>
+          <optionset Name="va_notificationstatus">
+            <OptionSetType>picklist</OptionSetType>
+            <IsGlobal>0</IsGlobal>
+            <Options>
+              <Option Value="720000500">
+                <Labels><Label description="Pending" languagecode="1033" /></Labels>
+              </Option>
+              <Option Value="720000501">
+                <Labels><Label description="Sent" languagecode="1033" /></Labels>
+              </Option>
+              <Option Value="720000502">
+                <Labels><Label description="Failed" languagecode="1033" /></Labels>
+              </Option>
+            </Options>
+          </optionset>
+        </attribute>
+
+        <!-- Message Content -->
+        <attribute PhysicalName="va_messageContent">
+          <Type>Memo</Type>
+          <Name>va_messageContent</Name>
+          <LogicalName>va_messageContent</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>16000</MaxLength>
+          <Format>TextArea</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Message Content" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Teams Message ID (for reference) -->
+        <attribute PhysicalName="va_teamsMessageId">
+          <Type>String</Type>
+          <Name>va_teamsMessageId</Name>
+          <LogicalName>va_teamsMessageId</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>200</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Teams Message ID" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+        <!-- Application Lookup -->
+        <attribute PhysicalName="va_applicationId">
+          <Type>Lookup</Type>
+          <Name>va_applicationId</Name>
+          <LogicalName>va_applicationId</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Application" languagecode="1033" />
+          </LocalizedNames>
+        </attribute>
+
+      </attributes>
+    </entity>
+  </EntityInfo>
+</Entity>

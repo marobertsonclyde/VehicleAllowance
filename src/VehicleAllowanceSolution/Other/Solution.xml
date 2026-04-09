@@ -36,13 +36,60 @@
       </Addresses>
     </Publisher>
     <RootComponents>
-      <!-- Entities (Tables) will be listed here by PAC CLI after first export -->
-      <!-- EnvironmentVariableDefinitions will be listed here -->
-      <!-- Roles will be listed here -->
-      <!-- Workflows (Flows) will be listed here -->
-      <!-- CanvasApps will be listed here -->
-      <!-- AIModels will be listed here -->
-      <!-- Bots (Copilot Studio) will be listed here -->
+      <!--
+        NOTE: type="1" = Entity, type="2" = Attribute, type="9" = OptionSet, type="29" = Workflow,
+              type="300" = Canvas App, type="318" = Env Variable Definition, type="380" = AI Model,
+              type="419" = Bot (Copilot Studio Agent)
+        GUIDs below are placeholders — PAC CLI replaces them with real Dataverse IDs on first export.
+        behavior="0" = include all subcomponents (columns, forms, views, relationships).
+      -->
+
+      <!-- ── Global Option Sets ─────────────────────────────────────────── -->
+      <RootComponent type="9" schemaName="va_allowancelevel" behavior="0" />
+      <RootComponent type="9" schemaName="va_reviewerdecision" behavior="0" />
+      <RootComponent type="9" schemaName="va_aiprocessingstatus" behavior="0" />
+
+      <!-- ── Entities (Tables) ──────────────────────────────────────────── -->
+      <RootComponent type="1" schemaName="va_allowanceapplication" behavior="0" />
+      <RootComponent type="1" schemaName="va_vehicle" behavior="0" />
+      <RootComponent type="1" schemaName="va_insurancepolicy" behavior="0" />
+      <RootComponent type="1" schemaName="va_document" behavior="0" />
+      <RootComponent type="1" schemaName="va_documentchecklist" behavior="0" />
+      <RootComponent type="1" schemaName="va_allowancerecord" behavior="0" />
+      <RootComponent type="1" schemaName="va_companyentity" behavior="0" />
+      <RootComponent type="1" schemaName="va_eligibletitle" behavior="0" />
+      <RootComponent type="1" schemaName="va_allowancelevelconfig" behavior="0" />
+      <RootComponent type="1" schemaName="va_auditlog" behavior="0" />
+      <RootComponent type="1" schemaName="va_notification" behavior="0" />
+      <RootComponent type="1" schemaName="va_insurancereminderschedule" behavior="0" />
+      <RootComponent type="1" schemaName="va_reminderconfig" behavior="0" />
+
+      <!-- ── Environment Variable Definitions ──────────────────────────── -->
+      <RootComponent type="318" schemaName="va_EquipmentLeaderUserId" behavior="0" />
+      <RootComponent type="318" schemaName="va_DirectorOfEquipmentUserId" behavior="0" />
+      <RootComponent type="318" schemaName="va_CompanyPresidentUserId" behavior="0" />
+      <RootComponent type="318" schemaName="va_PayrollTeamsChannelId" behavior="0" />
+      <RootComponent type="318" schemaName="va_PortalUrl" behavior="0" />
+      <RootComponent type="318" schemaName="va_AIAutoApprovalThreshold" behavior="0" />
+      <RootComponent type="318" schemaName="va_OptInWindowDays" behavior="0" />
+      <RootComponent type="318" schemaName="va_FabricSqlEndpoint" behavior="0" />
+
+      <!-- ── Security Roles ─────────────────────────────────────────────── -->
+      <!-- GUIDs assigned by Dataverse on import; schemaName used for reference -->
+      <!-- va_Employee, va_EquipmentLeader, va_Director, va_President, va_Payroll, va_Administrator -->
+
+      <!-- ── Workflows (Power Automate Flows) ──────────────────────────── -->
+      <!-- Added by PAC CLI after flows are created in Power Platform Studio -->
+
+      <!-- ── Canvas Apps ────────────────────────────────────────────────── -->
+      <!-- VehicleAllowancePortal — built as a Code App (React/TypeScript) in apps/employee-portal/ -->
+
+      <!-- ── AI Builder Models ──────────────────────────────────────────── -->
+      <!-- va_InsuranceDocumentExtractor, va_WindowStickerExtractor, va_DocumentClassifier -->
+      <!-- va_EmailDraftingPrompt — added by PAC CLI after training in AI Builder Studio -->
+
+      <!-- ── Copilot Studio Agent ───────────────────────────────────────── -->
+      <!-- va_AllowanceAssistant — topic files in Bots/va_AllowanceAssistant/topics/ -->
     </RootComponents>
     <MissingDependencies />
   </SolutionManifest>
