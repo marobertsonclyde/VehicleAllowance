@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useConnectorContext } from '@microsoft/power-apps'
 import { useCurrentApplication } from '@/hooks/useCurrentApplication'
@@ -21,6 +21,10 @@ export function VehicleDetailsScreen() {
   const [msrp, setMsrp] = useState<number | ''>(vehicle?.va_msrpTotal ?? '')
   const [isElectric, setIsElectric] = useState(vehicle?.va_isElectric ?? false)
   const [preApproved, setPreApproved] = useState(vehicle?.va_preApprovedByEquipmentLeader ?? false)
+
+  // Prevent stale state updates if user navigates away during AI polling
+  const isMountedRef = useRef(true)
+  useEffect(() => () => { isMountedRef.current = false }, [])
 
   // Window sticker AI state
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -107,11 +111,13 @@ export function VehicleDetailsScreen() {
       let extractedDoc = null
       while (waited < 60_000) {
         await new Promise(r => setTimeout(r, 3_000))
+        if (!isMountedRef.current) break
         waited += 3_000
         const doc = await connectors.dataverse.retrieveRecord(
           'va_documents', docRecord.va_documentid,
           '?$select=va_aiProcessingStatus,va_aiExtractedData,va_aiConfidenceScore',
         )
+        if (!isMountedRef.current) break
         if (
           doc.va_aiProcessingStatus === AIProcessingStatus.Completed ||
           doc.va_aiProcessingStatus === AIProcessingStatus.Failed

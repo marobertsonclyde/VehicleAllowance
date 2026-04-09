@@ -16,6 +16,7 @@ export function AllowanceLevelScreen() {
     application?.va_allowanceLevel ?? null,
   )
   const [saving, setSaving] = useState(false)
+  const [configError, setConfigError] = useState<string | null>(null)
 
   useEffect(() => {
     connectors.dataverse
@@ -24,7 +25,7 @@ export function AllowanceLevelScreen() {
         '?$filter=va_isCurrentRate eq true&$orderby=va_monthlyAllowance desc',
       )
       .then(r => setLevelConfigs(r.entities ?? []))
-      .catch(console.error)
+      .catch(err => setConfigError(err instanceof Error ? err.message : 'Failed to load allowance levels. Please refresh.'))
   }, [connectors])
 
   const vehicleMsrp = vehicle?.va_msrpTotal ?? 0
@@ -64,6 +65,10 @@ export function AllowanceLevelScreen() {
           Select the allowance level for your vehicle. Levels are filtered to those your vehicle's MSRP qualifies for.
         </p>
       </div>
+
+      {configError && (
+        <div className="alert alert-error">{configError}</div>
+      )}
 
       {vehicleMsrp > 0 && (
         <div className="alert alert-info">

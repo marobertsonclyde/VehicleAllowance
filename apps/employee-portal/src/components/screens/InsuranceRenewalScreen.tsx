@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useConnectorContext } from '@microsoft/power-apps'
 import { useAllowanceRecord } from '@/hooks/useAllowanceRecord'
@@ -19,6 +19,9 @@ export function InsuranceRenewalScreen() {
   const { record, activePolicies, loading } = useAllowanceRecord()
 
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const isMountedRef = useRef(true)
+  useEffect(() => () => { isMountedRef.current = false }, [])
+
   const [uploadingPolicyId, setUploadingPolicyId] = useState<string | null>(null)
   const [extractions, setExtractions] = useState<Record<string, { data: InsuranceExtractionResult; confidence: number }>>({})
   const [uploadError, setUploadError] = useState<string | null>(null)
@@ -58,11 +61,13 @@ export function InsuranceRenewalScreen() {
       let waited = 0
       while (waited < 60_000) {
         await new Promise(r => setTimeout(r, 3_000))
+        if (!isMountedRef.current) break
         waited += 3_000
         const doc = await connectors.dataverse.retrieveRecord(
           'va_documents', docRecord.va_documentid,
           '?$select=va_aiProcessingStatus,va_aiExtractedData,va_aiConfidenceScore',
         )
+        if (!isMountedRef.current) break
         if (doc.va_aiProcessingStatus !== AIProcessingStatus.Processing &&
             doc.va_aiProcessingStatus !== AIProcessingStatus.Pending) {
           if (doc.va_aiExtractedData) {

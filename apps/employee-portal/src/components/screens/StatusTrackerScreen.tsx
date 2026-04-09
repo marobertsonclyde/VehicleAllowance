@@ -16,15 +16,23 @@ const STEPS: { label: string; status: ApplicationStatus }[] = [
 
 const STATUS_ORDER = STEPS.map(s => s.status)
 
-function getStepState(step: ApplicationStatus, current: ApplicationStatus) {
-  if (current === ApplicationStatus.Rejected || current === ApplicationStatus.Terminated) {
-    const stepIdx = STATUS_ORDER.indexOf(step)
-    const currentIdx = STATUS_ORDER.indexOf(current)
-    if (stepIdx < currentIdx) return 'completed'
-    if (stepIdx === currentIdx) return 'rejected'
+function getStepState(
+  step: ApplicationStatus,
+  current: ApplicationStatus,
+  lastReachedIdx: number,
+) {
+  const stepIdx = STATUS_ORDER.indexOf(step)
+  const isTerminalNonActive =
+    current === ApplicationStatus.Rejected ||
+    current === ApplicationStatus.Withdrawn ||
+    current === ApplicationStatus.Terminated
+
+  if (isTerminalNonActive) {
+    if (stepIdx < lastReachedIdx) return 'completed'
+    if (stepIdx === lastReachedIdx) return 'rejected'
     return 'pending'
   }
-  const stepIdx = STATUS_ORDER.indexOf(step)
+
   const currentIdx = STATUS_ORDER.indexOf(current)
   if (stepIdx < currentIdx) return 'completed'
   if (stepIdx === currentIdx) return 'active'
@@ -53,6 +61,16 @@ export function StatusTrackerScreen() {
   }
 
   const currentStatus = application.va_status ?? ApplicationStatus.Draft
+
+  // For rejected/withdrawn/terminated apps, determine the furthest step actually reached
+  // so the step indicator shows which steps completed before the terminal decision.
+  const lastReachedIdx = (() => {
+    if (application.va_presidentDecision) return STATUS_ORDER.indexOf(ApplicationStatus.PresidentReview)
+    if (application.va_directorDecision) return STATUS_ORDER.indexOf(ApplicationStatus.DirectorReview)
+    if (application.va_equipmentLeaderDecision) return STATUS_ORDER.indexOf(ApplicationStatus.EquipmentLeaderReview)
+    return STATUS_ORDER.indexOf(ApplicationStatus.Submitted)
+  })()
+
   const isTerminal = [
     ApplicationStatus.Rejected,
     ApplicationStatus.Withdrawn,
@@ -85,7 +103,7 @@ export function StatusTrackerScreen() {
       <div className="card">
         <div className="step-indicator">
           {STEPS.map((step, idx) => {
-            const state = getStepState(step.status, currentStatus as ApplicationStatus)
+            const state = getStepState(step.status, currentStatus as ApplicationStatus, lastReachedIdx)
             const isLast = idx === STEPS.length - 1
             return (
               <div key={step.status} className={`step ${state}`}>
