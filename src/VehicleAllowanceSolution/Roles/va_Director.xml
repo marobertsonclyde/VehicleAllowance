@@ -18,7 +18,7 @@
     <LocalizedName description="Vehicle Allowance — Director of Equipment" languagecode="1033" />
   </LocalizedNames>
   <Descriptions>
-    <Description description="Director of Equipment review role. Inherits Equipment Leader access. Final approver for Vehicle Update and Annual Renewal applications." languagecode="1033" />
+    <Description description="Director of Equipment review role. Inherits Equipment Leader access. Final approver for Vehicle Update and Annual Renewal applications. Includes read access to Reminder Configuration program settings." languagecode="1033" />
   </Descriptions>
   <IsInherited>1</IsInherited>
   <RolePrivileges>

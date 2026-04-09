@@ -10,7 +10,7 @@
         <LocalizedCollectionName description="Reminder Configs" languagecode="1033" />
       </LocalizedCollectionNames>
       <Descriptions>
-        <Description description="Admin-configurable insurance reminder schedule. Flow 7 reads the active record (va_isActive = true) at runtime to determine when to send reminders. Admins update via the Admin model-driven app Settings screen — no flow modification required. Seeded with defaults: 30/14/7 days before expiry, 30-day grace period." languagecode="1033" />
+        <Description description="Admin-configurable reminder schedule settings. Insurance reminders and grace period values are read at runtime by Flow 7. Vehicle age reminder/grace values are used by the vehicle age compliance flow. Admins update via the Admin model-driven app Settings screen — no flow modification required." languagecode="1033" />
       </Descriptions>
       <ownership>OrganizationOwned</ownership>
       <lookupcollectionname>va_reminderconfigs</lookupcollectionname>
@@ -105,6 +105,23 @@
           </LocalizedNames>
           <Descriptions>
             <Description description="Days after policy expiry before Flow 7 terminates the AllowanceRecord and notifies payroll. Default: 30. During grace period, urgent reminders are sent to employee, Equipment Leader, and Director." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Vehicle Age Grace Period Days -->
+        <attribute PhysicalName="va_vehicleAgeGracePeriodDays">
+          <Type>Integer</Type>
+          <Name>va_vehicleAgeGracePeriodDays</Name>
+          <LogicalName>va_vehicleAgeGracePeriodDays</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <MinValue>0</MinValue>
+          <MaxValue>90</MaxValue>
+          <Format>None</Format>
+          <LocalizedNames>
+            <LocalizedName description="Vehicle Age Grace Period (Days After Jan 1)" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Days after January 1 model-year eligibility rollover before vehicle age non-compliance action is enforced. Program Manager can adjust this value in Settings without flow changes. Default: 30." languagecode="1033" />
           </Descriptions>
         </attribute>
 
