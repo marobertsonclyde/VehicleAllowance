@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useCurrentApplication } from '@/hooks/useCurrentApplication'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { ApplicationStatus } from '@/types'
@@ -39,7 +39,6 @@ function getStepState(
 }
 
 export function StatusTrackerScreen() {
-  const { applicationId } = useParams()
   const navigate = useNavigate()
   const { application, loading, error } = useCurrentApplication()
 
@@ -75,6 +74,7 @@ export function StatusTrackerScreen() {
     ApplicationStatus.Terminated,
     ApplicationStatus.Active,
   ].includes(currentStatus as ApplicationStatus)
+
 
   const isReturned = currentStatus === ApplicationStatus.ReturnedToEmployee
 
