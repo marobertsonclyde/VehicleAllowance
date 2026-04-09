@@ -1,0 +1,8 @@
+{
+  "name": "VehicleAllowancePortal",
+  "displayName": "Vehicle Allowance Portal",
+  "description": "Employee self-service portal for the Clyde Companies Vehicle Allowance Program",
+  "version": "1.0.0",
+  "environmentId": "REPLACE-WITH-DEV-ENVIRONMENT-GUID",
+  "_note": "Run 'pac env select --environment <id>' to set the active environment, then 'pac code init' to populate this file. The environmentId is filled in by PAC CLI."
+}

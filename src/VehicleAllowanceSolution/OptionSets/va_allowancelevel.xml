@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Global Option Set: va_allowancelevel
+  Used by: va_AllowanceApplication, va_AllowanceRecord, va_EligibleTitle, va_AllowanceLevelConfig
+  A = highest (Level A, ≥ $70k MSRP), D = lowest (Level D, ≥ $43k MSRP)
+-->
+<optionsets>
+  <optionset Name="va_allowancelevel">
+    <OptionSetType>picklist</OptionSetType>
+    <IsGlobal>1</IsGlobal>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <IsCustomizable>1</IsCustomizable>
+    <LocalizedNames>
+      <LocalizedName description="Allowance Level" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Vehicle Allowance Program tier. Determined by vehicle MSRP and job title ceiling. Drives monthly payment amount." languagecode="1033" />
+    </Descriptions>
+    <Options>
+      <Option Value="720000000">
+        <Labels><Label description="Level A" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Highest level. Vehicle MSRP ≥ $70,000. Monthly amount: $1,760." languagecode="1033" /></Descriptions>
+      </Option>
+      <Option Value="720000001">
+        <Labels><Label description="Level B" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Vehicle MSRP ≥ $59,000. Monthly amount: $1,500." languagecode="1033" /></Descriptions>
+      </Option>
+      <Option Value="720000002">
+        <Labels><Label description="Level C" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Vehicle MSRP ≥ $46,000. Monthly amount: $1,260." languagecode="1033" /></Descriptions>
+      </Option>
+      <Option Value="720000003">
+        <Labels><Label description="Level D" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Entry level. Vehicle MSRP ≥ $43,000. Monthly amount: $1,180." languagecode="1033" /></Descriptions>
+      </Option>
+    </Options>
+  </optionset>
+</optionsets>

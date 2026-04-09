@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name LocalizedName="Reminder Config" OriginalName="va_reminderconfig">va_reminderconfig</Name>
+  <EntityInfo>
+    <entity Name="va_reminderconfig">
+      <LocalizedNames>
+        <LocalizedName description="Reminder Config" languagecode="1033" />
+      </LocalizedNames>
+      <LocalizedCollectionNames>
+        <LocalizedCollectionName description="Reminder Configs" languagecode="1033" />
+      </LocalizedCollectionNames>
+      <Descriptions>
+        <Description description="Admin-configurable insurance reminder schedule. Flow 7 reads the active record (va_isActive = true) at runtime to determine when to send reminders. Admins update via the Admin model-driven app Settings screen — no flow modification required. Seeded with defaults: 30/14/7 days before expiry, 30-day grace period." languagecode="1033" />
+      </Descriptions>
+      <ownership>OrganizationOwned</ownership>
+      <lookupcollectionname>va_reminderconfigs</lookupcollectionname>
+      <primaryattribute>va_name</primaryattribute>
+      <IsActivity>0</IsActivity>
+      <IsAuditEnabled>1</IsAuditEnabled>
+      <IsAvailableOffline>0</IsAvailableOffline>
+      <IsDocumentManagementEnabled>0</IsDocumentManagementEnabled>
+      <IsQuickCreateEnabled>0</IsQuickCreateEnabled>
+      <IsVisibleInMobile>0</IsVisibleInMobile>
+      <attributes>
+
+        <!-- Config Name -->
+        <attribute PhysicalName="va_name">
+          <Type>String</Type>
+          <Name>va_name</Name>
+          <LogicalName>va_name</LogicalName>
+          <RequiredLevel>SystemRequired</RequiredLevel>
+          <MaxLength>100</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Config Name" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Display name, e.g.: Insurance Reminder Schedule. Only one record should have va_isActive = true at a time." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Reminder Interval 1 (days before expiry) -->
+        <attribute PhysicalName="va_reminderDays1">
+          <Type>Integer</Type>
+          <Name>va_reminderDays1</Name>
+          <LogicalName>va_reminderDays1</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <MinValue>1</MinValue>
+          <MaxValue>365</MaxValue>
+          <Format>None</Format>
+          <LocalizedNames>
+            <LocalizedName description="First Reminder (Days Before Expiry)" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Days before policy expiry to send first reminder. Default: 30." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Reminder Interval 2 -->
+        <attribute PhysicalName="va_reminderDays2">
+          <Type>Integer</Type>
+          <Name>va_reminderDays2</Name>
+          <LogicalName>va_reminderDays2</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <MinValue>1</MinValue>
+          <MaxValue>365</MaxValue>
+          <Format>None</Format>
+          <LocalizedNames>
+            <LocalizedName description="Second Reminder (Days Before Expiry)" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Days before policy expiry to send second reminder. Default: 14." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Reminder Interval 3 -->
+        <attribute PhysicalName="va_reminderDays3">
+          <Type>Integer</Type>
+          <Name>va_reminderDays3</Name>
+          <LogicalName>va_reminderDays3</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <MinValue>1</MinValue>
+          <MaxValue>365</MaxValue>
+          <Format>None</Format>
+          <LocalizedNames>
+            <LocalizedName description="Third Reminder (Days Before Expiry)" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Days before policy expiry to send final reminder before expiry. Default: 7." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Grace Period Days -->
+        <attribute PhysicalName="va_gracePeriodDays">
+          <Type>Integer</Type>
+          <Name>va_gracePeriodDays</Name>
+          <LogicalName>va_gracePeriodDays</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <MinValue>1</MinValue>
+          <MaxValue>90</MaxValue>
+          <Format>None</Format>
+          <LocalizedNames>
+            <LocalizedName description="Grace Period (Days After Expiry)" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Days after policy expiry before Flow 7 terminates the AllowanceRecord and notifies payroll. Default: 30. During grace period, urgent reminders are sent to employee, Equipment Leader, and Director." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Is Active -->
+        <attribute PhysicalName="va_isActive">
+          <Type>Boolean</Type>
+          <Name>va_isActive</Name>
+          <LogicalName>va_isActive</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Is Active" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Flow 7 reads the first record where va_isActive = true. Only one record should be active at a time." languagecode="1033" />
+          </Descriptions>
+          <FalseOption>
+            <Labels><Label description="Inactive" languagecode="1033" /></Labels>
+          </FalseOption>
+          <TrueOption>
+            <Labels><Label description="Active" languagecode="1033" /></Labels>
+          </TrueOption>
+        </attribute>
+
+      </attributes>
+    </entity>
+  </EntityInfo>
+</Entity>

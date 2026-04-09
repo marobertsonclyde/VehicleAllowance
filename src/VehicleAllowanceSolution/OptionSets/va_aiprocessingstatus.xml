@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Global Option Set: va_aiprocessingstatus
+  Used by: va_Document, va_Vehicle
+-->
+<optionsets>
+  <optionset Name="va_aiprocessingstatus">
+    <OptionSetType>picklist</OptionSetType>
+    <IsGlobal>1</IsGlobal>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <IsCustomizable>1</IsCustomizable>
+    <LocalizedNames>
+      <LocalizedName description="AI Processing Status" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="Status of AI Builder extraction processing for a document or vehicle record." languagecode="1033" />
+    </Descriptions>
+    <Options>
+      <Option Value="720000020">
+        <Labels><Label description="Pending" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Document uploaded; awaiting Flow 8 trigger." languagecode="1033" /></Descriptions>
+      </Option>
+      <Option Value="720000021">
+        <Labels><Label description="Processing" languagecode="1033" /></Labels>
+        <Descriptions><Description description="AI Builder extraction in progress." languagecode="1033" /></Descriptions>
+      </Option>
+      <Option Value="720000022">
+        <Labels><Label description="Completed" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Extraction complete. Results written to va_aiExtractedData." languagecode="1033" /></Descriptions>
+      </Option>
+      <Option Value="720000023">
+        <Labels><Label description="Failed" languagecode="1033" /></Labels>
+        <Descriptions><Description description="Extraction failed. Equipment Leader notified. Employee can re-upload." languagecode="1033" /></Descriptions>
+      </Option>
+    </Options>
+  </optionset>
+</optionsets>

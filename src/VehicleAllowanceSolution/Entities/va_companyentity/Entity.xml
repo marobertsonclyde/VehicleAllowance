@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name LocalizedName="Company Entity" OriginalName="va_companyentity">va_companyentity</Name>
+  <EntityInfo>
+    <entity Name="va_companyentity">
+      <LocalizedNames>
+        <LocalizedName description="Company Entity" languagecode="1033" />
+      </LocalizedNames>
+      <LocalizedCollectionNames>
+        <LocalizedCollectionName description="Company Entities" languagecode="1033" />
+      </LocalizedCollectionNames>
+      <Descriptions>
+        <Description description="The 8 Clyde Companies legal subsidiaries. Pre-seeded by scripts/seed-reference-data.ps1. Used by AI Builder for endorsement entity fuzzy matching and by Flow 2 to validate that the correct company is named on the insurance endorsement. Endorsement address: 730 N 1500 W, Orem, UT 84057." languagecode="1033" />
+      </Descriptions>
+      <ownership>OrganizationOwned</ownership>
+      <lookupcollectionname>va_companyentities</lookupcollectionname>
+      <primaryattribute>va_name</primaryattribute>
+      <IsActivity>0</IsActivity>
+      <IsAuditEnabled>0</IsAuditEnabled>
+      <IsAvailableOffline>0</IsAvailableOffline>
+      <IsDocumentManagementEnabled>0</IsDocumentManagementEnabled>
+      <IsQuickCreateEnabled>1</IsQuickCreateEnabled>
+      <IsVisibleInMobile>0</IsVisibleInMobile>
+      <attributes>
+
+        <!-- Company Legal Name -->
+        <attribute PhysicalName="va_name">
+          <Type>String</Type>
+          <Name>va_name</Name>
+          <LogicalName>va_name</LogicalName>
+          <RequiredLevel>SystemRequired</RequiredLevel>
+          <MaxLength>300</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Company Name" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Full legal name of the Clyde Companies subsidiary. Must match (or be fuzzy-matchable to) the name on insurance endorsements." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Endorsement Address (full address block for insurance docs) -->
+        <attribute PhysicalName="va_endorsementAddress">
+          <Type>Memo</Type>
+          <Name>va_endorsementAddress</Name>
+          <LogicalName>va_endorsementAddress</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>2000</MaxLength>
+          <Format>TextArea</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Endorsement Address" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Full address block for insurance endorsements. Standard: 730 N 1500 W, Orem, UT 84057. Shown to employees during application so they can provide it to their insurance agent." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Legal Entity Code (matches Dynamics company code) -->
+        <attribute PhysicalName="va_legalEntityCode">
+          <Type>String</Type>
+          <Name>va_legalEntityCode</Name>
+          <LogicalName>va_legalEntityCode</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>20</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Legal Entity Code" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Company code from Dynamics 365 (matches va_applicantCompany value from Fabric Lakehouse lookup)." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Company President User ID (AAD Object ID for this subsidiary's president) -->
+        <attribute PhysicalName="va_presidentUserId">
+          <Type>String</Type>
+          <Name>va_presidentUserId</Name>
+          <LogicalName>va_presidentUserId</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>100</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Company President (User ID)" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="AAD Object ID of this subsidiary's company president. Flow 5 looks up this value using the applicant's company to route New Opt-In applications to the correct president for final approval." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Company President Display Name -->
+        <attribute PhysicalName="va_presidentName">
+          <Type>String</Type>
+          <Name>va_presidentName</Name>
+          <LogicalName>va_presidentName</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MaxLength>200</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Company President Name" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Display name of the company president. Shown in review history and Teams notification messages." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Is Active -->
+        <attribute PhysicalName="va_isActive">
+          <Type>Boolean</Type>
+          <Name>va_isActive</Name>
+          <LogicalName>va_isActive</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Is Active" languagecode="1033" />
+          </LocalizedNames>
+          <FalseOption>
+            <Labels><Label description="Inactive" languagecode="1033" /></Labels>
+          </FalseOption>
+          <TrueOption>
+            <Labels><Label description="Active" languagecode="1033" /></Labels>
+          </TrueOption>
+        </attribute>
+
+      </attributes>
+    </entity>
+  </EntityInfo>
+</Entity>

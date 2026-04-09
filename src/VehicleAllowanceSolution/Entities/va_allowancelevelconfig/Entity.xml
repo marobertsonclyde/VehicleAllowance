@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name LocalizedName="Allowance Level Config" OriginalName="va_allowancelevelconfig">va_allowancelevelconfig</Name>
+  <EntityInfo>
+    <entity Name="va_allowancelevelconfig">
+      <LocalizedNames>
+        <LocalizedName description="Allowance Level Config" languagecode="1033" />
+      </LocalizedNames>
+      <LocalizedCollectionNames>
+        <LocalizedCollectionName description="Allowance Level Configs" languagecode="1033" />
+      </LocalizedCollectionNames>
+      <Descriptions>
+        <Description description="Configurable allowance amounts per level (A/B/C/D). Admins update rates via the Admin model-driven app Settings screen — no flow modification required. The va_isCurrentRate flag identifies the active row. Rates are stored at approval time on va_AllowanceRecord. Seeded by scripts/seed-reference-data.ps1 with current CCI rates." languagecode="1033" />
+      </Descriptions>
+      <ownership>OrganizationOwned</ownership>
+      <lookupcollectionname>va_allowancelevelconfigs</lookupcollectionname>
+      <primaryattribute>va_name</primaryattribute>
+      <IsActivity>0</IsActivity>
+      <IsAuditEnabled>1</IsAuditEnabled>
+      <IsAvailableOffline>0</IsAvailableOffline>
+      <IsDocumentManagementEnabled>0</IsDocumentManagementEnabled>
+      <IsQuickCreateEnabled>1</IsQuickCreateEnabled>
+      <IsVisibleInMobile>0</IsVisibleInMobile>
+      <attributes>
+
+        <!-- Config Name (e.g., "Level A — 2025") -->
+        <attribute PhysicalName="va_name">
+          <Type>String</Type>
+          <Name>va_name</Name>
+          <LogicalName>va_name</LogicalName>
+          <RequiredLevel>SystemRequired</RequiredLevel>
+          <MaxLength>100</MaxLength>
+          <Format>Text</Format>
+          <ImeMode>auto</ImeMode>
+          <LocalizedNames>
+            <LocalizedName description="Config Name" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Display name, e.g.: Level A — 2025" languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Allowance Level -->
+        <attribute PhysicalName="va_allowanceLevel">
+          <Type>Picklist</Type>
+          <Name>va_allowanceLevel</Name>
+          <LogicalName>va_allowanceLevel</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Allowance Level" languagecode="1033" />
+          </LocalizedNames>
+          <optionset Name="va_allowancelevel">
+            <OptionSetType>picklist</OptionSetType>
+            <IsGlobal>1</IsGlobal>
+          </optionset>
+        </attribute>
+
+        <!-- Monthly Amount -->
+        <attribute PhysicalName="va_monthlyAmount">
+          <Type>Money</Type>
+          <Name>va_monthlyAmount</Name>
+          <LogicalName>va_monthlyAmount</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <MinValue>0</MinValue>
+          <MaxValue>10000</MaxValue>
+          <Precision>2</Precision>
+          <PrecisionSource>2</PrecisionSource>
+          <LocalizedNames>
+            <LocalizedName description="Monthly Amount" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Monthly cash allowance. Current rates: A=$1,760, B=$1,500, C=$1,260, D=$1,180." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- EV Charging Amount -->
+        <attribute PhysicalName="va_evChargingAmount">
+          <Type>Money</Type>
+          <Name>va_evChargingAmount</Name>
+          <LogicalName>va_evChargingAmount</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MinValue>0</MinValue>
+          <MaxValue>1000</MaxValue>
+          <Precision>2</Precision>
+          <PrecisionSource>2</PrecisionSource>
+          <LocalizedNames>
+            <LocalizedName description="EV Charging Amount" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Additional monthly amount for electric vehicle recipients. Current rate: $310." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Minimum MSRP -->
+        <attribute PhysicalName="va_minimumMsrp">
+          <Type>Money</Type>
+          <Name>va_minimumMsrp</Name>
+          <LogicalName>va_minimumMsrp</LogicalName>
+          <RequiredLevel>ApplicationRequired</RequiredLevel>
+          <MinValue>0</MinValue>
+          <MaxValue>1000000</MaxValue>
+          <Precision>2</Precision>
+          <PrecisionSource>2</PrecisionSource>
+          <LocalizedNames>
+            <LocalizedName description="Minimum MSRP" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Vehicle total MSRP must be ≥ this value to qualify for this level. Current minimums: A=$70,000, B=$59,000, C=$46,000, D=$43,000." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+        <!-- Is Current Rate -->
+        <attribute PhysicalName="va_isCurrentRate">
+          <Type>Boolean</Type>
+          <Name>va_isCurrentRate</Name>
+          <LogicalName>va_isCurrentRate</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <LocalizedNames>
+            <LocalizedName description="Is Current Rate" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Only rows with IsCurrentRate=true are shown to employees on the Allowance Level screen. Set to false when updating rates to preserve historical data." languagecode="1033" />
+          </Descriptions>
+          <FalseOption>
+            <Labels><Label description="Historical" languagecode="1033" /></Labels>
+          </FalseOption>
+          <TrueOption>
+            <Labels><Label description="Current Rate" languagecode="1033" /></Labels>
+          </TrueOption>
+        </attribute>
+
+        <!-- Effective Year -->
+        <attribute PhysicalName="va_effectiveYear">
+          <Type>Integer</Type>
+          <Name>va_effectiveYear</Name>
+          <LogicalName>va_effectiveYear</LogicalName>
+          <RequiredLevel>None</RequiredLevel>
+          <MinValue>2020</MinValue>
+          <MaxValue>2100</MaxValue>
+          <Format>None</Format>
+          <LocalizedNames>
+            <LocalizedName description="Effective Year" languagecode="1033" />
+          </LocalizedNames>
+          <Descriptions>
+            <Description description="Year these rates became effective. Used for historical tracking when CCI adjusts rates annually." languagecode="1033" />
+          </Descriptions>
+        </attribute>
+
+      </attributes>
+    </entity>
+  </EntityInfo>
+</Entity>

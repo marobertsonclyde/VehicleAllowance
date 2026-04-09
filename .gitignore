@@ -24,9 +24,17 @@ desktop.ini
 # ─── PowerShell ───────────────────────────────────────────────────────────────
 *.ps1.bak
 
-# ─── Node (if any tooling added later) ────────────────────────────────────────
+# ─── Node / code app ──────────────────────────────────────────────────────────
 node_modules/
 npm-debug.log*
+apps/*/dist/
+apps/*/.vite/
+
+# Generated Dataverse service files (created by: pac code add-data-source)
+# Commit these once generated — they are the typed API layer.
+# Listed here as a reminder that they don't exist until PAC CLI creates them.
+# apps/employee-portal/src/generated/models/*.ts
+# apps/employee-portal/src/generated/services/*.ts
 
 # ─── Temporary export ZIPs (in case someone runs export into repo root) ────────
 *.zip

@@ -1,0 +1,166 @@
+{
+  "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+  "contentVersion": "1.0.0.0",
+  "_comment": "Flow 1: Application Submission Orchestrator. Triggered when va_AllowanceApplication status changes to Submitted (720000011). Generates application number, creates checklist, confirms submission to employee, then invokes Flow 2 (AI Document Validation).",
+  "triggers": {
+    "When_application_status_changes_to_Submitted": {
+      "type": "OpenApiConnectionWebhook",
+      "inputs": {
+        "host": {
+          "connectionName": "shared_commondataserviceforapps",
+          "operationId": "SubscribeWebhookTrigger"
+        },
+        "parameters": {
+          "subscriptionRequest/message": 3,
+          "subscriptionRequest/entityname": "va_allowanceapplication",
+          "subscriptionRequest/scope": 4,
+          "subscriptionRequest/filterexpression": "va_status eq 720000011",
+          "subscriptionRequest/filteringattributes": "va_status"
+        }
+      }
+    }
+  },
+  "actions": {
+    "1_Get_application_details": {
+      "_comment": "Retrieve the full application record including applicant details.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "GetItem" },
+        "parameters": {
+          "entityName": "va_allowanceapplications",
+          "recordId": "@triggerOutputs()?['body/va_allowanceapplicationid']",
+          "$select": "va_allowanceapplicationid,va_applicantName,va_applicantCompany,va_applicantJobTitle,va_applicationType,va_personnelNumber,va_submittedOn"
+        }
+      }
+    },
+    "2_Generate_application_number": {
+      "_comment": "Build VA-YYYY-NNNNN. Query count of applications this year to get sequence number.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "ListRecords" },
+        "parameters": {
+          "entityName": "va_allowanceapplications",
+          "$filter": "va_submittedOn ge @{startOfYear(utcNow())} and va_status ne 720000010",
+          "$select": "va_allowanceapplicationid",
+          "$top": 5000
+        }
+      }
+    },
+    "3_Update_application_name_and_submitted_date": {
+      "_comment": "Set va_name = 'VA-{year}-{sequence:00000}', va_submittedOn = now, va_presidentApprovalRequired based on applicationType.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "UpdateItem" },
+        "parameters": {
+          "entityName": "va_allowanceapplications",
+          "recordId": "@triggerOutputs()?['body/va_allowanceapplicationid']",
+          "item/va_name": "VA-@{formatDateTime(utcNow(), 'yyyy')}-@{padLeft(string(add(length(outputs('2_Generate_application_number')?['body/value']), 1)), 5, '0')}",
+          "item/va_submittedOn": "@utcNow()",
+          "item/va_presidentApprovalRequired": "@equals(triggerOutputs()?['body/va_applicationType'], 720000000)"
+        }
+      }
+    },
+    "4_Create_checklist_item_Auto_Dec_Page": {
+      "_comment": "Create 4 DocumentChecklist rows. One per required document type.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "CreateItem" },
+        "parameters": {
+          "entityName": "va_documentchecklists",
+          "item/va_name": "Auto Insurance Declaration Page",
+          "item/va_isSatisfied": false,
+          "item/va_applicationId@odata.bind": "/va_allowanceapplications(@{triggerOutputs()?['body/va_allowanceapplicationid']})"
+        }
+      }
+    },
+    "4b_Create_checklist_item_Umbrella_Dec_Page": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "CreateItem" },
+        "parameters": {
+          "entityName": "va_documentchecklists",
+          "item/va_name": "Umbrella Insurance Declaration Page",
+          "item/va_isSatisfied": false,
+          "item/va_applicationId@odata.bind": "/va_allowanceapplications(@{triggerOutputs()?['body/va_allowanceapplicationid']})"
+        }
+      }
+    },
+    "4c_Create_checklist_item_Endorsement": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "CreateItem" },
+        "parameters": {
+          "entityName": "va_documentchecklists",
+          "item/va_name": "Clyde Company Endorsement",
+          "item/va_isSatisfied": false,
+          "item/va_applicationId@odata.bind": "/va_allowanceapplications(@{triggerOutputs()?['body/va_allowanceapplicationid']})"
+        }
+      }
+    },
+    "4d_Create_checklist_item_Window_Sticker": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "CreateItem" },
+        "parameters": {
+          "entityName": "va_documentchecklists",
+          "item/va_name": "Vehicle Window Sticker (Monroney Label)",
+          "item/va_isSatisfied": false,
+          "item/va_applicationId@odata.bind": "/va_allowanceapplications(@{triggerOutputs()?['body/va_allowanceapplicationid']})"
+        }
+      }
+    },
+    "5_Transition_status_to_AI_Review": {
+      "_comment": "Move status to AI Review (720000012) and write audit log entry.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "UpdateItem" },
+        "parameters": {
+          "entityName": "va_allowanceapplications",
+          "recordId": "@triggerOutputs()?['body/va_allowanceapplicationid']",
+          "item/va_status": 720000012
+        }
+      }
+    },
+    "5b_Create_audit_log_Submitted": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_commondataserviceforapps", "operationId": "CreateItem" },
+        "parameters": {
+          "entityName": "va_auditlogs",
+          "item/va_name": "Application submitted by employee",
+          "item/va_eventType": "StatusChange",
+          "item/va_previousStatus": "Draft",
+          "item/va_newStatus": "AI Review",
+          "item/va_performedByName": "@outputs('1_Get_application_details')?['body/va_applicantName']",
+          "item/va_eventDate": "@utcNow()",
+          "item/va_applicationId@odata.bind": "/va_allowanceapplications(@{triggerOutputs()?['body/va_allowanceapplicationid']})"
+        }
+      }
+    },
+    "6_Send_submission_confirmation_Teams_message": {
+      "_comment": "Post a Teams message to the employee confirming receipt. Use the Portal URL env var for the status tracker link.",
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": { "connectionName": "shared_teams", "operationId": "PostMessageToConversation" },
+        "parameters": {
+          "poster": "Flow bot",
+          "location": "Chat with Flow bot",
+          "body/recipient": "@outputs('1_Get_application_details')?['body/_ownerid_value']",
+          "body/messageBody": "<p>Your Vehicle Allowance application <strong>@{outputs('3_Update_application_name_and_submitted_date')?['body/va_name']}</strong> has been received and is under AI review. You will receive a notification at each stage. <a href=\"@{parameters('$connections')['shared_environmentvariable']['va_PortalUrl']}/status/@{triggerOutputs()?['body/va_allowanceapplicationid']}\">Track your application</a></p>"
+        }
+      }
+    },
+    "7_Trigger_Flow2_AI_Document_Validation": {
+      "_comment": "Call Flow 2 as a child flow, passing the application ID. Flow 2 runs document extraction and calls Flow 3 when done.",
+      "type": "Workflow",
+      "inputs": {
+        "host": {
+          "workflowReferenceName": "va_Flow2_AIDocumentValidation"
+        },
+        "body": {
+          "applicationId": "@triggerOutputs()?['body/va_allowanceapplicationid']"
+        }
+      }
+    }
+  }
+}

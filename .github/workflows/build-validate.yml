@@ -2,7 +2,7 @@ name: Build & Validate Solution
 
 on:
   pull_request:
-    branches: [develop, main]
+    branches: [main]
     paths:
       - 'src/**'
       - 'config/**'
@@ -30,7 +30,7 @@ jobs:
       - name: Run solution checker
         uses: microsoft/powerplatform-actions/check-solution@v1
         with:
-          environment-url: ${{ secrets.PP_DEV_ENVIRONMENT_URL }}
+          environment-url: ${{ secrets.PP_ENVIRONMENT_URL }}
           app-id: ${{ secrets.PP_CLIENT_ID }}
           client-secret: ${{ secrets.PP_CLIENT_SECRET }}
           tenant-id: ${{ secrets.PP_TENANT_ID }}

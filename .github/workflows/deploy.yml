@@ -1,14 +1,14 @@
-name: Deploy to Dev
+name: Deploy Solution
 
 on:
   push:
-    branches: [develop]
+    branches: [main]
     paths:
       - 'src/**'
 
 jobs:
-  deploy-dev:
-    name: Pack & Import to Dev
+  deploy:
+    name: Pack & Import Solution
     runs-on: windows-latest
 
     steps:
@@ -25,14 +25,14 @@ jobs:
           solution-file: out/VehicleAllowanceSolution.zip
           solution-type: Unmanaged
 
-      - name: Import solution to Dev
+      - name: Import solution
         uses: microsoft/powerplatform-actions/import-solution@v1
         with:
-          environment-url: ${{ secrets.PP_DEV_ENVIRONMENT_URL }}
+          environment-url: ${{ secrets.PP_ENVIRONMENT_URL }}
           app-id: ${{ secrets.PP_CLIENT_ID }}
           client-secret: ${{ secrets.PP_CLIENT_SECRET }}
           tenant-id: ${{ secrets.PP_TENANT_ID }}
           solution-file: out/VehicleAllowanceSolution.zip
           force-overwrite: true
           publish-changes: true
-          deployment-settings-file: config/dev-environment-variables.json
+          deployment-settings-file: config/environment-variables.json
