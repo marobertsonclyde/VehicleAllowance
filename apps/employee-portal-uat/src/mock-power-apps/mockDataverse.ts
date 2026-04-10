@@ -132,7 +132,15 @@ export function buildMockDataverse() {
       await delay()
       const record = mockStore.findById(entityName, id)
       if (!record) throw new Error(`[UAT Mock] Record not found: ${entityName}/${id}`)
-      return record
+      // Expose both original casing AND all-lowercase aliases so that code
+      // using OData-style names (e.g. va_aiprocessingstatus) works alongside
+      // code using the TypeScript camelCase names (va_aiProcessingStatus).
+      const result: Record<string, unknown> = {}
+      for (const [key, val] of Object.entries(record)) {
+        result[key]               = val
+        result[key.toLowerCase()] = val
+      }
+      return result
     },
 
     async createRecord(entityName: string, data: Record<string, unknown>) {
@@ -147,13 +155,28 @@ export function buildMockDataverse() {
     },
 
     async uploadFile(
-      _entityName: string,
-      _recordId: string,
+      entityName: string,
+      recordId: string,
       _columnName: string,
       _file: File,
     ) {
-      // Simulate a brief upload pause; no actual file stored in UAT
+      // Simulate upload time
       await delay(600)
+
+      // For document uploads, simulate the Power Automate flow that runs AI
+      // processing: set status to Processing immediately, then Completed after
+      // ~2 seconds so the polling hook resolves cleanly.
+      if (entityName === 'va_documents') {
+        mockStore.updateRecord('va_documents', recordId, {
+          va_aiProcessingStatus: 'Processing',
+        })
+        setTimeout(() => {
+          mockStore.updateRecord('va_documents', recordId, {
+            va_aiProcessingStatus: 'Completed',
+            va_aiConfidenceScore: parseFloat((0.85 + Math.random() * 0.12).toFixed(2)),
+          })
+        }, 2000)
+      }
     },
   }
 }
