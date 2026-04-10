@@ -1,28 +1,19 @@
 import { useCallback } from 'react'
 import { useConnectorContext } from '@microsoft/power-apps'
-import type { EligibilityCheckResult } from '@/types'
+import type { EligibilityCheckResult, PayrollVerificationStatus } from '@/types'
 
-/**
- * Provides typed wrappers for calling Power Automate flows.
- *
- * Each flow is triggered via HTTP POST to its unique trigger URL.
- * Flow URLs are stored in environment variables on the Power Platform side
- * and surfaced here via the connector context.
- *
- * Note: After adding the Power Automate connector via
- *   `pac code add-data-source -a "PowerAutomate" -c <connectionId>`
- * the generated connector service provides typed methods.
- * Until then, calls are made via the raw connectors.powerAutomate API.
- */
+export interface PayrollVerificationResult {
+  status: PayrollVerificationStatus
+  earnCode?: string
+  payrollAmount?: number
+  expectedAmount?: number
+  amountMismatch: boolean
+  notes?: string
+}
 
 export function useFlowActions() {
   const { connectors } = useConnectorContext()
 
-  /**
-   * Checks whether the current user is eligible for the vehicle allowance,
-   * and retrieves their PersonnelNumber, job title, and company from Dynamics
-   * via the Fabric SQL endpoint (done server-side in the flow).
-   */
   const checkEligibility = useCallback(async (): Promise<EligibilityCheckResult> => {
     const result = await connectors.powerAutomate.runFlow(
       'va_CheckEmployeeEligibility',
@@ -31,10 +22,6 @@ export function useFlowActions() {
     return result as EligibilityCheckResult
   }, [connectors])
 
-  /**
-   * Submits a draft application for processing.
-   * Triggers Flow 1 (Application Submission Orchestrator) in Power Automate.
-   */
   const submitApplication = useCallback(async (applicationId: string): Promise<void> => {
     await connectors.powerAutomate.runFlow(
       'va_SubmitApplication',
@@ -42,10 +29,6 @@ export function useFlowActions() {
     )
   }, [connectors])
 
-  /**
-   * Triggers AI reprocessing of a specific document.
-   * Useful when the employee re-uploads a rejected document.
-   */
   const reprocessDocument = useCallback(async (documentId: string): Promise<void> => {
     await connectors.powerAutomate.runFlow(
       'va_ReprocessDocument',
@@ -53,10 +36,6 @@ export function useFlowActions() {
     )
   }, [connectors])
 
-  /**
-   * Submits an opt-out request.
-   * Creates the opt-out record and notifies the Equipment Leader.
-   */
   const submitOptOut = useCallback(async (
     allowanceRecordId: string,
     requestedDate: string,
@@ -68,13 +47,20 @@ export function useFlowActions() {
   }, [connectors])
 
   /**
-   * Queries the AllowanceLevelConfig table and returns levels that match
-   * the given vehicle MSRP. Used by the Copilot agent calculator topic
-   * and the AllowanceLevel screen.
+   * Triggers on-demand payroll earn code verification for an allowance record.
+   * Queries Fabric SQL for the employee's earn codes and compares against the record.
    */
-  const getAllowanceLevelsForMsrp = useCallback(async (
-    vehicleMsrp: number,
-  ) => {
+  const verifyPayroll = useCallback(async (
+    allowanceRecordId: string,
+  ): Promise<PayrollVerificationResult> => {
+    const result = await connectors.powerAutomate.runFlow(
+      'va_VerifyPayrollEarnCode',
+      { allowanceRecordId },
+    )
+    return result as PayrollVerificationResult
+  }, [connectors])
+
+  const getAllowanceLevelsForMsrp = useCallback(async (vehicleMsrp: number) => {
     const result = await connectors.powerAutomate.runFlow(
       'va_GetAllowanceLevelForMsrp',
       { vehicleMsrp },
@@ -87,6 +73,7 @@ export function useFlowActions() {
     submitApplication,
     reprocessDocument,
     submitOptOut,
+    verifyPayroll,
     getAllowanceLevelsForMsrp,
   }
 }

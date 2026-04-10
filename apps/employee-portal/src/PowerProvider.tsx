@@ -1,20 +1,15 @@
-/**
- * PowerProvider
- *
- * Wraps the app with the Power Apps SDK authentication and connector context.
- * All Dataverse calls and flow invocations made within the app pass through
- * the middleware provided by `pac code run`, which handles Entra ID token
- * acquisition transparently.
- *
- * See: https://learn.microsoft.com/en-us/power-apps/developer/code-apps/architecture
- */
-import { type ReactNode } from 'react'
 import { AuthenticationProvider, ConnectorProvider } from '@microsoft/power-apps'
+import type { ReactNode } from 'react'
 
 interface PowerProviderProps {
   children: ReactNode
 }
 
+/**
+ * Wraps the app with Power Platform authentication and connector context.
+ * During dev, `pac code run` provides the auth middleware.
+ * In production, Power Platform manages the auth lifecycle.
+ */
 export function PowerProvider({ children }: PowerProviderProps) {
   return (
     <AuthenticationProvider>

@@ -1,45 +1,50 @@
-name: Build & Validate Solution
+name: Build & Validate
 
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
     paths:
-      - 'src/**'
-      - 'config/**'
-      - 'scripts/**'
+      - 'apps/**'
+      - 'specs/**'
 
 jobs:
-  build-validate:
-    name: Pack & Check Solution
-    runs-on: windows-latest
+  code-app:
+    name: Lint, Typecheck, Test & Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/employee-portal
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install PAC CLI
-        uses: microsoft/powerplatform-actions/actions-install@v1
-
-      - name: Pack solution
-        uses: microsoft/powerplatform-actions/pack-solution@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          solution-folder: src/VehicleAllowanceSolution
-          solution-file: out/VehicleAllowanceSolution_validate.zip
-          solution-type: Unmanaged
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: apps/employee-portal/package-lock.json
 
-      - name: Run solution checker
-        uses: microsoft/powerplatform-actions/check-solution@v1
-        with:
-          environment-url: ${{ secrets.PP_ENVIRONMENT_URL }}
-          app-id: ${{ secrets.PP_CLIENT_ID }}
-          client-secret: ${{ secrets.PP_CLIENT_SECRET }}
-          tenant-id: ${{ secrets.PP_TENANT_ID }}
-          path: out/VehicleAllowanceSolution_validate.zip
-          checker-logs-artifact-name: checker-results
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Upload checker results
-        if: always()
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: solution-checker-results
-          path: checker-results/
+          name: code-app-dist
+          path: apps/employee-portal/dist/

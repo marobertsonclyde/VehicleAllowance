@@ -1,38 +1,45 @@
-name: Deploy Solution
+name: Deploy Code App
 
 on:
   push:
     branches: [main]
     paths:
-      - 'src/**'
+      - 'apps/**'
 
 jobs:
-  deploy:
-    name: Pack & Import Solution
-    runs-on: windows-latest
+  deploy-dev:
+    name: Build & Publish to Dev
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/employee-portal
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: apps/employee-portal/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
       - name: Install PAC CLI
         uses: microsoft/powerplatform-actions/actions-install@v1
 
-      - name: Pack solution
-        uses: microsoft/powerplatform-actions/pack-solution@v1
-        with:
-          solution-folder: src/VehicleAllowanceSolution
-          solution-file: out/VehicleAllowanceSolution.zip
-          solution-type: Unmanaged
+      - name: Authenticate
+        run: |
+          pac auth create \
+            --applicationId ${{ secrets.PP_CLIENT_ID }} \
+            --clientSecret ${{ secrets.PP_CLIENT_SECRET }} \
+            --tenant ${{ secrets.PP_TENANT_ID }}
 
-      - name: Import solution
-        uses: microsoft/powerplatform-actions/import-solution@v1
-        with:
-          environment-url: ${{ secrets.PP_ENVIRONMENT_URL }}
-          app-id: ${{ secrets.PP_CLIENT_ID }}
-          client-secret: ${{ secrets.PP_CLIENT_SECRET }}
-          tenant-id: ${{ secrets.PP_TENANT_ID }}
-          solution-file: out/VehicleAllowanceSolution.zip
-          force-overwrite: true
-          publish-changes: true
-          deployment-settings-file: config/environment-variables.json
+      - name: Publish code app
+        run: pac code publish --solution-folder ./dist --environment ${{ secrets.PP_DEV_ENVIRONMENT_URL }}
