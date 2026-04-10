@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, Button, Text, Spinner, MessageBar, tokens } from '@fluentui/react-components'
 import { useFlowActions } from '@/hooks/useFlowActions'
@@ -14,7 +14,7 @@ export function EligibilityCheckScreen() {
   const [result, setResult] = useState<EligibilityCheckResult | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  async function handleCheck() {
+  const handleCheck = useCallback(async () => {
     setLoading(true)
     setError(null)
     try {
@@ -29,32 +29,31 @@ export function EligibilityCheckScreen() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [checkEligibility, dispatch])
+
+  // Auto-run the check when the screen loads — no need to click a second button
+  useEffect(() => {
+    void handleCheck()
+  }, [handleCheck])
 
   return (
     <div className="screen">
       <Text as="h1" size={700} weight="bold">Eligibility Check</Text>
       <Text size={300}>
-        We will verify your job title and company against the vehicle allowance program requirements.
+        Verifying your job title and company against the vehicle allowance program requirements.
       </Text>
-
-      {!result && !loading && (
-        <Card style={{ textAlign: 'center', padding: tokens.spacingVerticalXXL }}>
-          <Text as="p" size={400}>Ready to check your eligibility?</Text>
-          <Button
-            appearance="primary"
-            size="large"
-            onClick={() => void handleCheck()}
-            style={{ marginTop: tokens.spacingVerticalL }}
-          >
-            Check My Eligibility
-          </Button>
-        </Card>
-      )}
 
       {loading && <Spinner size="large" label="Checking eligibility..." />}
 
-      {error && <MessageBar intent="error">{error}</MessageBar>}
+      {error && (
+        <Card>
+          <MessageBar intent="error">{error}</MessageBar>
+          <div className="action-bar">
+            <Button appearance="secondary" onClick={() => navigate('/')}>Return Home</Button>
+            <Button appearance="primary" onClick={() => void handleCheck()}>Try Again</Button>
+          </div>
+        </Card>
+      )}
 
       {result && result.isEligible && (
         <Card>

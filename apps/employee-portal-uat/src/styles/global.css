@@ -1,0 +1,106 @@
+/* Minimal layout styles — Fluent UI handles component styling */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: var(--fontFamilyBase);
+  background-color: var(--colorNeutralBackground2);
+  color: var(--colorNeutralForeground1);
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  width: 100%;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.screen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.action-bar {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- Mobile (max-width: 640px) ---- */
+
+@media (max-width: 640px) {
+  .app-content {
+    padding: 16px;
+  }
+
+  .screen {
+    gap: 16px;
+  }
+
+  .screen-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-bar {
+    flex-direction: column;
+  }
+
+  .action-bar > * {
+    width: 100%;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-stack {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+}
