@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Card, Button, Text, Input, Field, Select, MessageBar,
@@ -10,6 +10,7 @@ import { usePollForCompletion } from '@/hooks/usePollForCompletion'
 import { AIExtractionDisplay } from '@/components/shared/AIExtractionDisplay'
 import { validateVin, validateMsrp, isAcceptedFileType, isWithinSizeLimit } from '@/utils/validation'
 import { BodyType, AIProcessingStatus } from '@/types'
+import type { Vehicle } from '@/types'
 
 export function VehicleDetailsScreen() {
   const navigate = useNavigate()
@@ -29,6 +30,31 @@ export function VehicleDetailsScreen() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [documentData] = useState<{ extractedData?: string; confidence?: number } | null>(null)
+  const [prefilled, setPrefilled] = useState(false)
+
+  // Pre-fill form from existing vehicle when resuming a draft
+  useEffect(() => {
+    if (prefilled || !wizardState.hydrated || !wizardState.vehicleId) return
+    async function loadVehicle() {
+      try {
+        const v = await connectors.dataverse.retrieveRecord(
+          'va_vehicles',
+          wizardState.vehicleId!,
+        ) as Vehicle
+        setVin(v.va_vin ?? '')
+        setMake(v.va_make ?? '')
+        setModel(v.va_model ?? '')
+        setYear(v.va_year ?? new Date().getFullYear())
+        setBodyType((v.va_bodyType as BodyType) ?? BodyType.Pickup)
+        setMsrp(v.va_msrpTotal ?? 0)
+        setIsElectric(v.va_isElectric ?? false)
+      } catch {
+        // Vehicle record missing or inaccessible — start fresh
+      }
+      setPrefilled(true)
+    }
+    void loadVehicle()
+  }, [connectors, wizardState.hydrated, wizardState.vehicleId, prefilled])
 
   async function handleSaveAndUpload() {
     const vinResult = validateVin(vin)
@@ -42,11 +68,11 @@ export function VehicleDetailsScreen() {
     setSaving(true)
     setError(null)
     try {
-      // Create or get application
+      // Reuse existing draft or create a new application
       let appId = wizardState.applicationId
       if (!appId) {
         const appResult = await connectors.dataverse.createRecord('va_allowanceapplications', {
-          va_applicationType: wizardState.eligibility?.defaultAllowanceLevel ? 'New Opt-In' : 'New Opt-In',
+          va_applicationType: 'New Opt-In',
           va_status: 'Draft',
           va_personnelnumber: wizardState.eligibility?.personnelNumber,
         })
@@ -54,8 +80,8 @@ export function VehicleDetailsScreen() {
         dispatch({ type: 'SET_APPLICATION_ID', payload: appId })
       }
 
-      // Create vehicle
-      const vehicleResult = await connectors.dataverse.createRecord('va_vehicles', {
+      // Update existing vehicle or create a new one
+      const vehiclePayload = {
         '_va_applicationid_value': appId,
         va_vin: vin.trim().toUpperCase(),
         va_make: make,
@@ -64,15 +90,23 @@ export function VehicleDetailsScreen() {
         va_bodyType: bodyType,
         va_msrpTotal: msrp,
         va_isElectric: isElectric,
-      })
-      dispatch({ type: 'SET_VEHICLE_ID', payload: vehicleResult.id })
+      }
+
+      let vehicleId = wizardState.vehicleId
+      if (vehicleId) {
+        await connectors.dataverse.updateRecord('va_vehicles', vehicleId, vehiclePayload)
+      } else {
+        const vehicleResult = await connectors.dataverse.createRecord('va_vehicles', vehiclePayload)
+        vehicleId = vehicleResult.id
+        dispatch({ type: 'SET_VEHICLE_ID', payload: vehicleId })
+      }
 
       // Create document and upload file
       const docResult = await connectors.dataverse.createRecord('va_documents', {
         '_va_applicationid_value': appId,
         va_documentType: 'Window Sticker',
         va_aiProcessingStatus: 'Pending',
-        '_va_linkedvehicleid_value': vehicleResult.id,
+        '_va_linkedvehicleid_value': vehicleId,
       })
       await connectors.dataverse.uploadFile('va_documents', docResult.id, 'va_filereference', file)
 

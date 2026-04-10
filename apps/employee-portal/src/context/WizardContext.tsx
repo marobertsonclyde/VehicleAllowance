@@ -1,4 +1,5 @@
-import { createContext, useContext, useReducer, type ReactNode, type Dispatch } from 'react'
+import { createContext, useContext, useReducer, useEffect, type ReactNode, type Dispatch } from 'react'
+import { useConnectorContext } from '@microsoft/power-apps'
 import type { EligibilityCheckResult } from '@/types'
 
 type WizardStep = 'eligibility' | 'vehicle' | 'level' | 'insurance' | 'review'
@@ -9,6 +10,7 @@ interface WizardState {
   currentStep: WizardStep
   eligibility: EligibilityCheckResult | null
   isDirty: boolean
+  hydrated: boolean
 }
 
 type WizardAction =
@@ -18,6 +20,7 @@ type WizardAction =
   | { type: 'SET_ELIGIBILITY'; payload: EligibilityCheckResult }
   | { type: 'MARK_DIRTY' }
   | { type: 'RESET' }
+  | { type: 'HYDRATE'; payload: { applicationId: string | null; vehicleId: string | null } }
 
 const initialState: WizardState = {
   applicationId: null,
@@ -25,6 +28,7 @@ const initialState: WizardState = {
   currentStep: 'eligibility',
   eligibility: null,
   isDirty: false,
+  hydrated: false,
 }
 
 function wizardReducer(state: WizardState, action: WizardAction): WizardState {
@@ -40,7 +44,9 @@ function wizardReducer(state: WizardState, action: WizardAction): WizardState {
     case 'MARK_DIRTY':
       return { ...state, isDirty: true }
     case 'RESET':
-      return initialState
+      return { ...initialState, hydrated: true }
+    case 'HYDRATE':
+      return { ...state, ...action.payload, hydrated: true }
     default:
       return state
   }
@@ -50,7 +56,36 @@ const WizardStateContext = createContext<WizardState>(initialState)
 const WizardDispatchContext = createContext<Dispatch<WizardAction>>(() => {})
 
 export function WizardProvider({ children }: { children: ReactNode }) {
+  const { connectors } = useConnectorContext()
   const [state, dispatch] = useReducer(wizardReducer, initialState)
+
+  useEffect(() => {
+    async function hydrate() {
+      try {
+        const appsResult = await connectors.dataverse.retrieveMultipleRecords(
+          'va_allowanceapplications',
+          "?$filter=va_status eq 'Draft'&$orderby=createdon desc&$top=1",
+        )
+        const app = appsResult.entities?.[0] as { va_allowanceapplicationid?: string } | undefined
+        const appId = app?.va_allowanceapplicationid ?? null
+
+        let vehicleId: string | null = null
+        if (appId) {
+          const vehicleResult = await connectors.dataverse.retrieveMultipleRecords(
+            'va_vehicles',
+            `?$filter=_va_applicationid_value eq '${appId}'&$top=1`,
+          )
+          const vehicle = vehicleResult.entities?.[0] as { va_vehicleid?: string } | undefined
+          vehicleId = vehicle?.va_vehicleid ?? null
+        }
+
+        dispatch({ type: 'HYDRATE', payload: { applicationId: appId, vehicleId } })
+      } catch {
+        dispatch({ type: 'HYDRATE', payload: { applicationId: null, vehicleId: null } })
+      }
+    }
+    void hydrate()
+  }, [connectors])
 
   return (
     <WizardStateContext.Provider value={state}>

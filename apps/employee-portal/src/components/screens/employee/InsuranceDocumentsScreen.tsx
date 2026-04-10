@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { Card, Button, Text, MessageBar, Spinner, tokens } from '@fluentui/react-components'
 import { useConnectorContext } from '@microsoft/power-apps'
 import { useWizardState, useWizardDispatch } from '@/context/WizardContext'
@@ -28,7 +28,10 @@ export function InsuranceDocumentsScreen() {
   const [loading, setLoading] = useState(true)
 
   const fetchDocuments = useCallback(async () => {
-    if (!wizardState.applicationId) return
+    if (!wizardState.applicationId) {
+      setLoading(false)
+      return
+    }
     try {
       const result = await connectors.dataverse.retrieveMultipleRecords(
         'va_documents',
@@ -91,6 +94,8 @@ export function InsuranceDocumentsScreen() {
   const checklist = buildChecklist()
   const allSatisfied = checklist.filter(c => c.required).every(c => c.satisfied)
 
+  if (!wizardState.hydrated) return <Spinner size="large" label="Loading..." />
+  if (!wizardState.applicationId) return <Navigate to="/apply/vehicle" replace />
   if (loading) return <Spinner size="large" label="Loading documents..." />
 
   return (

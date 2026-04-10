@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { Card, Button, Text, Spinner, MessageBar, RadioGroup, Radio, tokens } from '@fluentui/react-components'
 import { useFlowActions } from '@/hooks/useFlowActions'
 import { useWizardState, useWizardDispatch } from '@/context/WizardContext'
@@ -66,6 +66,8 @@ export function AllowanceLevelScreen() {
     }
   }
 
+  if (!wizardState.hydrated) return <Spinner size="large" label="Loading..." />
+  if (!wizardState.applicationId || !wizardState.vehicleId) return <Navigate to="/apply/vehicle" replace />
   if (loading) return <Spinner size="large" label="Loading available levels..." />
 
   return (
