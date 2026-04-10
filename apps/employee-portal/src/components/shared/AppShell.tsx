@@ -54,7 +54,7 @@ export function AppShell({ allRoles, children }: AppShellProps) {
 
   return (
     <div className="app-container">
-      <header style={{
+      <header className="app-header" style={{
         display: 'flex',
         alignItems: 'center',
         gap: tokens.spacingHorizontalL,
@@ -64,7 +64,7 @@ export function AppShell({ allRoles, children }: AppShellProps) {
       }}>
         <VehicleCar24Regular />
         <Text weight="semibold" size={500}>Vehicle Allowance</Text>
-        <nav style={{ marginLeft: tokens.spacingHorizontalXL, flex: 1 }}>
+        <nav className="app-header-nav" style={{ marginLeft: tokens.spacingHorizontalXL, flex: 1 }}>
           <TabList
             selectedValue={currentTab}
             onTabSelect={(_e, data) => navigate(data.value as string)}
@@ -77,7 +77,7 @@ export function AppShell({ allRoles, children }: AppShellProps) {
         </nav>
         <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalS }}>
           <PersonCircle24Regular />
-          <Text size={200}>{allRoles.join(', ')}</Text>
+          <Text className="app-header-user-text" size={200}>{allRoles.join(', ')}</Text>
         </div>
       </header>
       <main className="app-content">

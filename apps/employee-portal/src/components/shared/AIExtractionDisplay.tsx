@@ -30,7 +30,7 @@ export function AIExtractionDisplay({ type, data, confidence }: AIExtractionDisp
           {confidence != null ? `${confidence.toFixed(0)}% confidence` : 'N/A'}
         </Badge>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: tokens.spacingVerticalXS }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: tokens.spacingVerticalXS }}>
         {type === 'insurance' ? renderInsurance(parsed as InsuranceExtractionResult) : renderWindowSticker(parsed as WindowStickerExtractionResult)}
       </div>
     </Card>

@@ -42,29 +42,31 @@ export function DataTable<T>({
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          {columns.map(col => (
-            <TableHeaderCell key={col.key} style={col.width ? { width: col.width } : undefined}>
-              {col.label}
-            </TableHeaderCell>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {items.map(item => (
-          <TableRow
-            key={getRowKey(item)}
-            onClick={onRowClick ? () => onRowClick(item) : undefined}
-            style={onRowClick ? { cursor: 'pointer' } : undefined}
-          >
+    <div className="table-scroll-wrapper">
+      <Table>
+        <TableHeader>
+          <TableRow>
             {columns.map(col => (
-              <TableCell key={col.key}>{col.render(item)}</TableCell>
+              <TableHeaderCell key={col.key} style={col.width ? { width: col.width } : undefined}>
+                {col.label}
+              </TableHeaderCell>
             ))}
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {items.map(item => (
+            <TableRow
+              key={getRowKey(item)}
+              onClick={onRowClick ? () => onRowClick(item) : undefined}
+              style={onRowClick ? { cursor: 'pointer' } : undefined}
+            >
+              {columns.map(col => (
+                <TableCell key={col.key}>{col.render(item)}</TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   )
 }

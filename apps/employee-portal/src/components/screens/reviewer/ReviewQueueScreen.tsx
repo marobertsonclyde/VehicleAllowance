@@ -36,7 +36,7 @@ export function ReviewQueueScreen() {
     <div className="screen">
       <Text as="h1" size={700} weight="bold">Review Queue</Text>
 
-      <div style={{ display: 'flex', gap: 16, marginBottom: 8 }}>
+      <div className="mobile-stack" style={{ display: 'flex', gap: 16, marginBottom: 8 }}>
         <Badge color="brand" appearance="filled">{pending.length} pending</Badge>
         <Badge color="warning" appearance="filled">{flagged.length} AI flagged</Badge>
         <Badge color="informative" appearance="filled">{all.length} total</Badge>

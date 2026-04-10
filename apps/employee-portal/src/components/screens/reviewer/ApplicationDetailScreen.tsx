@@ -50,7 +50,7 @@ export function ApplicationDetailScreen() {
     <div className="screen">
       <div className="screen-header">
         <Text as="h1" size={700} weight="bold">{application.va_name}</Text>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <div className="mobile-stack" style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <StatusBadge status={application.va_status ?? 'Draft'} />
           <Badge color={application.va_aiAutoApprovalEligible ? 'success' : 'warning'} appearance="filled">
             AI: {formatPercent(application.va_aiValidationScore)}
@@ -109,7 +109,7 @@ export function ApplicationDetailScreen() {
         <Text weight="semibold" size={400}>Insurance Policies</Text>
         {policies.map(p => (
           <div key={p.va_insurancepolicyid} style={{ marginTop: tokens.spacingVerticalS, paddingTop: tokens.spacingVerticalS, borderTop: `1px solid ${tokens.colorNeutralStroke2}` }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className="mobile-stack" style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Text weight="semibold" size={300}>{p.va_policyType}: {p.va_carrierName}</Text>
               <Badge color={p.va_meetsLiabilityRequirement ? 'success' : 'danger'} appearance="outline" size="small">
                 {p.va_meetsLiabilityRequirement ? 'Meets requirements' : 'Does not meet requirements'}
@@ -126,7 +126,7 @@ export function ApplicationDetailScreen() {
         <Text weight="semibold" size={400}>Documents</Text>
         {documents.map(d => (
           <div key={d.va_documentid} style={{ marginTop: tokens.spacingVerticalM }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: tokens.spacingVerticalXS }}>
+            <div className="mobile-stack" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: tokens.spacingVerticalXS }}>
               <Text size={300}>{d.va_documentType}</Text>
               <StatusBadge status={d.va_aiProcessingStatus ?? 'Pending'} />
             </div>

@@ -4,6 +4,7 @@ import {
   Circle24Regular,
   ArrowCircleRight24Filled,
 } from '@fluentui/react-icons'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 interface Step {
   label: string
@@ -16,11 +17,23 @@ interface StepIndicatorProps {
 }
 
 export function StepIndicator({ steps }: StepIndicatorProps) {
+  const isMobile = useIsMobile()
+
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalS }}>
+    <div style={{
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row',
+      alignItems: isMobile ? 'flex-start' : 'center',
+      gap: isMobile ? tokens.spacingVerticalXS : tokens.spacingHorizontalS,
+    }}>
       {steps.map((step, i) => (
-        <div key={step.label} style={{ display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalXS }}>
-          {i > 0 && (
+        <div key={step.label} style={{
+          display: 'flex',
+          flexDirection: isMobile ? 'row' : 'row',
+          alignItems: 'center',
+          gap: tokens.spacingHorizontalXS,
+        }}>
+          {i > 0 && !isMobile && (
             <div style={{
               width: 32,
               height: 2,
