@@ -1,59 +1,49 @@
-import type { DocumentChecklist } from '@/types'
+import { Text, Badge, tokens } from '@fluentui/react-components'
+import {
+  CheckmarkCircle24Filled,
+  Circle24Regular,
+  ArrowSync24Regular,
+  ErrorCircle24Regular,
+} from '@fluentui/react-icons'
+import { AIProcessingStatus } from '@/types'
+import type { ChecklistItemState } from '@/types'
 
 interface ChecklistItemProps {
-  item: DocumentChecklist
-  onUpload: (itemType: string) => void
-  uploading?: boolean
-  children?: React.ReactNode  // Optional: AI extraction display rendered below header
+  item: ChecklistItemState
 }
 
-export function ChecklistItem({ item, onUpload, uploading, children }: ChecklistItemProps) {
-  const satisfied = item.va_isSatisfied === true
-  const failed = item.va_validationNote && !satisfied
-
-  const itemClass = [
-    'checklist-item',
-    satisfied ? 'satisfied' : '',
-    failed ? 'failed' : '',
-  ].filter(Boolean).join(' ')
-
+export function ChecklistItem({ item }: ChecklistItemProps) {
   return (
-    <div className={itemClass}>
-      <div className="checklist-item-header">
-        <span className="validation-icon">
-          {satisfied ? '✅' : failed ? '❌' : '⬜'}
-        </span>
-        <span>{item.va_name}</span>
-        {item.va_isRequired && !satisfied && (
-          <span className="badge badge-warning" style={{ marginLeft: 'auto' }}>Required</span>
-        )}
-        {satisfied && (
-          <span className="badge badge-success" style={{ marginLeft: 'auto' }}>Verified</span>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: tokens.spacingHorizontalS,
+      padding: tokens.spacingVerticalS,
+      borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+    }}>
+      {getIcon(item)}
+      <div style={{ flex: 1 }}>
+        <Text weight="semibold" size={300}>{item.label}</Text>
+        {item.required && !item.satisfied && (
+          <Text size={200} style={{ color: tokens.colorPaletteRedForeground1 }}> (required)</Text>
         )}
       </div>
-
-      {item.va_validationNote && (
-        <div className={`alert ${satisfied ? 'alert-success' : 'alert-warning'}`}>
-          {item.va_validationNote}
-        </div>
-      )}
-
-      {children}
-
-      {!satisfied && (
-        <button
-          className="btn btn-secondary"
-          onClick={() => onUpload(item.va_checklistItemType ?? '')}
-          disabled={uploading}
-          style={{ alignSelf: 'flex-start' }}
+      {item.aiStatus && (
+        <Badge
+          color={item.aiStatus === AIProcessingStatus.Completed ? 'success' : item.aiStatus === AIProcessingStatus.Failed ? 'danger' : 'brand'}
+          appearance="outline"
+          size="small"
         >
-          {uploading ? (
-            <><span className="spinner-icon" /> Uploading…</>
-          ) : (
-            '↑ Upload Document'
-          )}
-        </button>
+          {item.aiStatus}
+        </Badge>
       )}
     </div>
   )
+}
+
+function getIcon(item: ChecklistItemState) {
+  if (item.satisfied) return <CheckmarkCircle24Filled primaryFill={tokens.colorPaletteGreenForeground1} />
+  if (item.aiStatus === AIProcessingStatus.Processing) return <ArrowSync24Regular primaryFill={tokens.colorBrandForeground1} />
+  if (item.aiStatus === AIProcessingStatus.Failed) return <ErrorCircle24Regular primaryFill={tokens.colorPaletteRedForeground1} />
+  return <Circle24Regular primaryFill={tokens.colorNeutralStroke1} />
 }

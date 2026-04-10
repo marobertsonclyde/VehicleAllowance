@@ -1,24 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useConnectorContext } from '@microsoft/power-apps'
-import type {
-  AllowanceApplication,
-  Vehicle,
-  InsurancePolicy,
-  DocumentChecklist,
-  VADocument,
-} from '@/types'
+import type { AllowanceApplication, Vehicle, InsurancePolicy, VADocument } from '@/types'
 import { ApplicationStatus } from '@/types'
-
-/**
- * Fetches and manages the current user's open AllowanceApplication.
- *
- * "Open" means any application that is not in a terminal state
- * (Active, Rejected, Withdrawn, Terminated).
- *
- * After `pac code add-data-source` generates the service files, replace the
- * connector-based calls below with direct service class calls, e.g.:
- *   import { Va_AllowanceApplicationService } from '@/generated/services/...'
- */
 
 const TERMINAL_STATUSES: ApplicationStatus[] = [
   ApplicationStatus.Active,
@@ -31,7 +14,6 @@ interface ApplicationBundle {
   application: AllowanceApplication | null
   vehicle: Vehicle | null
   policies: InsurancePolicy[]
-  checklist: DocumentChecklist[]
   documents: VADocument[]
 }
 
@@ -49,7 +31,6 @@ export function useCurrentApplication(): UseCurrentApplicationResult {
     application: null,
     vehicle: null,
     policies: [],
-    checklist: [],
     documents: [],
   })
 
@@ -57,8 +38,6 @@ export function useCurrentApplication(): UseCurrentApplicationResult {
     setLoading(true)
     setError(null)
     try {
-      // Query for open applications owned by the current user
-      // Filter excludes terminal statuses
       const terminalFilter = TERMINAL_STATUSES.map(
         s => `va_status ne '${s}'`,
       ).join(' and ')
@@ -68,43 +47,35 @@ export function useCurrentApplication(): UseCurrentApplicationResult {
         `?$filter=${terminalFilter}&$orderby=createdon desc&$top=1`,
       )
 
-      const application: AllowanceApplication | null =
-        appsResult.entities?.[0] ?? null
+      const application = (appsResult.entities?.[0] as AllowanceApplication | undefined) ?? null
 
       if (!application?.va_allowanceapplicationid) {
-        setBundle({ application: null, vehicle: null, policies: [], checklist: [], documents: [] })
+        setBundle({ application: null, vehicle: null, policies: [], documents: [] })
         return
       }
 
       const appId = application.va_allowanceapplicationid
 
-      // Fetch related records in parallel
-      const [vehicleResult, policyResult, checklistResult, documentResult] =
-        await Promise.all([
-          connectors.dataverse.retrieveMultipleRecords(
-            'va_vehicles',
-            `?$filter=_va_applicationid_value eq '${appId}'&$top=1`,
-          ),
-          connectors.dataverse.retrieveMultipleRecords(
-            'va_insurancepolicies',
-            `?$filter=_va_applicationid_value eq '${appId}'`,
-          ),
-          connectors.dataverse.retrieveMultipleRecords(
-            'va_documentchecklists',
-            `?$filter=_va_applicationid_value eq '${appId}'&$orderby=va_name`,
-          ),
-          connectors.dataverse.retrieveMultipleRecords(
-            'va_documents',
-            `?$filter=_va_applicationid_value eq '${appId}'&$orderby=createdon desc`,
-          ),
-        ])
+      const [vehicleResult, policyResult, documentResult] = await Promise.all([
+        connectors.dataverse.retrieveMultipleRecords(
+          'va_vehicles',
+          `?$filter=_va_applicationid_value eq '${appId}'&$top=1`,
+        ),
+        connectors.dataverse.retrieveMultipleRecords(
+          'va_insurancepolicies',
+          `?$filter=_va_applicationid_value eq '${appId}'`,
+        ),
+        connectors.dataverse.retrieveMultipleRecords(
+          'va_documents',
+          `?$filter=_va_applicationid_value eq '${appId}'&$orderby=createdon desc`,
+        ),
+      ])
 
       setBundle({
         application,
-        vehicle: vehicleResult.entities?.[0] ?? null,
-        policies: policyResult.entities ?? [],
-        checklist: checklistResult.entities ?? [],
-        documents: documentResult.entities ?? [],
+        vehicle: (vehicleResult.entities?.[0] as Vehicle | undefined) ?? null,
+        policies: (policyResult.entities as InsurancePolicy[]) ?? [],
+        documents: (documentResult.entities as VADocument[]) ?? [],
       })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load application data')

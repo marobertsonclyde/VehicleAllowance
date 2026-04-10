@@ -1,16 +1,19 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
+import { FluentProvider, webLightTheme } from '@fluentui/react-components'
 import { PowerProvider } from './PowerProvider'
 import App from './App'
-import './index.css'
+import './styles/global.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <FluentProvider theme={webLightTheme}>
       <PowerProvider>
-        <App />
+        <HashRouter>
+          <App />
+        </HashRouter>
       </PowerProvider>
-    </BrowserRouter>
+    </FluentProvider>
   </StrictMode>,
 )

@@ -1,7 +1,5 @@
 // ─── Choice field enums ────────────────────────────────────────────────────────
 // Values must match the option set integer values in Dataverse.
-// Confirm exact values after first solution publish by checking
-// the va_* option sets in Power Platform admin center > Tables.
 
 export enum ApplicationType {
   NewOptIn = 'New Opt-In',
@@ -73,16 +71,21 @@ export enum AllowanceRecordStatus {
   Terminated = 'Terminated',
 }
 
-// ─── Dataverse table types ─────────────────────────────────────────────────────
-// These mirror the auto-generated types from `pac code add-data-source`.
-// Once PAC CLI generates src/generated/models/*.ts, import from there instead.
-// Keep these in sync with docs/data-model-reference.md.
+export enum UserRole {
+  Employee = 'Employee',
+  EquipmentLeader = 'EquipmentLeader',
+  Director = 'Director',
+  Admin = 'Admin',
+  Payroll = 'Payroll',
+}
+
+// ─── Dataverse table types (9-table model) ────────────────────────────────────
 
 export interface AllowanceApplication {
   va_allowanceapplicationid?: string
-  va_name?: string                          // e.g. VA-2026-00001
-  va_applicantid?: string                   // SystemUser lookup GUID
-  va_personnelnumber?: string               // From Dynamics via Fabric SQL
+  va_name?: string
+  va_applicantid?: string
+  va_personnelnumber?: string
   va_applicationType?: ApplicationType
   va_status?: ApplicationStatus
   va_allowanceLevel?: AllowanceLevel
@@ -90,11 +93,11 @@ export interface AllowanceApplication {
   va_isElectricVehicle?: boolean
   va_evChargingAllowance?: number
   va_totalMonthlyAllowance?: number
-  va_effectiveDate?: string                 // ISO date string
-  va_submittedOn?: string                   // ISO datetime string
+  va_effectiveDate?: string
+  va_submittedOn?: string
   va_eligibilityDeadline?: string
-  va_companyEntityId?: string               // va_CompanyEntity lookup GUID
-  va_companyEntityName?: string             // Expanded name
+  va_companyEntityId?: string
+  va_companyEntityName?: string
   va_equipmentLeaderDecision?: DecisionType
   va_equipmentLeaderReviewDate?: string
   va_equipmentLeaderNotes?: string
@@ -150,12 +153,13 @@ export interface InsurancePolicy {
   va_meetsLiabilityRequirement?: boolean
   va_meetsUmbrellaRequirement?: boolean
   va_meetsEndorsementRequirement?: boolean
-  // Multi-vehicle policy support
-  va_listedVehicles?: string              // JSON: [{vin, year, make, model}] — all vehicles on policy
-  va_qualifyingVehicleConfirmed?: boolean // qualifying VIN found among listed vehicles
-  va_checkedVin?: string                  // VIN that was looked up (for admin display on failure)
+  va_listedVehicles?: string
+  va_qualifyingVehicleConfirmed?: boolean
+  va_checkedVin?: string
   va_aiExtractionConfidence?: number
   va_status?: 'Active' | 'Expired' | 'Superseded'
+  va_lastReminderSentDate?: string
+  va_lastReminderType?: string
 }
 
 export interface VADocument {
@@ -166,24 +170,12 @@ export interface VADocument {
   va_uploadedOn?: string
   va_uploadedByUserId?: string
   va_aiProcessingStatus?: AIProcessingStatus
-  va_aiExtractedData?: string               // JSON blob
+  va_aiExtractedData?: string
   va_aiConfidenceScore?: number
   va_reviewStatus?: 'Pending Review' | 'Accepted' | 'Rejected'
   va_rejectionReason?: string
   va_linkedPolicyId?: string
   va_linkedVehicleId?: string
-}
-
-export interface DocumentChecklist {
-  va_documentchecklistid?: string
-  va_name?: string
-  va_applicationId?: string
-  va_checklistItemType?: DocumentType
-  va_isRequired?: boolean
-  va_isSatisfied?: boolean
-  va_satisfiedByDocumentId?: string
-  va_satisfiedOn?: string
-  va_validationNote?: string
 }
 
 export interface AllowanceRecord {
@@ -204,6 +196,18 @@ export interface AllowanceRecord {
   va_optOutRequestedDate?: string
   va_optOutEffectiveDate?: string
   va_terminationReason?: string
+}
+
+export interface AuditLog {
+  va_auditlogid?: string
+  va_name?: string
+  va_eventType?: string
+  va_previousStatus?: string
+  va_newStatus?: string
+  va_performedByName?: string
+  va_notes?: string
+  va_eventDate?: string
+  va_applicationId?: string
 }
 
 export interface CompanyEntity {
@@ -227,14 +231,6 @@ export interface AllowanceLevelConfig {
   va_isCurrentRate?: boolean
 }
 
-export interface EligibleTitle {
-  va_eligibletitleid?: string
-  va_name?: string
-  va_leadershipTier?: string
-  va_defaultAllowanceLevel?: AllowanceLevel
-  va_isActive?: boolean
-}
-
 export interface ReminderConfig {
   va_reminderconfigid?: string
   va_reminderDays1?: number
@@ -244,7 +240,7 @@ export interface ReminderConfig {
   va_isActive?: boolean
 }
 
-// ─── AI extraction result shape (from va_Document.va_aiExtractedData JSON) ────
+// ─── AI extraction result shapes ──────────────────────────────────────────────
 
 export interface ListedVehicle {
   vin?: string
@@ -266,8 +262,6 @@ export interface InsuranceExtractionResult {
   umbrella_limit?: number
   endorsement_type?: 'Additional Insured' | 'Additional Interest'
   additional_insured_entity?: string
-  // All vehicles on the policy — employees commonly have 2-4 household vehicles.
-  // The qualifying vehicle's VIN must appear here; Flow 8 checks this automatically.
   listed_vehicles?: ListedVehicle[]
   confidence_scores?: Record<string, number>
 }
@@ -284,16 +278,7 @@ export interface WindowStickerExtractionResult {
   confidence_scores?: Record<string, number>
 }
 
-// ─── Flow action payloads ──────────────────────────────────────────────────────
-
-export interface SubmitApplicationPayload {
-  applicationId: string
-}
-
-export interface OptOutPayload {
-  allowanceRecordId: string
-  requestedDate: string
-}
+// ─── Flow action payloads ────────────────────────────────────────────────────
 
 export interface EligibilityCheckResult {
   isEligible: boolean
@@ -305,7 +290,7 @@ export interface EligibilityCheckResult {
   ineligibilityReason?: string
 }
 
-// ─── UI-only types ─────────────────────────────────────────────────────────────
+// ─── UI-only types ───────────────────────────────────────────────────────────
 
 export interface ApplicationStep {
   label: string
@@ -318,4 +303,13 @@ export type ValidationResult = {
   field: string
   passes: boolean
   message: string
+}
+
+export interface ChecklistItemState {
+  documentType: DocumentType
+  label: string
+  required: boolean
+  satisfied: boolean
+  documentId?: string
+  aiStatus?: AIProcessingStatus
 }

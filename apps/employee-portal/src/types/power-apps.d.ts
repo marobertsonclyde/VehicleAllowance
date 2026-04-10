@@ -1,34 +1,72 @@
+// Type augmentations for @microsoft/power-apps SDK
+// These provide IntelliSense for the connector APIs.
+
 declare module '@microsoft/power-apps' {
-  import type { ReactNode } from 'react'
+  export function AuthenticationProvider(props: {
+    children: React.ReactNode
+  }): React.ReactElement
+
+  export function ConnectorProvider(props: {
+    children: React.ReactNode
+  }): React.ReactElement
 
   export interface DataverseConnector {
-    retrieveMultipleRecords: (entitySetName: string, query?: string) => Promise<{ entities?: any[] }>
-    retrieveRecord: (entitySetName: string, id: string, query?: string) => Promise<Record<string, any>>
-    createRecord: (entitySetName: string, data: Record<string, any>) => Promise<Record<string, any>>
-    updateRecord: (entitySetName: string, id: string, data: Record<string, any>) => Promise<void>
-    uploadFile: (
-      entitySetName: string,
+    retrieveRecord(
+      entityLogicalName: string,
       id: string,
-      attributeName: string,
-      fileContentBase64: string,
-      fileName: string,
-      mimeType: string,
-    ) => Promise<void>
+      options?: string,
+    ): Promise<Record<string, unknown>>
+
+    retrieveMultipleRecords(
+      entityLogicalName: string,
+      options?: string,
+    ): Promise<{ entities: Record<string, unknown>[]; nextLink?: string }>
+
+    createRecord(
+      entityLogicalName: string,
+      data: Record<string, unknown>,
+    ): Promise<{ id: string }>
+
+    updateRecord(
+      entityLogicalName: string,
+      id: string,
+      data: Record<string, unknown>,
+    ): Promise<void>
+
+    deleteRecord(
+      entityLogicalName: string,
+      id: string,
+    ): Promise<void>
+
+    uploadFile(
+      entityLogicalName: string,
+      id: string,
+      columnLogicalName: string,
+      file: File,
+    ): Promise<void>
   }
 
   export interface PowerAutomateConnector {
-    runFlow: (flowName: string, payload: Record<string, any>) => Promise<unknown>
+    runFlow(
+      flowName: string,
+      inputs: Record<string, unknown>,
+    ): Promise<unknown>
   }
 
-  export interface ConnectorContextValue {
+  export interface ConnectorContext {
     connectors: {
       dataverse: DataverseConnector
       powerAutomate: PowerAutomateConnector
     }
   }
 
-  export function useConnectorContext(): ConnectorContextValue
+  export function useConnectorContext(): ConnectorContext
 
-  export function AuthenticationProvider(props: { children: ReactNode }): JSX.Element
-  export function ConnectorProvider(props: { children: ReactNode }): JSX.Element
+  export interface AuthContext {
+    userId: string
+    userName: string
+    userEmail: string
+  }
+
+  export function useAuthContext(): AuthContext
 }

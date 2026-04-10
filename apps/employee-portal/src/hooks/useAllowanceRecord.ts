@@ -5,21 +5,18 @@ import { AllowanceRecordStatus } from '@/types'
 
 interface UseAllowanceRecordResult {
   record: AllowanceRecord | null
-  activePolicies: InsurancePolicy[]
-  expiringPolicies: InsurancePolicy[]   // Policies expiring within 45 days
+  policies: InsurancePolicy[]
   loading: boolean
   error: string | null
   refetch: () => Promise<void>
 }
 
-const EXPIRY_WARNING_DAYS = 45
-
 export function useAllowanceRecord(): UseAllowanceRecordResult {
   const { connectors } = useConnectorContext()
+  const [record, setRecord] = useState<AllowanceRecord | null>(null)
+  const [policies, setPolicies] = useState<InsurancePolicy[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [record, setRecord] = useState<AllowanceRecord | null>(null)
-  const [activePolicies, setActivePolicies] = useState<InsurancePolicy[]>([])
 
   const fetchRecord = useCallback(async () => {
     setLoading(true)
@@ -27,23 +24,21 @@ export function useAllowanceRecord(): UseAllowanceRecordResult {
     try {
       const result = await connectors.dataverse.retrieveMultipleRecords(
         'va_allowancerecords',
-        `?$filter=va_status eq '${AllowanceRecordStatus.Active}'&$top=1`,
+        `?$filter=va_status eq '${AllowanceRecordStatus.Active}'&$orderby=createdon desc&$top=1`,
       )
 
-      const activeRecord: AllowanceRecord | null = result.entities?.[0] ?? null
+      const activeRecord = (result.entities?.[0] as AllowanceRecord | undefined) ?? null
       setRecord(activeRecord)
 
-      if (!activeRecord?.va_allowancerecordid) {
-        setActivePolicies([])
-        return
+      if (activeRecord?.va_allowancerecordid) {
+        const policyResult = await connectors.dataverse.retrieveMultipleRecords(
+          'va_insurancepolicies',
+          `?$filter=_va_employeeid_value eq '${activeRecord.va_employeeId}'&$orderby=va_expirationdate desc`,
+        )
+        setPolicies((policyResult.entities as InsurancePolicy[]) ?? [])
+      } else {
+        setPolicies([])
       }
-
-      // Fetch policies linked to the application on this record
-      const policyResult = await connectors.dataverse.retrieveMultipleRecords(
-        'va_insurancepolicies',
-        `?$filter=_va_applicationid_value eq '${activeRecord.va_originalApplicationId}' and va_status eq 'Active'`,
-      )
-      setActivePolicies(policyResult.entities ?? [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load allowance record')
     } finally {
@@ -55,13 +50,5 @@ export function useAllowanceRecord(): UseAllowanceRecordResult {
     void fetchRecord()
   }, [fetchRecord])
 
-  const warningThreshold = new Date()
-  warningThreshold.setDate(warningThreshold.getDate() + EXPIRY_WARNING_DAYS)
-
-  const expiringPolicies = activePolicies.filter(p => {
-    if (!p.va_expirationDate) return false
-    return new Date(p.va_expirationDate) <= warningThreshold
-  })
-
-  return { record, activePolicies, expiringPolicies, loading, error, refetch: fetchRecord }
+  return { record, policies, loading, error, refetch: fetchRecord }
 }
