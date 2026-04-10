@@ -1,6 +1,15 @@
 import { useCallback } from 'react'
 import { useConnectorContext } from '@microsoft/power-apps'
-import type { EligibilityCheckResult } from '@/types'
+import type { EligibilityCheckResult, PayrollVerificationStatus } from '@/types'
+
+export interface PayrollVerificationResult {
+  status: PayrollVerificationStatus
+  earnCode?: string
+  payrollAmount?: number
+  expectedAmount?: number
+  amountMismatch: boolean
+  notes?: string
+}
 
 export function useFlowActions() {
   const { connectors } = useConnectorContext()
@@ -37,6 +46,20 @@ export function useFlowActions() {
     )
   }, [connectors])
 
+  /**
+   * Triggers on-demand payroll earn code verification for an allowance record.
+   * Queries Fabric SQL for the employee's earn codes and compares against the record.
+   */
+  const verifyPayroll = useCallback(async (
+    allowanceRecordId: string,
+  ): Promise<PayrollVerificationResult> => {
+    const result = await connectors.powerAutomate.runFlow(
+      'va_VerifyPayrollEarnCode',
+      { allowanceRecordId },
+    )
+    return result as PayrollVerificationResult
+  }, [connectors])
+
   const getAllowanceLevelsForMsrp = useCallback(async (vehicleMsrp: number) => {
     const result = await connectors.powerAutomate.runFlow(
       'va_GetAllowanceLevelForMsrp',
@@ -50,6 +73,7 @@ export function useFlowActions() {
     submitApplication,
     reprocessDocument,
     submitOptOut,
+    verifyPayroll,
     getAllowanceLevelsForMsrp,
   }
 }

@@ -71,6 +71,14 @@ export enum AllowanceRecordStatus {
   Terminated = 'Terminated',
 }
 
+export enum PayrollVerificationStatus {
+  Pending = 'Pending',
+  Verified = 'Verified',
+  NotFound = 'Not Found',
+  AmountMismatch = 'Amount Mismatch',
+  Failed = 'Failed',
+}
+
 export enum UserRole {
   Employee = 'Employee',
   EquipmentLeader = 'EquipmentLeader',
@@ -196,6 +204,13 @@ export interface AllowanceRecord {
   va_optOutRequestedDate?: string
   va_optOutEffectiveDate?: string
   va_terminationReason?: string
+  // Payroll earn code verification
+  va_payrollVerificationStatus?: PayrollVerificationStatus
+  va_payrollVerifiedDate?: string
+  va_payrollEarnCode?: string
+  va_payrollAmount?: number
+  va_payrollAmountMismatch?: boolean
+  va_payrollVerificationNotes?: string
 }
 
 export interface AuditLog {

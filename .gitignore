@@ -29,6 +29,11 @@ node_modules/
 npm-debug.log*
 apps/*/dist/
 apps/*/.vite/
+*.tsbuildinfo
+apps/*/vite.config.js
+apps/*/vite.config.d.ts
+apps/*/vitest.config.js
+apps/*/vitest.config.d.ts
 
 # Generated Dataverse service files (created by: pac code add-data-source)
 # Commit these once generated — they are the typed API layer.

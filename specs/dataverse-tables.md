@@ -148,6 +148,12 @@ The "living" active allowance state for an enrolled employee.
 | va_optOutRequestedDate | Date | No | |
 | va_optOutEffectiveDate | Date | No | Jan 1 of following year |
 | va_terminationReason | Multiline Text | No | |
+| va_payrollVerificationStatus | Choice | No | Options: Pending, Verified, Not Found, Amount Mismatch, Failed. Set by Flow 9. |
+| va_payrollVerifiedDate | DateTime | No | Last verification timestamp |
+| va_payrollEarnCode | Text(20) | No | Earn code from Fabric SQL |
+| va_payrollAmount | Currency | No | Amount from payroll system |
+| va_payrollAmountMismatch | Boolean | No | True when payroll amount ≠ va_totalMonthlyAmount |
+| va_payrollVerificationNotes | Multiline Text | No | Details of verification result |
 
 ---
 
@@ -235,3 +241,4 @@ Create these as global option sets (reusable across tables):
 | va_allowancerecordstatus | Active(0), Suspended(1), Terminated(2) |
 | va_policystatus | Active(0), Expired(1), Superseded(2) |
 | va_documentreviewstatus | Pending Review(0), Accepted(1), Rejected(2) |
+| va_payrollverificationstatus | Pending(0), Verified(1), Not Found(2), Amount Mismatch(3), Failed(4) |
