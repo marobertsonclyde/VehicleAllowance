@@ -78,8 +78,8 @@ export function PayrollAllowances() {
         </div>
       ),
     },
-    { key: 'earnCode', label: 'Earn Code', render: r => r.va_payrollEarnCode ?? '--' },
-    { key: 'verified', label: 'Verified', render: r => formatDate(r.va_payrollVerifiedDate) },
+    { key: 'earnCode', label: 'Earn Code', render: r => r.va_payrollEarnCode ?? '--', hideOnMobile: true },
+    { key: 'verified', label: 'Verified', render: r => formatDate(r.va_payrollVerifiedDate), hideOnMobile: true },
     {
       key: 'action',
       label: '',

@@ -25,7 +25,7 @@ export function HomeScreen() {
       <div className="screen">
         <Text as="h1" size={700} weight="bold">Your Vehicle Allowance</Text>
         <Card>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+          <div className="mobile-stack" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
             <div>
               <Text size={300} style={{ color: tokens.colorNeutralForeground3 }}>Monthly Allowance</Text>
               <Text as="p" size={800} weight="bold">{formatCurrency(record.va_totalMonthlyAmount)}</Text>
@@ -61,7 +61,7 @@ export function HomeScreen() {
       <div className="screen">
         <Text as="h1" size={700} weight="bold">Application {application.va_name}</Text>
         <Card>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="mobile-stack" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <Text size={300}>Status</Text>
               <div style={{ marginTop: tokens.spacingVerticalXS }}>

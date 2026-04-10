@@ -8,7 +8,7 @@ import type { AllowanceApplication } from '@/types'
 
 const columns: Column<AllowanceApplication>[] = [
   { key: 'name', label: 'Application', render: a => a.va_name ?? '--' },
-  { key: 'type', label: 'Type', render: a => a.va_applicationType ?? '--' },
+  { key: 'type', label: 'Type', render: a => a.va_applicationType ?? '--', hideOnMobile: true },
   { key: 'status', label: 'Status', render: a => <StatusBadge status={a.va_status ?? 'Draft'} /> },
   { key: 'submitted', label: 'Submitted', render: a => formatDate(a.va_submittedOn) },
   {
@@ -36,7 +36,7 @@ export function ReviewQueueScreen() {
     <div className="screen">
       <Text as="h1" size={700} weight="bold">Review Queue</Text>
 
-      <div style={{ display: 'flex', gap: 16, marginBottom: 8 }}>
+      <div className="mobile-stack" style={{ display: 'flex', gap: 16, marginBottom: 8 }}>
         <Badge color="brand" appearance="filled">{pending.length} pending</Badge>
         <Badge color="warning" appearance="filled">{flagged.length} AI flagged</Badge>
         <Badge color="informative" appearance="filled">{all.length} total</Badge>

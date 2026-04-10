@@ -8,12 +8,14 @@ import {
   Text,
 } from '@fluentui/react-components'
 import type { ReactNode } from 'react'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 export interface Column<T> {
   key: string
   label: string
   render: (item: T) => ReactNode
   width?: string
+  hideOnMobile?: boolean
 }
 
 interface DataTableProps<T> {
@@ -31,6 +33,9 @@ export function DataTable<T>({
   onRowClick,
   emptyMessage = 'No data available',
 }: DataTableProps<T>) {
+  const isMobile = useIsMobile()
+  const visibleColumns = isMobile ? columns.filter(c => !c.hideOnMobile) : columns
+
   if (items.length === 0) {
     return (
       <div style={{ padding: '40px 0', textAlign: 'center' }}>
@@ -42,29 +47,31 @@ export function DataTable<T>({
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          {columns.map(col => (
-            <TableHeaderCell key={col.key} style={col.width ? { width: col.width } : undefined}>
-              {col.label}
-            </TableHeaderCell>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {items.map(item => (
-          <TableRow
-            key={getRowKey(item)}
-            onClick={onRowClick ? () => onRowClick(item) : undefined}
-            style={onRowClick ? { cursor: 'pointer' } : undefined}
-          >
-            {columns.map(col => (
-              <TableCell key={col.key}>{col.render(item)}</TableCell>
+    <div className="table-scroll-wrapper">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            {visibleColumns.map(col => (
+              <TableHeaderCell key={col.key} style={col.width ? { width: col.width } : undefined}>
+                {col.label}
+              </TableHeaderCell>
             ))}
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {items.map(item => (
+            <TableRow
+              key={getRowKey(item)}
+              onClick={onRowClick ? () => onRowClick(item) : undefined}
+              style={onRowClick ? { cursor: 'pointer' } : undefined}
+            >
+              {visibleColumns.map(col => (
+                <TableCell key={col.key}>{col.render(item)}</TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   )
 }

@@ -87,7 +87,7 @@ export function AllowanceLevelScreen() {
                 key={level.va_allowancelevelconfigid}
                 value={level.va_allowancelevelconfigid!}
                 label={
-                  <div style={{ display: 'flex', gap: tokens.spacingHorizontalL }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: tokens.spacingHorizontalL }}>
                     <Text weight="semibold">Level {level.va_level}</Text>
                     <Text>{formatCurrency(level.va_monthlyAllowance)}/mo</Text>
                     {level.va_evChargingAmount ? (

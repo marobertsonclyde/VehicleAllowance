@@ -7,7 +7,7 @@ import type { CompanyEntity } from '@/types'
 const columns: Column<CompanyEntity>[] = [
   { key: 'name', label: 'Company', render: c => c.va_name ?? '--' },
   { key: 'shortcode', label: 'Code', render: c => c.va_shortcode ?? '--' },
-  { key: 'addr', label: 'Endorsement Address', render: c => c.va_endorsementaddressline1 ?? '--' },
+  { key: 'addr', label: 'Endorsement Address', render: c => c.va_endorsementaddressline1 ?? '--', hideOnMobile: true },
   { key: 'active', label: 'Active', render: c => c.va_isactive ? 'Yes' : 'No' },
 ]
 
