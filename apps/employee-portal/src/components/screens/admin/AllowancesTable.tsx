@@ -1,13 +1,29 @@
 import { Text, Spinner, MessageBar, Badge, tokens } from '@fluentui/react-components'
 import { useAdminData } from '@/hooks/useAdminData'
-import { DataTable, type Column } from '@/components/shared/DataTable'
+import { DataTable, type Column, type FilterConfig } from '@/components/shared/DataTable'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { VerificationBadge } from '@/components/shared/VerificationBadge'
 import { PayrollWarnings } from '@/components/shared/PayrollWarnings'
 import { formatDate, formatCurrency } from '@/utils/formatters'
+import { AllowanceRecordStatus, AllowanceLevel } from '@/types'
 import type { AllowanceRecord } from '@/types'
 
 const RENEWAL_WARNING_MS = 45 * 24 * 60 * 60 * 1000
+
+const recordFilters: FilterConfig<AllowanceRecord>[] = [
+  {
+    key: 'status',
+    label: 'Status',
+    options: Object.values(AllowanceRecordStatus).map(s => ({ label: s, value: s })),
+    getValue: r => r.va_status ?? '',
+  },
+  {
+    key: 'level',
+    label: 'Level',
+    options: Object.values(AllowanceLevel).map(l => ({ label: `Level ${l}`, value: l })),
+    getValue: r => r.va_allowanceLevel ?? '',
+  },
+]
 
 const columns: Column<AllowanceRecord>[] = [
   { key: 'name', label: 'Record', render: r => r.va_name ?? '--' },
@@ -61,6 +77,10 @@ export function AllowancesTable() {
         items={allowanceRecords}
         getRowKey={r => r.va_allowancerecordid!}
         emptyMessage="No allowance records found."
+        searchable
+        searchPlaceholder="Search by name or personnel #..."
+        searchFields={[r => r.va_name ?? '', r => r.va_personnelnumber ?? '']}
+        filters={recordFilters}
       />
     </div>
   )

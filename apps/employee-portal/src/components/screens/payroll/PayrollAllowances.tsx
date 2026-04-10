@@ -2,12 +2,34 @@ import { useState, useEffect, useCallback } from 'react'
 import { Text, Spinner, MessageBar, Button, tokens } from '@fluentui/react-components'
 import { useConnectorContext } from '@microsoft/power-apps'
 import { useFlowActions } from '@/hooks/useFlowActions'
-import { DataTable, type Column } from '@/components/shared/DataTable'
+import { DataTable, type Column, type FilterConfig } from '@/components/shared/DataTable'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { VerificationBadge } from '@/components/shared/VerificationBadge'
 import { PayrollWarnings } from '@/components/shared/PayrollWarnings'
 import { formatDate, formatCurrency, getErrorMessage } from '@/utils/formatters'
+import { AllowanceRecordStatus, AllowanceLevel, PayrollVerificationStatus } from '@/types'
 import type { AllowanceRecord } from '@/types'
+
+const payrollFilters: FilterConfig<AllowanceRecord>[] = [
+  {
+    key: 'status',
+    label: 'Status',
+    options: Object.values(AllowanceRecordStatus).map(s => ({ label: s, value: s })),
+    getValue: r => r.va_status ?? '',
+  },
+  {
+    key: 'level',
+    label: 'Level',
+    options: Object.values(AllowanceLevel).map(l => ({ label: `Level ${l}`, value: l })),
+    getValue: r => r.va_allowanceLevel ?? '',
+  },
+  {
+    key: 'payroll',
+    label: 'Payroll Status',
+    options: Object.values(PayrollVerificationStatus).map(s => ({ label: s, value: s })),
+    getValue: r => r.va_payrollVerificationStatus ?? '',
+  },
+]
 
 export function PayrollAllowances() {
   const { connectors } = useConnectorContext()
@@ -100,6 +122,10 @@ export function PayrollAllowances() {
         items={records}
         getRowKey={r => r.va_allowancerecordid!}
         emptyMessage="No allowance records."
+        searchable
+        searchPlaceholder="Search by name or personnel #..."
+        searchFields={[r => r.va_name ?? '', r => r.va_personnelnumber ?? '']}
+        filters={payrollFilters}
       />
     </div>
   )

@@ -27,6 +27,13 @@ export function AuditLogScreen() {
         items={auditLogs}
         getRowKey={l => l.va_auditlogid!}
         emptyMessage="No audit log entries."
+        searchable
+        searchPlaceholder="Search by event, user, or notes..."
+        searchFields={[
+          l => l.va_eventType ?? '',
+          l => l.va_performedByName ?? '',
+          l => l.va_notes ?? '',
+        ]}
       />
     </div>
   )

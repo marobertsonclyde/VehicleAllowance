@@ -1,10 +1,32 @@
 import { useNavigate } from 'react-router-dom'
 import { Text, Spinner, MessageBar } from '@fluentui/react-components'
 import { useAdminData } from '@/hooks/useAdminData'
-import { DataTable, type Column } from '@/components/shared/DataTable'
+import { DataTable, type Column, type FilterConfig } from '@/components/shared/DataTable'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { formatDate, formatCurrency } from '@/utils/formatters'
+import { ApplicationStatus, ApplicationType, AllowanceLevel } from '@/types'
 import type { AllowanceApplication } from '@/types'
+
+const appFilters: FilterConfig<AllowanceApplication>[] = [
+  {
+    key: 'status',
+    label: 'Status',
+    options: Object.values(ApplicationStatus).map(s => ({ label: s, value: s })),
+    getValue: a => a.va_status ?? '',
+  },
+  {
+    key: 'type',
+    label: 'Type',
+    options: Object.values(ApplicationType).map(t => ({ label: t, value: t })),
+    getValue: a => a.va_applicationType ?? '',
+  },
+  {
+    key: 'level',
+    label: 'Level',
+    options: Object.values(AllowanceLevel).map(l => ({ label: `Level ${l}`, value: l })),
+    getValue: a => a.va_allowanceLevel ?? '',
+  },
+]
 
 const columns: Column<AllowanceApplication>[] = [
   { key: 'name', label: 'Application', render: a => a.va_name ?? '--' },
@@ -31,6 +53,10 @@ export function ApplicationsTable() {
         getRowKey={a => a.va_allowanceapplicationid!}
         onRowClick={a => navigate(`/review/${a.va_allowanceapplicationid}`)}
         emptyMessage="No applications found."
+        searchable
+        searchPlaceholder="Search applications..."
+        searchFields={[a => a.va_name ?? '']}
+        filters={appFilters}
       />
     </div>
   )

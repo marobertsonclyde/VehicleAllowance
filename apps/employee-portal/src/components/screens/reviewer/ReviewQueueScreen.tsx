@@ -1,10 +1,26 @@
 import { useNavigate } from 'react-router-dom'
 import { Text, Spinner, MessageBar, Badge } from '@fluentui/react-components'
 import { useApplicationQueue } from '@/hooks/useApplicationQueue'
-import { DataTable, type Column } from '@/components/shared/DataTable'
+import { DataTable, type Column, type FilterConfig } from '@/components/shared/DataTable'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { formatDate } from '@/utils/formatters'
+import { ApplicationStatus, ApplicationType } from '@/types'
 import type { AllowanceApplication } from '@/types'
+
+const queueFilters: FilterConfig<AllowanceApplication>[] = [
+  {
+    key: 'status',
+    label: 'Status',
+    options: Object.values(ApplicationStatus).map(s => ({ label: s, value: s })),
+    getValue: a => a.va_status ?? '',
+  },
+  {
+    key: 'type',
+    label: 'Type',
+    options: Object.values(ApplicationType).map(t => ({ label: t, value: t })),
+    getValue: a => a.va_applicationType ?? '',
+  },
+]
 
 const columns: Column<AllowanceApplication>[] = [
   { key: 'name', label: 'Application', render: a => a.va_name ?? '--' },
@@ -48,6 +64,10 @@ export function ReviewQueueScreen() {
         getRowKey={a => a.va_allowanceapplicationid!}
         onRowClick={a => navigate(`/review/${a.va_allowanceapplicationid}`)}
         emptyMessage="No applications pending review."
+        searchable
+        searchPlaceholder="Search applications..."
+        searchFields={[a => a.va_name ?? '']}
+        filters={queueFilters}
       />
     </div>
   )
