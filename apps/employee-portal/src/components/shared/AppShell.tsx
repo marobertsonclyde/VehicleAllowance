@@ -11,10 +11,10 @@ import {
   PersonCircle24Regular,
 } from '@fluentui/react-icons'
 import { UserRole } from '@/types'
-import { canAccessAdmin, canAccessReview } from '@/hooks/useUserRole'
+import { canAccessAdmin, canAccessReview, canAccessPayroll } from '@/hooks/useUserRole'
 
 interface AppShellProps {
-  role: UserRole
+  allRoles: UserRole[]
   children: ReactNode
 }
 
@@ -23,28 +23,28 @@ interface NavItem {
   label: string
 }
 
-function getNavItems(role: UserRole): NavItem[] {
+function getNavItems(allRoles: UserRole[]): NavItem[] {
   const items: NavItem[] = [{ path: '/', label: 'Home' }]
 
-  if (canAccessReview(role)) {
+  if (canAccessReview(allRoles)) {
     items.push({ path: '/review', label: 'Review Queue' })
   }
 
-  if (canAccessAdmin(role)) {
+  if (canAccessAdmin(allRoles)) {
     items.push({ path: '/admin', label: 'Admin' })
   }
 
-  if (role === UserRole.Payroll) {
+  if (canAccessPayroll(allRoles)) {
     items.push({ path: '/payroll', label: 'Payroll' })
   }
 
   return items
 }
 
-export function AppShell({ role, children }: AppShellProps) {
+export function AppShell({ allRoles, children }: AppShellProps) {
   const navigate = useNavigate()
   const location = useLocation()
-  const navItems = getNavItems(role)
+  const navItems = getNavItems(allRoles)
 
   const currentTab = navItems.find(item =>
     item.path === '/'
@@ -77,7 +77,7 @@ export function AppShell({ role, children }: AppShellProps) {
         </nav>
         <div style={{ display: 'flex', alignItems: 'center', gap: tokens.spacingHorizontalS }}>
           <PersonCircle24Regular />
-          <Text size={200}>{role}</Text>
+          <Text size={200}>{allRoles.join(', ')}</Text>
         </div>
       </header>
       <main className="app-content">

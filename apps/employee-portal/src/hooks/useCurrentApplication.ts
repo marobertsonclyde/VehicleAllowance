@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useConnectorContext } from '@microsoft/power-apps'
+import { useConnectorContext, useAuthContext } from '@microsoft/power-apps'
 import type { AllowanceApplication, Vehicle, InsurancePolicy, VADocument } from '@/types'
 import { ApplicationStatus } from '@/types'
 
@@ -25,6 +25,7 @@ interface UseCurrentApplicationResult extends ApplicationBundle {
 
 export function useCurrentApplication(): UseCurrentApplicationResult {
   const { connectors } = useConnectorContext()
+  const { userId } = useAuthContext()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [bundle, setBundle] = useState<ApplicationBundle>({
@@ -44,7 +45,7 @@ export function useCurrentApplication(): UseCurrentApplicationResult {
 
       const appsResult = await connectors.dataverse.retrieveMultipleRecords(
         'va_allowanceapplications',
-        `?$filter=${terminalFilter}&$orderby=createdon desc&$top=1`,
+        `?$filter=_va_applicantid_value eq '${userId}' and ${terminalFilter}&$orderby=createdon desc&$top=1`,
       )
 
       const application = (appsResult.entities?.[0] as AllowanceApplication | undefined) ?? null
@@ -82,7 +83,7 @@ export function useCurrentApplication(): UseCurrentApplicationResult {
     } finally {
       setLoading(false)
     }
-  }, [connectors])
+  }, [connectors, userId])
 
   useEffect(() => {
     void fetchApplication()

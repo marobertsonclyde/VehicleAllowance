@@ -1,9 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { Spinner } from '@fluentui/react-components'
-import { useUserRole, canAccessAdmin, canAccessReview } from '@/hooks/useUserRole'
+import { useUserRole, canAccessAdmin, canAccessReview, canAccessPayroll } from '@/hooks/useUserRole'
 import { WizardProvider } from '@/context/WizardContext'
 import { AppShell } from '@/components/shared/AppShell'
-import { UserRole } from '@/types'
 
 // Employee screens
 import { HomeScreen } from '@/components/screens/employee/HomeScreen'
@@ -35,7 +34,7 @@ import { PayrollDashboard } from '@/components/screens/payroll/PayrollDashboard'
 import { PayrollAllowances } from '@/components/screens/payroll/PayrollAllowances'
 
 export default function App() {
-  const { role, loading } = useUserRole()
+  const { allRoles, loading } = useUserRole()
 
   if (loading) {
     return (
@@ -46,7 +45,7 @@ export default function App() {
   }
 
   return (
-    <AppShell role={role}>
+    <AppShell allRoles={allRoles}>
       <WizardProvider>
         <Routes>
           {/* ── Employee routes ── */}
@@ -61,7 +60,7 @@ export default function App() {
           <Route path="/opt-out" element={<OptOutScreen />} />
 
           {/* ── Reviewer routes ── */}
-          {canAccessReview(role) && (
+          {canAccessReview(allRoles) && (
             <>
               <Route path="/review" element={<ReviewQueueScreen />} />
               <Route path="/review/:applicationId" element={<ApplicationDetailScreen />} />
@@ -70,7 +69,7 @@ export default function App() {
           )}
 
           {/* ── Admin routes (Director + Admin) ── */}
-          {canAccessAdmin(role) && (
+          {canAccessAdmin(allRoles) && (
             <>
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/applications" element={<ApplicationsTable />} />
@@ -83,7 +82,7 @@ export default function App() {
           )}
 
           {/* ── Payroll routes ── */}
-          {role === UserRole.Payroll && (
+          {canAccessPayroll(allRoles) && (
             <>
               <Route path="/payroll" element={<PayrollDashboard />} />
               <Route path="/payroll/allowances" element={<PayrollAllowances />} />

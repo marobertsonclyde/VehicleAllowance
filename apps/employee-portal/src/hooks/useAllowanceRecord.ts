@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useConnectorContext } from '@microsoft/power-apps'
+import { useConnectorContext, useAuthContext } from '@microsoft/power-apps'
 import type { AllowanceRecord, InsurancePolicy } from '@/types'
 import { AllowanceRecordStatus } from '@/types'
 
@@ -13,6 +13,7 @@ interface UseAllowanceRecordResult {
 
 export function useAllowanceRecord(): UseAllowanceRecordResult {
   const { connectors } = useConnectorContext()
+  const { userId } = useAuthContext()
   const [record, setRecord] = useState<AllowanceRecord | null>(null)
   const [policies, setPolicies] = useState<InsurancePolicy[]>([])
   const [loading, setLoading] = useState(true)
@@ -24,7 +25,7 @@ export function useAllowanceRecord(): UseAllowanceRecordResult {
     try {
       const result = await connectors.dataverse.retrieveMultipleRecords(
         'va_allowancerecords',
-        `?$filter=va_status eq '${AllowanceRecordStatus.Active}'&$orderby=createdon desc&$top=1`,
+        `?$filter=_va_employeeid_value eq '${userId}' and va_status eq '${AllowanceRecordStatus.Active}'&$orderby=createdon desc&$top=1`,
       )
 
       const activeRecord = (result.entities?.[0] as AllowanceRecord | undefined) ?? null
@@ -44,7 +45,7 @@ export function useAllowanceRecord(): UseAllowanceRecordResult {
     } finally {
       setLoading(false)
     }
-  }, [connectors])
+  }, [connectors, userId])
 
   useEffect(() => {
     void fetchRecord()

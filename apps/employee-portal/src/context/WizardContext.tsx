@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useEffect, type ReactNode, type Dispatch } from 'react'
-import { useConnectorContext } from '@microsoft/power-apps'
+import { useConnectorContext, useAuthContext } from '@microsoft/power-apps'
 import type { EligibilityCheckResult } from '@/types'
 
 type WizardStep = 'eligibility' | 'vehicle' | 'level' | 'insurance' | 'review'
@@ -57,6 +57,7 @@ const WizardDispatchContext = createContext<Dispatch<WizardAction>>(() => {})
 
 export function WizardProvider({ children }: { children: ReactNode }) {
   const { connectors } = useConnectorContext()
+  const { userId } = useAuthContext()
   const [state, dispatch] = useReducer(wizardReducer, initialState)
 
   useEffect(() => {
@@ -64,7 +65,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
       try {
         const appsResult = await connectors.dataverse.retrieveMultipleRecords(
           'va_allowanceapplications',
-          "?$filter=va_status eq 'Draft'&$orderby=createdon desc&$top=1",
+          `?$filter=_va_applicantid_value eq '${userId}' and va_status eq 'Draft'&$orderby=createdon desc&$top=1`,
         )
         const app = appsResult.entities?.[0] as { va_allowanceapplicationid?: string } | undefined
         const appId = app?.va_allowanceapplicationid ?? null
@@ -85,7 +86,7 @@ export function WizardProvider({ children }: { children: ReactNode }) {
       }
     }
     void hydrate()
-  }, [connectors])
+  }, [connectors, userId])
 
   return (
     <WizardStateContext.Provider value={state}>

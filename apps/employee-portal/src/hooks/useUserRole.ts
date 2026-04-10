@@ -68,12 +68,17 @@ export function useUserRole(): UseUserRoleResult {
   return { role, allRoles, loading, error }
 }
 
-/** Returns true if the role can access admin config screens */
-export function canAccessAdmin(role: UserRole): boolean {
-  return role === UserRole.Admin || role === UserRole.Director
+/** Returns true if the user can access admin config screens */
+export function canAccessAdmin(roles: UserRole[]): boolean {
+  return roles.includes(UserRole.Admin) || roles.includes(UserRole.Director)
 }
 
-/** Returns true if the role can access reviewer screens */
-export function canAccessReview(role: UserRole): boolean {
-  return role === UserRole.EquipmentLeader || role === UserRole.Director || role === UserRole.Admin
+/** Returns true if the user can access reviewer screens */
+export function canAccessReview(roles: UserRole[]): boolean {
+  return roles.includes(UserRole.EquipmentLeader) || roles.includes(UserRole.Director) || roles.includes(UserRole.Admin)
+}
+
+/** Returns true if the user can access payroll screens */
+export function canAccessPayroll(roles: UserRole[]): boolean {
+  return roles.includes(UserRole.Payroll)
 }
