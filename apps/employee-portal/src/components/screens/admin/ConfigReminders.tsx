@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Card, Button, Text, Input, Field, MessageBar, Spinner, tokens } from '@fluentui/react-components'
 import { useAdminData } from '@/hooks/useAdminData'
+import { getErrorMessage } from '@/utils/formatters'
 import type { ReminderConfig } from '@/types'
 
 export function ConfigReminders() {
@@ -19,7 +20,7 @@ export function ConfigReminders() {
       await saveReminder({ ...editing, va_isActive: true })
       setEditing(null)
     } catch (err) {
-      setSaveError(err instanceof Error ? err.message : 'Failed to save')
+      setSaveError(getErrorMessage(err, 'Failed to save'))
     } finally {
       setSaving(false)
     }

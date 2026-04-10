@@ -5,6 +5,7 @@ import { useConnectorContext } from '@microsoft/power-apps'
 import { StepIndicator } from '@/components/shared/StepIndicator'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { TimelineEntry } from '@/components/shared/TimelineEntry'
+import { getErrorMessage } from '@/utils/formatters'
 import { ApplicationStatus, type AllowanceApplication, type AuditLog } from '@/types'
 
 const STATUS_STEPS = [
@@ -39,7 +40,7 @@ export function StatusTrackerScreen() {
         setApplication(appResult as unknown as AllowanceApplication)
         setAuditLogs((logsResult.entities as AuditLog[]) ?? [])
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load application status')
+        setError(getErrorMessage(err, 'Failed to load application status'))
       } finally {
         setLoading(false)
       }

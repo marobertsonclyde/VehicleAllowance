@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useConnectorContext, useAuthContext } from '@microsoft/power-apps'
+import { getErrorMessage } from '@/utils/formatters'
 import type { AllowanceRecord, InsurancePolicy } from '@/types'
 import { AllowanceRecordStatus } from '@/types'
 
@@ -41,7 +42,7 @@ export function useAllowanceRecord(): UseAllowanceRecordResult {
         setPolicies([])
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load allowance record')
+      setError(getErrorMessage(err, 'Failed to load allowance record'))
     } finally {
       setLoading(false)
     }

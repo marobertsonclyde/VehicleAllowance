@@ -2,20 +2,12 @@ import { Text, Spinner, MessageBar, Badge, tokens } from '@fluentui/react-compon
 import { useAdminData } from '@/hooks/useAdminData'
 import { DataTable, type Column } from '@/components/shared/DataTable'
 import { StatusBadge } from '@/components/shared/StatusBadge'
+import { VerificationBadge } from '@/components/shared/VerificationBadge'
+import { PayrollWarnings } from '@/components/shared/PayrollWarnings'
 import { formatDate, formatCurrency } from '@/utils/formatters'
-import { PayrollVerificationStatus, type AllowanceRecord } from '@/types'
+import type { AllowanceRecord } from '@/types'
 
-function VerificationBadge({ status }: { status?: PayrollVerificationStatus }) {
-  if (!status) return <Badge color="subtle" appearance="outline" size="small">Not Checked</Badge>
-  const colorMap: Record<PayrollVerificationStatus, 'success' | 'danger' | 'warning' | 'subtle' | 'brand'> = {
-    [PayrollVerificationStatus.Verified]: 'success',
-    [PayrollVerificationStatus.NotFound]: 'danger',
-    [PayrollVerificationStatus.AmountMismatch]: 'warning',
-    [PayrollVerificationStatus.Pending]: 'brand',
-    [PayrollVerificationStatus.Failed]: 'danger',
-  }
-  return <Badge color={colorMap[status] ?? 'subtle'} appearance="filled" size="small">{status}</Badge>
-}
+const RENEWAL_WARNING_MS = 45 * 24 * 60 * 60 * 1000
 
 const columns: Column<AllowanceRecord>[] = [
   { key: 'name', label: 'Record', render: r => r.va_name ?? '--' },
@@ -46,7 +38,7 @@ const columns: Column<AllowanceRecord>[] = [
     render: r => {
       const date = r.va_nextRenewalDue
       if (!date) return '--'
-      const isExpiring = new Date(date) <= new Date(Date.now() + 45 * 24 * 60 * 60 * 1000)
+      const isExpiring = new Date(date) <= new Date(Date.now() + RENEWAL_WARNING_MS)
       return isExpiring ? <Badge color="warning">{formatDate(date)}</Badge> : formatDate(date)
     },
   },
@@ -55,9 +47,6 @@ const columns: Column<AllowanceRecord>[] = [
 export function AllowancesTable() {
   const { allowanceRecords, loading, error } = useAdminData()
 
-  const unverified = allowanceRecords.filter(r => !r.va_payrollVerificationStatus || r.va_payrollVerificationStatus === PayrollVerificationStatus.Pending)
-  const mismatched = allowanceRecords.filter(r => r.va_payrollAmountMismatch)
-
   if (loading) return <Spinner size="large" label="Loading allowances..." />
   if (error) return <MessageBar intent="error">{error}</MessageBar>
 
@@ -65,16 +54,7 @@ export function AllowancesTable() {
     <div className="screen">
       <Text as="h1" size={700} weight="bold">Active Allowances</Text>
 
-      {unverified.length > 0 && (
-        <MessageBar intent="warning">
-          {unverified.length} record{unverified.length > 1 ? 's' : ''} not yet verified in payroll.
-        </MessageBar>
-      )}
-      {mismatched.length > 0 && (
-        <MessageBar intent="error">
-          {mismatched.length} record{mismatched.length > 1 ? 's' : ''} with payroll amount mismatch.
-        </MessageBar>
-      )}
+      <PayrollWarnings records={allowanceRecords} />
 
       <DataTable
         columns={columns}

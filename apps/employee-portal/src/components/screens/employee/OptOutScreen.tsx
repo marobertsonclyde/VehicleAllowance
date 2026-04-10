@@ -4,7 +4,7 @@ import { Card, Button, Text, MessageBar, tokens } from '@fluentui/react-componen
 import { useAllowanceRecord } from '@/hooks/useAllowanceRecord'
 import { useFlowActions } from '@/hooks/useFlowActions'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
-import { formatCurrency, formatDate } from '@/utils/formatters'
+import { formatCurrency, formatDate, getErrorMessage } from '@/utils/formatters'
 import { isInOptOutWindow, optOutEffectiveDate } from '@/utils/effectiveDateCalc'
 
 export function OptOutScreen() {
@@ -25,7 +25,7 @@ export function OptOutScreen() {
       await submitOptOut(record.va_allowancerecordid, new Date().toISOString())
       setSubmitted(true)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Opt-out request failed')
+      setError(getErrorMessage(err, 'Opt-out request failed'))
     } finally {
       setSubmitting(false)
       setShowConfirm(false)

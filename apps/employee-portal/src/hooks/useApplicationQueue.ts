@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useConnectorContext } from '@microsoft/power-apps'
+import { getErrorMessage } from '@/utils/formatters'
 import type { AllowanceApplication } from '@/types'
 import { ApplicationStatus } from '@/types'
 
@@ -38,7 +39,7 @@ export function useApplicationQueue(): UseApplicationQueueResult {
 
       setApplications((result.entities as AllowanceApplication[]) ?? [])
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load review queue')
+      setError(getErrorMessage(err, 'Failed to load review queue'))
     } finally {
       setLoading(false)
     }
@@ -48,10 +49,8 @@ export function useApplicationQueue(): UseApplicationQueueResult {
     void fetchQueue()
   }, [fetchQueue])
 
-  const pending = applications.filter(
-    a => a.va_status === ApplicationStatus.EquipmentLeaderReview || a.va_status === ApplicationStatus.DirectorReview,
-  )
+  // API query already filters for review statuses, so `pending` is the full result set
   const flagged = applications.filter(a => a.va_aiAutoApprovalEligible === false)
 
-  return { pending, flagged, all: applications, loading, error, refetch: fetchQueue }
+  return { pending: applications, flagged, all: applications, loading, error, refetch: fetchQueue }
 }

@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, Button, Text, MessageBar, Spinner, tokens } from '@fluentui/react-components'
-import { useConnectorContext } from '@microsoft/power-apps'
 import { useAllowanceRecord } from '@/hooks/useAllowanceRecord'
-import { usePollForCompletion } from '@/hooks/usePollForCompletion'
-import { isAcceptedFileType, isWithinSizeLimit } from '@/utils/validation'
+import { useDocumentUpload } from '@/hooks/useDocumentUpload'
 import { formatDate } from '@/utils/formatters'
 import { DocumentType, AIProcessingStatus } from '@/types'
 
@@ -16,36 +14,16 @@ const RENEWAL_DOCS = [
 
 export function InsuranceRenewalScreen() {
   const navigate = useNavigate()
-  const { connectors } = useConnectorContext()
   const { record, loading: recLoading } = useAllowanceRecord()
-  const { isPolling, startPolling, status: pollStatus } = usePollForCompletion()
+  const { upload, uploading, uploadError, isPolling, pollStatus } = useDocumentUpload()
 
   const [uploaded, setUploaded] = useState<Set<DocumentType>>(new Set())
-  const [uploading, setUploading] = useState<DocumentType | null>(null)
-  const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
   async function handleUpload(docType: DocumentType, file: File) {
     if (!record?.va_originalApplicationId) return
-    if (!isAcceptedFileType(file)) { setError('File must be PDF, PNG, JPEG, or TIFF'); return }
-    if (!isWithinSizeLimit(file)) { setError('File must be under 10MB'); return }
-
-    setUploading(docType)
-    setError(null)
-    try {
-      const docResult = await connectors.dataverse.createRecord('va_documents', {
-        '_va_applicationid_value': record.va_originalApplicationId,
-        va_documentType: docType,
-        va_aiProcessingStatus: 'Pending',
-      })
-      await connectors.dataverse.uploadFile('va_documents', docResult.id, 'va_filereference', file)
-      startPolling(docResult.id)
-      setUploaded(prev => new Set(prev).add(docType))
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed')
-    } finally {
-      setUploading(null)
-    }
+    const ok = await upload(record.va_originalApplicationId, docType, file)
+    if (ok) setUploaded(prev => new Set(prev).add(docType))
   }
 
   if (recLoading) return <Spinner size="large" label="Loading..." />
@@ -74,7 +52,7 @@ export function InsuranceRenewalScreen() {
         Your next renewal is due {formatDate(record.va_nextRenewalDue)}. Upload your updated insurance documents below.
       </Text>
 
-      {error && <MessageBar intent="error">{error}</MessageBar>}
+      {uploadError && <MessageBar intent="error">{uploadError}</MessageBar>}
 
       {RENEWAL_DOCS.map(doc => (
         <Card key={doc.type}>
