@@ -3,9 +3,9 @@ import { useNavigate, Navigate } from 'react-router-dom'
 import { Card, Button, Text, MessageBar, Spinner, tokens } from '@fluentui/react-components'
 import { useConnectorContext } from '@microsoft/power-apps'
 import { useWizardState, useWizardDispatch } from '@/context/WizardContext'
-import { usePollForCompletion } from '@/hooks/usePollForCompletion'
+import { useDocumentUpload } from '@/hooks/useDocumentUpload'
 import { ChecklistItem } from '@/components/shared/ChecklistItem'
-import { isAcceptedFileType, isWithinSizeLimit } from '@/utils/validation'
+import { getErrorMessage } from '@/utils/formatters'
 import { DocumentType, AIProcessingStatus, type ChecklistItemState, type VADocument } from '@/types'
 
 const REQUIRED_DOCS: { type: DocumentType; label: string; required: boolean }[] = [
@@ -20,10 +20,9 @@ export function InsuranceDocumentsScreen() {
   const { connectors } = useConnectorContext()
   const wizardState = useWizardState()
   const dispatch = useWizardDispatch()
-  const { startPolling, status: pollStatus, isPolling } = usePollForCompletion()
+  const { upload, uploading, uploadError, pollStatus, isPolling } = useDocumentUpload()
 
   const [documents, setDocuments] = useState<VADocument[]>([])
-  const [uploading, setUploading] = useState<DocumentType | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -39,7 +38,7 @@ export function InsuranceDocumentsScreen() {
       )
       setDocuments((result.entities as VADocument[]) ?? [])
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load documents')
+      setError(getErrorMessage(err, 'Failed to load documents'))
     } finally {
       setLoading(false)
     }
@@ -56,25 +55,8 @@ export function InsuranceDocumentsScreen() {
 
   async function handleUpload(docType: DocumentType, file: File) {
     if (!wizardState.applicationId) return
-    if (!isAcceptedFileType(file)) { setError('File must be PDF, PNG, JPEG, or TIFF'); return }
-    if (!isWithinSizeLimit(file)) { setError('File must be under 10MB'); return }
-
-    setUploading(docType)
-    setError(null)
-    try {
-      const docResult = await connectors.dataverse.createRecord('va_documents', {
-        '_va_applicationid_value': wizardState.applicationId,
-        va_documentType: docType,
-        va_aiProcessingStatus: 'Pending',
-      })
-      await connectors.dataverse.uploadFile('va_documents', docResult.id, 'va_filereference', file)
-      startPolling(docResult.id)
-      await fetchDocuments()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to upload document')
-    } finally {
-      setUploading(null)
-    }
+    const success = await upload(wizardState.applicationId, docType, file)
+    if (success) await fetchDocuments()
   }
 
   function buildChecklist(): ChecklistItemState[] {
@@ -103,7 +85,7 @@ export function InsuranceDocumentsScreen() {
       <Text as="h1" size={700} weight="bold">Insurance Documents</Text>
       <Text size={300}>Upload all required insurance documents. Each will be automatically validated by AI.</Text>
 
-      {error && <MessageBar intent="error">{error}</MessageBar>}
+      {(error || uploadError) && <MessageBar intent="error">{error ?? uploadError}</MessageBar>}
 
       <Card>
         {checklist.map(item => (

@@ -6,10 +6,11 @@ import {
 } from '@fluentui/react-components'
 import { useConnectorContext } from '@microsoft/power-apps'
 import { useWizardState, useWizardDispatch } from '@/context/WizardContext'
-import { usePollForCompletion } from '@/hooks/usePollForCompletion'
+import { useDocumentUpload } from '@/hooks/useDocumentUpload'
 import { AIExtractionDisplay } from '@/components/shared/AIExtractionDisplay'
-import { validateVin, validateMsrp, isAcceptedFileType, isWithinSizeLimit } from '@/utils/validation'
-import { BodyType, AIProcessingStatus } from '@/types'
+import { validateVin, validateMsrp } from '@/utils/validation'
+import { getErrorMessage } from '@/utils/formatters'
+import { BodyType, AIProcessingStatus, ApplicationType, ApplicationStatus, DocumentType } from '@/types'
 import type { Vehicle } from '@/types'
 
 export function VehicleDetailsScreen() {
@@ -17,7 +18,7 @@ export function VehicleDetailsScreen() {
   const { connectors } = useConnectorContext()
   const wizardState = useWizardState()
   const dispatch = useWizardDispatch()
-  const { status: aiStatus, isPolling, timedOut, startPolling } = usePollForCompletion()
+  const { upload, uploadError, pollStatus: aiStatus, isPolling, timedOut } = useDocumentUpload()
 
   const [vin, setVin] = useState('')
   const [make, setMake] = useState('')
@@ -62,8 +63,6 @@ export function VehicleDetailsScreen() {
     const msrpResult = validateMsrp(msrp)
     if (!msrpResult.passes) { setError(msrpResult.message); return }
     if (!file) { setError('Please upload a window sticker'); return }
-    if (!isAcceptedFileType(file)) { setError('File must be PDF, PNG, JPEG, or TIFF'); return }
-    if (!isWithinSizeLimit(file)) { setError('File must be under 10MB'); return }
 
     setSaving(true)
     setError(null)
@@ -72,8 +71,8 @@ export function VehicleDetailsScreen() {
       let appId = wizardState.applicationId
       if (!appId) {
         const appResult = await connectors.dataverse.createRecord('va_allowanceapplications', {
-          va_applicationType: 'New Opt-In',
-          va_status: 'Draft',
+          va_applicationType: ApplicationType.NewOptIn,
+          va_status: ApplicationStatus.Draft,
           va_personnelnumber: wizardState.eligibility?.personnelNumber,
         })
         appId = appResult.id
@@ -101,21 +100,14 @@ export function VehicleDetailsScreen() {
         dispatch({ type: 'SET_VEHICLE_ID', payload: vehicleId })
       }
 
-      // Create document and upload file
-      const docResult = await connectors.dataverse.createRecord('va_documents', {
-        '_va_applicationid_value': appId,
-        va_documentType: 'Window Sticker',
-        va_aiProcessingStatus: 'Pending',
+      // Upload window sticker document
+      await upload(appId, DocumentType.WindowSticker, file, {
         '_va_linkedvehicleid_value': vehicleId,
       })
-      await connectors.dataverse.uploadFile('va_documents', docResult.id, 'va_filereference', file)
-
-      // Poll for AI processing
-      startPolling(docResult.id)
 
       dispatch({ type: 'SET_STEP', payload: 'level' })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save vehicle details')
+      setError(getErrorMessage(err, 'Failed to save vehicle details'))
     } finally {
       setSaving(false)
     }
@@ -126,7 +118,7 @@ export function VehicleDetailsScreen() {
   return (
     <div className="screen">
       <Text as="h1" size={700} weight="bold">Vehicle Details</Text>
-      {error && <MessageBar intent="error">{error}</MessageBar>}
+      {(error || uploadError) && <MessageBar intent="error">{error ?? uploadError}</MessageBar>}
 
       <Card>
         <div className="form-grid">

@@ -7,6 +7,7 @@ import {
 import { useConnectorContext } from '@microsoft/power-apps'
 import { useUserRole } from '@/hooks/useUserRole'
 import { StatusBadge } from '@/components/shared/StatusBadge'
+import { getErrorMessage } from '@/utils/formatters'
 import { DecisionType, ApplicationStatus, UserRole, type AllowanceApplication } from '@/types'
 
 export function DecisionScreen() {
@@ -30,7 +31,7 @@ export function DecisionScreen() {
         const result = await connectors.dataverse.retrieveRecord('va_allowanceapplications', applicationId)
         setApplication(result as unknown as AllowanceApplication)
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load application')
+        setError(getErrorMessage(err, 'Failed to load application'))
       } finally {
         setLoading(false)
       }
@@ -65,7 +66,7 @@ export function DecisionScreen() {
       await connectors.dataverse.updateRecord('va_allowanceapplications', applicationId, updateData)
       setSubmitted(true)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit decision')
+      setError(getErrorMessage(err, 'Failed to submit decision'))
     } finally {
       setSubmitting(false)
     }

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Card, Button, Text, Input, Field, Checkbox, MessageBar, Spinner, tokens } from '@fluentui/react-components'
 import { useAdminData } from '@/hooks/useAdminData'
 import { DataTable, type Column } from '@/components/shared/DataTable'
-import { formatCurrency } from '@/utils/formatters'
+import { formatCurrency, getErrorMessage } from '@/utils/formatters'
 import type { AllowanceLevelConfig } from '@/types'
 
 const columns: Column<AllowanceLevelConfig>[] = [
@@ -27,7 +27,7 @@ export function ConfigLevels() {
       await saveLevel(editing)
       setEditing(null)
     } catch (err) {
-      setSaveError(err instanceof Error ? err.message : 'Failed to save')
+      setSaveError(getErrorMessage(err, 'Failed to save'))
     } finally {
       setSaving(false)
     }

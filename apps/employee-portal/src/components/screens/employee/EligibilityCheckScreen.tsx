@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Card, Button, Text, Spinner, MessageBar, tokens } from '@fluentui/react-components'
 import { useFlowActions } from '@/hooks/useFlowActions'
 import { useWizardDispatch } from '@/context/WizardContext'
+import { getErrorMessage } from '@/utils/formatters'
 import type { EligibilityCheckResult } from '@/types'
 
 export function EligibilityCheckScreen() {
@@ -24,7 +25,7 @@ export function EligibilityCheckScreen() {
         dispatch({ type: 'SET_STEP', payload: 'vehicle' })
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Eligibility check failed')
+      setError(getErrorMessage(err, 'Eligibility check failed'))
     } finally {
       setLoading(false)
     }

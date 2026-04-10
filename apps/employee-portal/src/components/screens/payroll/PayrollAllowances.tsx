@@ -1,23 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Text, Spinner, MessageBar, Badge, Button, tokens } from '@fluentui/react-components'
+import { Text, Spinner, MessageBar, Button, tokens } from '@fluentui/react-components'
 import { useConnectorContext } from '@microsoft/power-apps'
 import { useFlowActions } from '@/hooks/useFlowActions'
 import { DataTable, type Column } from '@/components/shared/DataTable'
 import { StatusBadge } from '@/components/shared/StatusBadge'
-import { formatDate, formatCurrency } from '@/utils/formatters'
-import { PayrollVerificationStatus, type AllowanceRecord } from '@/types'
-
-function VerificationBadge({ status }: { status?: PayrollVerificationStatus }) {
-  if (!status) return <Badge color="subtle" appearance="outline" size="small">Not Checked</Badge>
-  const colorMap: Record<PayrollVerificationStatus, 'success' | 'danger' | 'warning' | 'subtle' | 'brand'> = {
-    [PayrollVerificationStatus.Verified]: 'success',
-    [PayrollVerificationStatus.NotFound]: 'danger',
-    [PayrollVerificationStatus.AmountMismatch]: 'warning',
-    [PayrollVerificationStatus.Pending]: 'brand',
-    [PayrollVerificationStatus.Failed]: 'danger',
-  }
-  return <Badge color={colorMap[status] ?? 'subtle'} appearance="filled" size="small">{status}</Badge>
-}
+import { VerificationBadge } from '@/components/shared/VerificationBadge'
+import { PayrollWarnings } from '@/components/shared/PayrollWarnings'
+import { formatDate, formatCurrency, getErrorMessage } from '@/utils/formatters'
+import type { AllowanceRecord } from '@/types'
 
 export function PayrollAllowances() {
   const { connectors } = useConnectorContext()
@@ -35,7 +25,7 @@ export function PayrollAllowances() {
       )
       setRecords((result.entities as AllowanceRecord[]) ?? [])
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load records')
+      setError(getErrorMessage(err, 'Failed to load records'))
     } finally {
       setLoading(false)
     }
@@ -52,7 +42,7 @@ export function PayrollAllowances() {
       await verifyPayroll(record.va_allowancerecordid)
       await fetchRecords()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Verification failed')
+      setError(getErrorMessage(err, 'Verification failed'))
     } finally {
       setVerifying(null)
     }
@@ -96,9 +86,6 @@ export function PayrollAllowances() {
     },
   ]
 
-  const unverified = records.filter(r => !r.va_payrollVerificationStatus || r.va_payrollVerificationStatus === PayrollVerificationStatus.Pending)
-  const mismatched = records.filter(r => r.va_payrollAmountMismatch)
-
   if (loading) return <Spinner size="large" label="Loading payroll data..." />
   if (error) return <MessageBar intent="error">{error}</MessageBar>
 
@@ -106,16 +93,7 @@ export function PayrollAllowances() {
     <div className="screen">
       <Text as="h1" size={700} weight="bold">Allowance Records</Text>
 
-      {unverified.length > 0 && (
-        <MessageBar intent="warning">
-          {unverified.length} record{unverified.length > 1 ? 's' : ''} not yet verified in payroll.
-        </MessageBar>
-      )}
-      {mismatched.length > 0 && (
-        <MessageBar intent="error">
-          {mismatched.length} record{mismatched.length > 1 ? 's' : ''} with payroll amount mismatch.
-        </MessageBar>
-      )}
+      <PayrollWarnings records={records} />
 
       <DataTable
         columns={columns}

@@ -1,46 +1,14 @@
-import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Card, Button, Text, Spinner, MessageBar, Badge, tokens } from '@fluentui/react-components'
-import { useConnectorContext } from '@microsoft/power-apps'
+import { useApplicationDetail } from '@/hooks/useApplicationDetail'
 import { StatusBadge } from '@/components/shared/StatusBadge'
 import { AIExtractionDisplay } from '@/components/shared/AIExtractionDisplay'
 import { formatCurrency, formatDate, formatPercent } from '@/utils/formatters'
-import type { AllowanceApplication, Vehicle, InsurancePolicy, VADocument } from '@/types'
 
 export function ApplicationDetailScreen() {
   const { applicationId } = useParams<{ applicationId: string }>()
   const navigate = useNavigate()
-  const { connectors } = useConnectorContext()
-
-  const [application, setApplication] = useState<AllowanceApplication | null>(null)
-  const [vehicle, setVehicle] = useState<Vehicle | null>(null)
-  const [policies, setPolicies] = useState<InsurancePolicy[]>([])
-  const [documents, setDocuments] = useState<VADocument[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    async function fetchData() {
-      if (!applicationId) return
-      try {
-        const [appResult, vehicleResult, policyResult, docResult] = await Promise.all([
-          connectors.dataverse.retrieveRecord('va_allowanceapplications', applicationId),
-          connectors.dataverse.retrieveMultipleRecords('va_vehicles', `?$filter=_va_applicationid_value eq '${applicationId}'&$top=1`),
-          connectors.dataverse.retrieveMultipleRecords('va_insurancepolicies', `?$filter=_va_applicationid_value eq '${applicationId}'`),
-          connectors.dataverse.retrieveMultipleRecords('va_documents', `?$filter=_va_applicationid_value eq '${applicationId}'&$orderby=createdon desc`),
-        ])
-        setApplication(appResult as unknown as AllowanceApplication)
-        setVehicle((vehicleResult.entities?.[0] as Vehicle | undefined) ?? null)
-        setPolicies((policyResult.entities as InsurancePolicy[]) ?? [])
-        setDocuments((docResult.entities as VADocument[]) ?? [])
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load application')
-      } finally {
-        setLoading(false)
-      }
-    }
-    void fetchData()
-  }, [applicationId, connectors])
+  const { application, vehicle, policies, documents, loading, error } = useApplicationDetail(applicationId)
 
   if (loading) return <Spinner size="large" label="Loading application..." />
   if (error) return <MessageBar intent="error">{error}</MessageBar>

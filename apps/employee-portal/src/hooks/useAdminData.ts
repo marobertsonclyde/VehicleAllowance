@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useConnectorContext } from '@microsoft/power-apps'
+import { getErrorMessage } from '@/utils/formatters'
 import type {
   AllowanceLevelConfig,
   ReminderConfig,
@@ -62,7 +63,7 @@ export function useAdminData(): UseAdminDataResult {
         auditLogs: (auditRes.entities as AuditLog[]) ?? [],
       })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load admin data')
+      setError(getErrorMessage(err, 'Failed to load admin data'))
     } finally {
       setLoading(false)
     }

@@ -4,7 +4,7 @@ import { Card, Button, Text, Spinner, MessageBar, RadioGroup, Radio, tokens } fr
 import { useFlowActions } from '@/hooks/useFlowActions'
 import { useWizardState, useWizardDispatch } from '@/context/WizardContext'
 import { useConnectorContext } from '@microsoft/power-apps'
-import { formatCurrency } from '@/utils/formatters'
+import { formatCurrency, getErrorMessage } from '@/utils/formatters'
 import { effectiveDateDescription } from '@/utils/effectiveDateCalc'
 import type { AllowanceLevelConfig } from '@/types'
 
@@ -36,7 +36,7 @@ export function AllowanceLevelScreen() {
           setLevels(result as AllowanceLevelConfig[])
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load allowance levels')
+        setError(getErrorMessage(err, 'Failed to load allowance levels'))
       } finally {
         setLoading(false)
       }
@@ -60,7 +60,7 @@ export function AllowanceLevelScreen() {
       dispatch({ type: 'SET_STEP', payload: 'insurance' })
       navigate('/apply/insurance')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save level selection')
+      setError(getErrorMessage(err, 'Failed to save level selection'))
     } finally {
       setSaving(false)
     }

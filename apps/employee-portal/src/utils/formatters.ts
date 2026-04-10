@@ -52,3 +52,10 @@ export function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text
   return text.slice(0, maxLength - 1) + '\u2026'
 }
+
+/**
+ * Extract a human-readable error message from an unknown caught value.
+ */
+export function getErrorMessage(err: unknown, fallback = 'An unexpected error occurred'): string {
+  return err instanceof Error ? err.message : fallback
+}

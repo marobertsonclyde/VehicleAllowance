@@ -5,7 +5,7 @@ import { useCurrentApplication } from '@/hooks/useCurrentApplication'
 import { useFlowActions } from '@/hooks/useFlowActions'
 import { useWizardState } from '@/context/WizardContext'
 import { StatusBadge } from '@/components/shared/StatusBadge'
-import { formatCurrency, formatDate } from '@/utils/formatters'
+import { formatCurrency, formatDate, getErrorMessage } from '@/utils/formatters'
 import { effectiveDateDescription } from '@/utils/effectiveDateCalc'
 
 export function ReviewSubmitScreen() {
@@ -29,7 +29,7 @@ export function ReviewSubmitScreen() {
       await submitApplication(appId)
       setSubmitted(true)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Submission failed')
+      setError(getErrorMessage(err, 'Submission failed'))
     } finally {
       setSubmitting(false)
     }

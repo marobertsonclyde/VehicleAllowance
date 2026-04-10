@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useConnectorContext, useAuthContext } from '@microsoft/power-apps'
+import { getErrorMessage } from '@/utils/formatters'
 import { UserRole } from '@/types'
 
 const ROLE_MAP: Record<string, UserRole> = {
@@ -53,7 +54,7 @@ export function useUserRole(): UseUserRoleResult {
 
         setAllRoles(matched.length > 0 ? matched : [UserRole.Employee])
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load user roles')
+        setError(getErrorMessage(err, 'Failed to load user roles'))
         setAllRoles([UserRole.Employee])
       } finally {
         setLoading(false)
