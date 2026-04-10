@@ -78,7 +78,7 @@ export function InsuranceRenewalScreen() {
 
       {RENEWAL_DOCS.map(doc => (
         <Card key={doc.type}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="mobile-stack" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Text weight="semibold" size={300}>{doc.label}</Text>
             {uploaded.has(doc.type) && (
               <Text size={200} style={{ color: tokens.colorPaletteGreenForeground1 }}>Uploaded</Text>

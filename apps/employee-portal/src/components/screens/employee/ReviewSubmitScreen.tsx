@@ -101,7 +101,7 @@ export function ReviewSubmitScreen() {
       <Card>
         <Text weight="semibold" size={400}>Documents ({documents.length})</Text>
         {documents.map(d => (
-          <div key={d.va_documentid} style={{ display: 'flex', justifyContent: 'space-between', marginTop: tokens.spacingVerticalXS }}>
+          <div key={d.va_documentid} className="mobile-stack" style={{ display: 'flex', justifyContent: 'space-between', marginTop: tokens.spacingVerticalXS }}>
             <Text size={200}>{d.va_documentType}</Text>
             <StatusBadge status={d.va_aiProcessingStatus ?? 'Pending'} />
           </div>

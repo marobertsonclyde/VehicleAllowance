@@ -8,9 +8,9 @@ import type { AllowanceApplication } from '@/types'
 
 const columns: Column<AllowanceApplication>[] = [
   { key: 'name', label: 'Application', render: a => a.va_name ?? '--' },
-  { key: 'type', label: 'Type', render: a => a.va_applicationType ?? '--' },
+  { key: 'type', label: 'Type', render: a => a.va_applicationType ?? '--', hideOnMobile: true },
   { key: 'status', label: 'Status', render: a => <StatusBadge status={a.va_status ?? 'Draft'} /> },
-  { key: 'level', label: 'Level', render: a => a.va_allowanceLevel ?? '--' },
+  { key: 'level', label: 'Level', render: a => a.va_allowanceLevel ?? '--', hideOnMobile: true },
   { key: 'amount', label: 'Total Monthly', render: a => formatCurrency(a.va_totalMonthlyAllowance) },
   { key: 'submitted', label: 'Submitted', render: a => formatDate(a.va_submittedOn) },
 ]

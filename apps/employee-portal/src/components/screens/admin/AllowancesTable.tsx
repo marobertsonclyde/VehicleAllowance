@@ -19,9 +19,9 @@ function VerificationBadge({ status }: { status?: PayrollVerificationStatus }) {
 
 const columns: Column<AllowanceRecord>[] = [
   { key: 'name', label: 'Record', render: r => r.va_name ?? '--' },
-  { key: 'personnel', label: 'Personnel #', render: r => r.va_personnelnumber ?? '--' },
+  { key: 'personnel', label: 'Personnel #', render: r => r.va_personnelnumber ?? '--', hideOnMobile: true },
   { key: 'status', label: 'Status', render: r => <StatusBadge status={r.va_status ?? 'Active'} /> },
-  { key: 'level', label: 'Level', render: r => r.va_allowanceLevel ?? '--' },
+  { key: 'level', label: 'Level', render: r => r.va_allowanceLevel ?? '--', hideOnMobile: true },
   { key: 'amount', label: 'Monthly', render: r => formatCurrency(r.va_totalMonthlyAmount) },
   {
     key: 'payroll',
@@ -37,11 +37,12 @@ const columns: Column<AllowanceRecord>[] = [
       </div>
     ),
   },
-  { key: 'earnCode', label: 'Earn Code', render: r => r.va_payrollEarnCode ?? '--' },
-  { key: 'effective', label: 'Effective', render: r => formatDate(r.va_effectiveDate) },
+  { key: 'earnCode', label: 'Earn Code', render: r => r.va_payrollEarnCode ?? '--', hideOnMobile: true },
+  { key: 'effective', label: 'Effective', render: r => formatDate(r.va_effectiveDate), hideOnMobile: true },
   {
     key: 'renewal',
     label: 'Next Renewal',
+    hideOnMobile: true,
     render: r => {
       const date = r.va_nextRenewalDue
       if (!date) return '--'

@@ -7,8 +7,8 @@ import type { AuditLog } from '@/types'
 const columns: Column<AuditLog>[] = [
   { key: 'date', label: 'Date', render: l => formatDateTime(l.va_eventDate) },
   { key: 'event', label: 'Event', render: l => l.va_eventType ?? '--' },
-  { key: 'from', label: 'From', render: l => l.va_previousStatus ?? '--' },
-  { key: 'to', label: 'To', render: l => l.va_newStatus ?? '--' },
+  { key: 'from', label: 'From', render: l => l.va_previousStatus ?? '--', hideOnMobile: true },
+  { key: 'to', label: 'To', render: l => l.va_newStatus ?? '--', hideOnMobile: true },
   { key: 'by', label: 'By', render: l => l.va_performedByName ?? '--' },
   { key: 'notes', label: 'Notes', render: l => l.va_notes ?? '--' },
 ]

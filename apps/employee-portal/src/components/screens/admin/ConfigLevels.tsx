@@ -10,7 +10,7 @@ const columns: Column<AllowanceLevelConfig>[] = [
   { key: 'msrp', label: 'Min MSRP', render: c => formatCurrency(c.va_minimumMsrp) },
   { key: 'monthly', label: 'Monthly Allowance', render: c => formatCurrency(c.va_monthlyAllowance) },
   { key: 'ev', label: 'EV Charging', render: c => formatCurrency(c.va_evChargingAmount) },
-  { key: 'current', label: 'Current', render: c => c.va_isCurrentRate ? 'Yes' : 'No' },
+  { key: 'current', label: 'Current', render: c => c.va_isCurrentRate ? 'Yes' : 'No', hideOnMobile: true },
 ]
 
 export function ConfigLevels() {
