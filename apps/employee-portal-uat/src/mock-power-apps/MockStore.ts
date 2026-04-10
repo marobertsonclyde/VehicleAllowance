@@ -43,6 +43,26 @@ export const ROLE_USERS: Record<UserRole, { userId: string; displayName: string 
   [UserRole.Payroll]:         { userId: 'user-payroll', displayName: 'Casey Payroll' },
 }
 
+// ─── Employee personas ─────────────────────────────────────────────────────────
+// Each persona represents a distinct employee scenario for UAT.
+
+export interface EmployeePersona {
+  key: string
+  userId: string
+  displayName: string
+  description: string
+}
+
+export const EMPLOYEE_PERSONAS: EmployeePersona[] = [
+  { key: 'active-renewal',      userId: 'user-emp',          displayName: 'Alex Johnson',  description: 'Active allowance — renewal due soon' },
+  { key: 'expired-insurance',   userId: 'user-emp-expired',  displayName: 'Jordan Lee',    description: 'Active allowance — insurance lapsed' },
+  { key: 'pending-review',      userId: 'user-emp-pending',  displayName: 'Sam Davis',     description: 'Application in Equipment Leader review' },
+  { key: 'returned',            userId: 'user-emp-returned', displayName: 'Morgan Smith',  description: 'Application returned — needs resubmission' },
+  { key: 'no-application',      userId: 'user-emp-new',      displayName: 'Taylor Brown',  description: 'New employee — no application yet' },
+]
+
+export const DEFAULT_PERSONA_KEY = EMPLOYEE_PERSONAS[0].key
+
 // ─── Seed data ─────────────────────────────────────────────────────────────────
 
 const SEED_LEVEL_CONFIGS: AllowanceLevelConfig[] = [
@@ -551,11 +571,173 @@ const SEED_AUDIT_LOGS: AuditLog[] = [
   { va_auditlogid: 'log-008', va_name: 'AI Validation Completed',    va_eventType: 'AIValidationCompleted',   va_previousStatus: ApplicationStatus.Submitted, va_newStatus: ApplicationStatus.EquipmentLeaderReview,  va_performedByName: 'AI Builder System',               va_eventDate: '2024-10-28T14:35:00Z', va_applicationId: 'app-002', va_notes: 'AI score: 93%. Auto-approval eligible.' },
 ]
 
+// ─── Persona seed data (additional employees) ─────────────────────────────────
+
+/** Extra applications for personas beyond the shared queue */
+const PERSONA_APPLICATIONS: AllowanceApplication[] = [
+  // Sam Davis — pending EL review (user-emp-pending)
+  {
+    va_allowanceapplicationid: 'app-sam',
+    va_name: 'VA-2024-007',
+    va_applicantid: 'user-emp-pending',
+    va_personnelnumber: 'EMP-10312',
+    va_applicationType: ApplicationType.NewOptIn,
+    va_status: ApplicationStatus.EquipmentLeaderReview,
+    va_allowanceLevel: AllowanceLevel.B,
+    va_monthlyAllowanceAmount: 600,
+    va_evChargingAllowance: 0,
+    va_totalMonthlyAllowance: 600,
+    va_submittedOn: '2024-11-05T10:30:00Z',
+    va_companyEntityId: 'co-006',
+    va_companyEntityName: 'Clyde Construction',
+    va_aiValidationScore: 81,
+    va_aiAutoApprovalEligible: false,
+    va_aiValidationSummary: 'Documents extracted with good confidence. One endorsement field extraction borderline.',
+    va_aiFlaggedIssues: 'Endorsement entity name confidence 67% — recommend manual confirmation.',
+  },
+  // Morgan Smith — returned to employee (user-emp-returned)
+  {
+    va_allowanceapplicationid: 'app-morgan',
+    va_name: 'VA-2024-008',
+    va_applicantid: 'user-emp-returned',
+    va_personnelnumber: 'EMP-10388',
+    va_applicationType: ApplicationType.NewOptIn,
+    va_status: ApplicationStatus.ReturnedToEmployee,
+    va_allowanceLevel: AllowanceLevel.A,
+    va_monthlyAllowanceAmount: 400,
+    va_evChargingAllowance: 0,
+    va_totalMonthlyAllowance: 400,
+    va_submittedOn: '2024-10-18T09:00:00Z',
+    va_companyEntityId: 'co-007',
+    va_companyEntityName: 'Sunroc Building Materials',
+    va_aiValidationScore: 70,
+    va_aiAutoApprovalEligible: false,
+    va_equipmentLeaderDecision: 'Returned' as AllowanceApplication['va_equipmentLeaderDecision'],
+    va_equipmentLeaderReviewDate: '2024-10-22T14:00:00Z',
+    va_equipmentLeaderNotes: 'Umbrella policy does not list the vehicle VIN. Please upload a corrected umbrella declarations page that includes the insured vehicle.',
+  },
+]
+
+/** Vehicles for persona applications */
+const PERSONA_VEHICLES: Vehicle[] = [
+  {
+    va_vehicleid: 'veh-sam',
+    va_name: '2023 Toyota Tacoma',
+    va_applicationId: 'app-sam',
+    va_vin: '3TMCZ5AN7PM123456',
+    va_vinConfirmed: true,
+    va_make: 'Toyota',
+    va_model: 'Tacoma',
+    va_year: 2023,
+    va_bodyType: BodyType.Pickup,
+    va_msrpTotal: 46500,
+    va_msrpConfirmed: true,
+    va_isElectric: false,
+    va_meetsYearRequirement: true,
+    va_meetsMsrpRequirement: true,
+    va_meetsBodyTypeRequirement: true,
+  },
+  {
+    va_vehicleid: 'veh-morgan',
+    va_name: '2022 Ram 1500',
+    va_applicationId: 'app-morgan',
+    va_vin: '1C6SRFFT5NN123789',
+    va_vinConfirmed: true,
+    va_make: 'Ram',
+    va_model: '1500',
+    va_year: 2022,
+    va_bodyType: BodyType.Pickup,
+    va_msrpTotal: 38000,
+    va_msrpConfirmed: true,
+    va_isElectric: false,
+    va_meetsYearRequirement: true,
+    va_meetsMsrpRequirement: true,
+    va_meetsBodyTypeRequirement: true,
+  },
+  {
+    va_vehicleid: 'veh-jordan',
+    va_name: '2023 Ford Expedition',
+    va_applicationId: 'app-jordan-orig',
+    va_vin: '1FMJU2AT3PEA00001',
+    va_vinConfirmed: true,
+    va_make: 'Ford',
+    va_model: 'Expedition',
+    va_year: 2023,
+    va_bodyType: BodyType.SUV,
+    va_msrpTotal: 58000,
+    va_msrpConfirmed: true,
+    va_isElectric: false,
+    va_meetsYearRequirement: true,
+    va_meetsMsrpRequirement: true,
+    va_meetsBodyTypeRequirement: true,
+  },
+]
+
+/** AllowanceRecord for Jordan Lee — active but with lapsed insurance */
+const PERSONA_RECORDS: AllowanceRecord[] = [
+  {
+    va_allowancerecordid: 'rec-jordan',
+    va_name: 'AR-EMP-10271-2024',
+    va_employeeId: 'user-emp-expired',
+    va_personnelnumber: 'EMP-10271',
+    va_currentVehicleId: 'veh-jordan',
+    va_allowanceLevel: AllowanceLevel.B,
+    va_monthlyAmount: 600,
+    va_evChargingAmount: 0,
+    va_totalMonthlyAmount: 600,
+    va_effectiveDate: '2024-01-16T00:00:00Z',
+    va_status: AllowanceRecordStatus.Active,
+    va_companyEntityId: 'co-003',
+    // Renewal was due in September — now overdue
+    va_nextRenewalDue: '2024-09-15T00:00:00Z',
+    va_payrollVerificationStatus: PayrollVerificationStatus.Verified,
+    va_payrollEarnCode: 'VEHALLOW',
+    va_payrollAmount: 600,
+  },
+]
+
+/** Insurance policies for Jordan Lee — expired */
+const PERSONA_POLICIES: InsurancePolicy[] = [
+  {
+    va_insurancepolicyid: 'pol-jordan-auto',
+    va_name: 'Auto Policy – SF-2023-JL-4491 (EXPIRED)',
+    va_applicationId: 'app-jordan-orig',
+    va_employeeId: 'user-emp-expired',
+    va_personnelnumber: 'EMP-10271',
+    va_policyType: PolicyType.Auto,
+    va_carrierName: 'State Farm',
+    va_policyNumber: 'SF-2023-JL-4491',
+    va_effectiveDate: '2023-09-15T00:00:00Z',
+    va_expirationDate: '2024-09-15T00:00:00Z',   // expired Sep 2024
+    va_coverageLimitCSL: 500000,
+    va_meetsLiabilityRequirement: true,
+    va_meetsEndorsementRequirement: true,
+    va_status: 'Expired',
+    va_aiExtractionConfidence: 0.92,
+  },
+  {
+    va_insurancepolicyid: 'pol-jordan-umb',
+    va_name: 'Umbrella Policy – SF-UMB-2023-JL (EXPIRED)',
+    va_applicationId: 'app-jordan-orig',
+    va_employeeId: 'user-emp-expired',
+    va_policyType: PolicyType.UmbrellaPersonalExcess,
+    va_carrierName: 'State Farm',
+    va_policyNumber: 'SF-UMB-2023-JL',
+    va_effectiveDate: '2023-09-15T00:00:00Z',
+    va_expirationDate: '2024-09-15T00:00:00Z',   // expired Sep 2024
+    va_umbrellaLimit: 1000000,
+    va_meetsUmbrellaRequirement: true,
+    va_status: 'Expired',
+    va_aiExtractionConfidence: 0.89,
+  },
+]
+
 // ─── State shape ───────────────────────────────────────────────────────────────
 
 export interface UATState {
   currentRole: UserRole
   currentUserId: string
+  currentPersonaKey: string
   applications: AllowanceApplication[]
   vehicles: Vehicle[]
   insurancePolicies: InsurancePolicy[]
@@ -569,13 +751,15 @@ export interface UATState {
 
 function buildDefaultState(): UATState {
   return {
-    currentRole:    UserRole.Employee,
-    currentUserId:  ROLE_USERS[UserRole.Employee].userId,
-    applications:   structuredClone(SEED_APPLICATIONS),
-    vehicles:       structuredClone(SEED_VEHICLES),
-    insurancePolicies: structuredClone(SEED_POLICIES),
+    currentRole:       UserRole.Employee,
+    currentUserId:     ROLE_USERS[UserRole.Employee].userId,
+    currentPersonaKey: DEFAULT_PERSONA_KEY,
+    // Merge shared queue apps with persona-specific apps
+    applications:   structuredClone([...SEED_APPLICATIONS, ...PERSONA_APPLICATIONS]),
+    vehicles:       structuredClone([...SEED_VEHICLES, ...PERSONA_VEHICLES]),
+    insurancePolicies: structuredClone([...SEED_POLICIES, ...PERSONA_POLICIES]),
     documents:      structuredClone(SEED_DOCUMENTS),
-    allowanceRecords: structuredClone(SEED_ALLOWANCE_RECORDS),
+    allowanceRecords: structuredClone([...SEED_ALLOWANCE_RECORDS, ...PERSONA_RECORDS]),
     auditLogs:      structuredClone(SEED_AUDIT_LOGS),
     levelConfigs:   structuredClone(SEED_LEVEL_CONFIGS),
     reminderConfigs: structuredClone(SEED_REMINDER_CONFIG),
@@ -624,13 +808,37 @@ class MockDataStore {
 
   // ── Role / identity ──────────────────────────────────────────────────────────
 
-  getRole()   { return this.state.currentRole }
-  getUserId() { return this.state.currentUserId }
-  getDisplayName() { return ROLE_USERS[this.state.currentRole].displayName }
+  getRole()        { return this.state.currentRole }
+  getUserId()      { return this.state.currentUserId }
+  getPersonaKey()  { return this.state.currentPersonaKey }
+
+  getDisplayName() {
+    if (this.state.currentRole === UserRole.Employee) {
+      const persona = EMPLOYEE_PERSONAS.find(p => p.key === this.state.currentPersonaKey)
+      return persona?.displayName ?? ROLE_USERS[UserRole.Employee].displayName
+    }
+    return ROLE_USERS[this.state.currentRole].displayName
+  }
 
   setRole(role: UserRole) {
-    this.state.currentRole   = role
-    this.state.currentUserId = ROLE_USERS[role].userId
+    this.state.currentRole = role
+    if (role === UserRole.Employee) {
+      // Reset to default employee persona when switching back to Employee
+      const defaultPersona = EMPLOYEE_PERSONAS.find(p => p.key === DEFAULT_PERSONA_KEY)!
+      this.state.currentPersonaKey = defaultPersona.key
+      this.state.currentUserId     = defaultPersona.userId
+    } else {
+      this.state.currentPersonaKey = ''
+      this.state.currentUserId     = ROLE_USERS[role].userId
+    }
+    this.save()
+  }
+
+  setPersona(key: string) {
+    const persona = EMPLOYEE_PERSONAS.find(p => p.key === key)
+    if (!persona) return
+    this.state.currentPersonaKey = persona.key
+    this.state.currentUserId     = persona.userId
     this.save()
   }
 

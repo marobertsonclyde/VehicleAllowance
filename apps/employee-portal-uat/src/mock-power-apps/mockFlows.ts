@@ -25,15 +25,16 @@ export function buildMockFlowRunner() {
         // ── Eligibility check ────────────────────────────────────────────────
         case 'va_CheckEmployeeEligibility': {
           await delay()
-          const result: EligibilityCheckResult = {
-            isEligible: true,
-            personnelNumber: 'EMP-10042',
-            jobTitle: 'Field Operations Manager',
-            company: 'Clyde Companies Inc.',
-            defaultAllowanceLevel: AllowanceLevel.B,
-            eligibilityDeadline: new Date(Date.now() + 45 * 86400_000).toISOString().slice(0, 10),
+          // Return persona-appropriate eligibility data
+          const userId = mockStore.getUserId()
+          const personaData: Record<string, EligibilityCheckResult> = {
+            'user-emp':          { isEligible: true, personnelNumber: 'EMP-10042', jobTitle: 'Field Operations Manager',    company: 'Clyde Companies Inc.',      defaultAllowanceLevel: AllowanceLevel.B, eligibilityDeadline: new Date(Date.now() + 45 * 86400_000).toISOString().slice(0, 10) },
+            'user-emp-expired':  { isEligible: true, personnelNumber: 'EMP-10271', jobTitle: 'Project Manager',             company: 'Sunroc Corporation',        defaultAllowanceLevel: AllowanceLevel.B, eligibilityDeadline: new Date(Date.now() + 30 * 86400_000).toISOString().slice(0, 10) },
+            'user-emp-pending':  { isEligible: true, personnelNumber: 'EMP-10312', jobTitle: 'Construction Superintendent', company: 'Clyde Construction',        defaultAllowanceLevel: AllowanceLevel.B, eligibilityDeadline: new Date(Date.now() + 60 * 86400_000).toISOString().slice(0, 10) },
+            'user-emp-returned': { isEligible: true, personnelNumber: 'EMP-10388', jobTitle: 'Site Foreman',               company: 'Sunroc Building Materials', defaultAllowanceLevel: AllowanceLevel.A, eligibilityDeadline: new Date(Date.now() + 14 * 86400_000).toISOString().slice(0, 10) },
+            'user-emp-new':      { isEligible: true, personnelNumber: 'EMP-10441', jobTitle: 'Equipment Manager',          company: 'Arrow Rock Quarry',         defaultAllowanceLevel: AllowanceLevel.C, eligibilityDeadline: new Date(Date.now() + 60 * 86400_000).toISOString().slice(0, 10) },
           }
-          return result
+          return personaData[userId] ?? personaData['user-emp']
         }
 
         // ── Submit application ───────────────────────────────────────────────
