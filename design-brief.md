@@ -228,9 +228,42 @@ Screens / capabilities:
 - Opt-out action with reason + effective-date preview.
 - Indemnification: MVP captures an in-app attestation checkbox recorded
   in the audit log; DocuSign/Adobe Sign is a phase-2 swap-in.
+- **Responsive across phone and desktop.** Same codebase is deployed to a
+  Teams tab (desktop) and surfaced in the Power Apps mobile app
+  (iOS/Android). Employees will frequently use this from a phone — e.g.,
+  snapping a window sticker or dec page photo at a dealership — so the
+  upload, wizard, and status screens must be first-class on mobile, not
+  an afterthought.
 
 Internal users only → Teams tab avoids Power Pages licensing and uses Entra
 SSO natively.
+
+### 3a. Responsive / platform targets
+
+Both Code Apps (employee self-service and admin/reviewer) must be responsive
+and ship from a single codebase. Form-factor expectations:
+
+- **Mobile (< 600px)** — single-column layout, hamburger drawer for primary
+  navigation, a fixed bottom tab bar for top-level destinations, vertical
+  wizard stepper, data grids collapse to card-per-row with label:value
+  pairs. Tap targets ≥ 44×44px; form inputs ≥ 16px font-size to prevent
+  iOS zoom on focus. Employee app is expected to be used primarily on
+  mobile; admin app is expected to be used on mobile for triage (queues,
+  approvals, payroll ack) while configuration pages are desktop-primary.
+- **Tablet (600–1024px)** — two-column forms where it helps; drawer becomes
+  a persistent narrow rail; tables resume tabular layout with horizontal
+  scroll if needed.
+- **Desktop (≥ 1024px)** — full persistent left rail, tables inline, the
+  6-step wizard uses a 2-column layout (stepper on the left, form on the
+  right), admin queues get a filter panel on the right.
+
+Component style should map cleanly to **Fluent UI v9** (primary buttons with
+4px radius, underline-style inputs that thicken to brand color on focus,
+1px Pearl Gray card borders with no shadows, zebra-striped data grids,
+tab lists with an underline indicator, message bars for inline banners).
+This keeps the design portable between the Teams tab host and the Power
+Apps mobile app, and means the eventual React implementation can adopt
+`@fluentui/react-components` without a re-skin.
 
 ### 4. Power Apps Code App — admin + reviewer
 
@@ -247,6 +280,13 @@ targeting reviewers and admins. Screens:
   Dynamics asset list.
 - Config pages (admin-only): Allowance Levels, Title→Level mapping,
   Program Parameters, Legal Entities.
+- **Responsive across phone and desktop**, same codebase as the employee
+  app. Phone-primary surfaces: Needs Attention queue, Pending Approvals,
+  individual Request Review (approve/reject with comment), Payroll Ack.
+  Desktop-primary surfaces: all Config pages, bulk views of Active
+  Enrollments and Backfill Needed. Configuration pages are allowed to
+  degrade to a "open on a larger screen" message on narrow viewports
+  rather than attempting dense mobile layouts.
 
 Role gating is enforced server-side via Dataverse security roles; the Code
 App only hides UI affordances as a UX nicety.
@@ -331,6 +371,9 @@ record that was Active at migration time.
 - Audit columns + dedicated Audit Log table for state transitions and
   parameter changes.
 - Solution-based ALM across Dev / Test / Prod environments.
+- Mobile and desktop share a single Dataverse-role-based authorization model.
+  The Power Apps mobile shell inherits Entra SSO from the Code App host;
+  no separate auth model, no device-specific permission table.
 
 ### 9. Explicit Phase-2 items (deferred)
 
@@ -386,3 +429,11 @@ Expected repo layout when build starts:
   requests; Payroll role cannot edit; non-admin cannot open config pages.
 - **Fabric sync test:** break the Fabric→Dataverse join on a user (missing
   UPN) and confirm the reconciliation flow surfaces it to admin.
+- **Mobile layout check:** walk the employee happy path on a phone (375px
+  viewport / Power Apps mobile app) — eligibility landing, full 6-step
+  wizard including camera-based window-sticker upload, status tracker,
+  renewal, opt-out — and confirm no horizontal scroll, all tap targets
+  ≥ 44px, stepper renders vertically, data grids collapse to cards.
+  Repeat on the admin side for Needs Attention, Pending Approvals, and
+  individual Request Review (approve/reject). Confirm Config pages either
+  render usably or show the "open on a larger screen" degradation.

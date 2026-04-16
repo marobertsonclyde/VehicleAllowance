@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Review &amp; Submit</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css"></head><body>
+<div class="chrome chrome--with-bottomnav">
+  <div class="chrome__breadcrumb">Teams &rsaquo; CCI Vehicle Allowance &rsaquo; New Request</div>
+  <div class="chrome__accent"></div>
+  <div class="chrome__topbar">
+    <button class="nav-hamburger hide-desktop" data-drawer-toggle>&#9776;</button>
+    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Employee</span></div>
+    <div class="chrome__user"><span class="hide-mobile">Maria Alvarez</span><div class="chrome__avatar">MA</div></div>
+  </div>
+  <div class="chrome__body">
+    <aside class="nav-rail">
+      <h4>Menu</h4>
+      <a href="01-eligibility.html">Eligibility</a><a href="08-status-tracker.html">My Request Status</a>
+      <a href="02-wizard-intent.html" class="is-active">New Request</a>
+      <a href="09-renewal.html">Insurance Renewal</a><a href="10-opt-out.html">Opt-Out</a>
+      <div class="nav-rail__divider"></div><a href="../index.html">&larr; Wireframe hub</a>
+    </aside>
+    <div id="mobile-drawer" class="nav-drawer"><div class="nav-drawer__panel">
+      <a href="01-eligibility.html">Eligibility</a><a href="02-wizard-intent.html" class="is-active">New Request</a>
+      <a href="08-status-tracker.html">My Request Status</a><a href="09-renewal.html">Insurance Renewal</a>
+      <a href="10-opt-out.html">Opt-Out</a>
+    </div></div>
+
+    <main class="content">
+      <div class="content__header"><h1 class="content__title">Review &amp; submit</h1><span class="muted">Step 6 of 6</span></div>
+
+      <div class="fui-messagebar fui-messagebar--info">
+        <span class="fui-messagebar__icon">&#9432;</span>
+        <div>Your actual allowance level will be calculated at submit: <strong>min(your max qualifying level, highest level your vehicle MSRP meets)</strong>. Based on today&rsquo;s figures, that&rsquo;s <strong>Level B &mdash; $850/month</strong>.</div>
+      </div>
+
+      <div class="fui-card">
+        <div class="fui-card__header"><h3>Mode</h3><a href="02-wizard-intent.html" class="fui-btn fui-btn--subtle fui-btn--small">Edit</a></div>
+        <dl class="fui-dl"><dt>Request type</dt><dd>New Opt-In &middot; Monthly stipend</dd></dl>
+      </div>
+
+      <div class="fui-card">
+        <div class="fui-card__header"><h3>Vehicle</h3><a href="03-wizard-vehicle.html" class="fui-btn fui-btn--subtle fui-btn--small">Edit</a></div>
+        <dl class="fui-dl">
+          <dt>Vehicle</dt><dd>2024 Ford F-150 Lariat</dd>
+          <dt>VIN</dt><dd>1FTFW1E57PFA12345</dd>
+          <dt>Body / fuel</dt><dd>Pickup &middot; Gasoline</dd>
+          <dt>Total MSRP</dt><dd>$62,480</dd>
+          <dt>Purchase date</dt><dd>March 12, 2025</dd>
+          <dt>Eligible level</dt><dd><span class="fui-badge fui-badge--brand">Level B</span> (MSRP meets Level B floor; capped at your MLT max)</dd>
+        </dl>
+      </div>
+
+      <div class="fui-card">
+        <div class="fui-card__header"><h3>Insurance</h3><a href="05-wizard-auto-dec.html" class="fui-btn fui-btn--subtle fui-btn--small">Edit</a></div>
+        <dl class="fui-dl">
+          <dt>Auto carrier / policy</dt><dd>State Farm &middot; SF-1293-4455-02</dd>
+          <dt>Auto expires</dt><dd>August 15, 2026</dd>
+          <dt>Auto endorsement</dt><dd>Geneva Rock Products, Inc. &middot; Additional Insured</dd>
+          <dt>Umbrella carrier / policy</dt><dd>State Farm &middot; SF-UMB-9923-17</dd>
+          <dt>Umbrella limit</dt><dd>$1,000,000</dd>
+          <dt>Umbrella expires</dt><dd>November 1, 2026</dd>
+        </dl>
+      </div>
+
+      <div class="fui-card">
+        <div class="fui-card__header"><h3>Documents attached</h3></div>
+        <div class="fui-filepreview"><div class="fui-filepreview__icon">IMG</div><div class="fui-filepreview__body"><div class="fui-filepreview__name">window-sticker-f150.jpg</div><div class="fui-filepreview__meta">2.1 MB</div></div><span class="fui-badge fui-badge--success">&#10003; Extracted</span></div>
+        <div class="fui-filepreview"><div class="fui-filepreview__icon">PDF</div><div class="fui-filepreview__body"><div class="fui-filepreview__name">state-farm-auto-dec-2026.pdf</div><div class="fui-filepreview__meta">310 KB</div></div><span class="fui-badge fui-badge--success">&#10003; Extracted</span></div>
+        <div class="fui-filepreview"><div class="fui-filepreview__icon">PDF</div><div class="fui-filepreview__body"><div class="fui-filepreview__name">state-farm-umbrella-2026.pdf</div><div class="fui-filepreview__meta">225 KB</div></div><span class="fui-badge fui-badge--success">&#10003; Extracted</span></div>
+      </div>
+
+      <div class="fui-card">
+        <h3>Indemnification attestation</h3>
+        <p class="muted">Per policy &sect;4.2. This checkbox is recorded in the audit log. A formal e-signature step will replace it in phase 2.</p>
+        <label class="fui-checkbox"><input type="checkbox" checked> I have read and accept the indemnification terms. I agree to maintain insurance at or above the stated minimums for the duration of my participation, and I will notify CCI if my policy lapses.</label>
+      </div>
+
+      <div class="row row--between" style="gap:16px;">
+        <a href="06-wizard-umbrella-dec.html" class="fui-btn fui-btn--secondary">&larr; Back</a>
+        <a href="08-status-tracker.html" class="fui-btn fui-btn--primary">Submit for approval</a>
+      </div>
+    </main>
+  </div>
+  <nav class="bottom-nav hide-desktop">
+    <a href="01-eligibility.html"><span class="bottom-nav__icon">&#127968;</span>Home</a>
+    <a href="02-wizard-intent.html" class="is-active"><span class="bottom-nav__icon">&#43;</span>New</a>
+    <a href="08-status-tracker.html"><span class="bottom-nav__icon">&#9201;</span>Status</a>
+    <a href="09-renewal.html"><span class="bottom-nav__icon">&#128179;</span>Renew</a>
+  </nav>
+</div>
+<script src="../assets/app.js"></script>
+</body></html>

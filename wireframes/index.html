@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CCI Vehicle Allowance — Wireframes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="hub">
+    <section class="hub__hero">
+      <h1>CCI Vehicle Allowance</h1>
+      <p>Wireframes for the Power Apps Code Apps replacing the spreadsheet-and-PDF process. Two apps, one codebase, responsive across phone and desktop. Styled on the Clyde Companies brand with Fluent UI v9 component shapes.</p>
+    </section>
+
+    <section class="hub__section">
+      <h2>Preview a screen</h2>
+      <p class="muted">Pick a device width, then click any tile below. The preview frame drops into this page so you can walk the app at the target viewport.</p>
+      <div class="hub__device-toggle">
+        <button class="fui-btn fui-btn--secondary" data-device="phone">Phone&nbsp;&middot;&nbsp;375</button>
+        <button class="fui-btn fui-btn--secondary" data-device="tablet">Tablet&nbsp;&middot;&nbsp;768</button>
+        <button class="fui-btn fui-btn--primary" data-device="desktop">Desktop&nbsp;&middot;&nbsp;1440</button>
+      </div>
+      <div class="hub__preview hub__preview--desktop">
+        <div class="hub__preview__label muted">Select a screen to preview</div>
+        <div class="hub__preview__frame"><iframe title="screen preview" src="about:blank"></iframe></div>
+      </div>
+    </section>
+
+    <section class="hub__section">
+      <h2>Employee Self-Service</h2>
+      <p class="muted">For eligible leadership/management. Mobile is the primary surface — employees upload a window sticker at the dealership.</p>
+      <div class="hub__grid">
+        <a href="employee/01-eligibility.html" class="hub__tile" data-preview="employee/01-eligibility.html" data-title="Eligibility"><span class="hub__tile__num">E1</span><span class="hub__tile__title">Eligibility Landing</span><span class="hub__tile__desc">Am I eligible, countdown to Aug 1 lockout, next action.</span></a>
+        <a href="employee/02-wizard-intent.html" class="hub__tile" data-preview="employee/02-wizard-intent.html" data-title="Wizard · Intent"><span class="hub__tile__num">E2</span><span class="hub__tile__title">Wizard · Intent</span><span class="hub__tile__desc">Step 1: Stipend vs Company Car (MLT+).</span></a>
+        <a href="employee/03-wizard-vehicle.html" class="hub__tile" data-preview="employee/03-wizard-vehicle.html" data-title="Wizard · Vehicle"><span class="hub__tile__num">E3</span><span class="hub__tile__title">Wizard · Vehicle</span><span class="hub__tile__desc">Step 2: year, make, model, VIN, MSRP, purchase date.</span></a>
+        <a href="employee/04-wizard-window-sticker.html" class="hub__tile" data-preview="employee/04-wizard-window-sticker.html" data-title="Wizard · Window Sticker"><span class="hub__tile__num">E4</span><span class="hub__tile__title">Wizard · Window Sticker</span><span class="hub__tile__desc">Step 3: photo / file upload + AI Builder extract.</span></a>
+        <a href="employee/05-wizard-auto-dec.html" class="hub__tile" data-preview="employee/05-wizard-auto-dec.html" data-title="Wizard · Auto Dec"><span class="hub__tile__num">E5</span><span class="hub__tile__title">Wizard · Auto Dec</span><span class="hub__tile__desc">Step 4: auto insurance dec page + endorsement entity.</span></a>
+        <a href="employee/06-wizard-umbrella-dec.html" class="hub__tile" data-preview="employee/06-wizard-umbrella-dec.html" data-title="Wizard · Umbrella Dec"><span class="hub__tile__num">E6</span><span class="hub__tile__title">Wizard · Umbrella Dec</span><span class="hub__tile__desc">Step 5: umbrella dec page upload + limits.</span></a>
+        <a href="employee/07-wizard-review.html" class="hub__tile" data-preview="employee/07-wizard-review.html" data-title="Wizard · Review"><span class="hub__tile__num">E7</span><span class="hub__tile__title">Wizard · Review &amp; Submit</span><span class="hub__tile__desc">Step 6: confirm everything + attestation.</span></a>
+        <a href="employee/08-status-tracker.html" class="hub__tile" data-preview="employee/08-status-tracker.html" data-title="Status Tracker"><span class="hub__tile__num">E8</span><span class="hub__tile__title">Status Tracker</span><span class="hub__tile__desc">Where is my request in the approval chain?</span></a>
+        <a href="employee/09-renewal.html" class="hub__tile" data-preview="employee/09-renewal.html" data-title="Renewal"><span class="hub__tile__num">E9</span><span class="hub__tile__title">Insurance Renewal</span><span class="hub__tile__desc">One-click if vehicle unchanged.</span></a>
+        <a href="employee/10-opt-out.html" class="hub__tile" data-preview="employee/10-opt-out.html" data-title="Opt-Out"><span class="hub__tile__num">E10</span><span class="hub__tile__title">Opt-Out</span><span class="hub__tile__desc">Reason + effective-date preview.</span></a>
+        <a href="employee/11-company-car-branch.html" class="hub__tile" data-preview="employee/11-company-car-branch.html" data-title="Company-Car Branch"><span class="hub__tile__num">E11</span><span class="hub__tile__title">Company-Car Branch</span><span class="hub__tile__desc">MLT+ deferral — skips MSRP / insurance rules.</span></a>
+      </div>
+    </section>
+
+    <section class="hub__section">
+      <h2>Admin &amp; Reviewer</h2>
+      <p class="muted">CCI Director, Equipment Leaders, delegates, and read-only payroll. Phone-usable for triage and approvals; config pages are desktop-primary.</p>
+      <div class="hub__grid">
+        <a href="admin/01-landing.html" class="hub__tile" data-preview="admin/01-landing.html" data-title="Admin Landing"><span class="hub__tile__num">A1</span><span class="hub__tile__title">Admin Dashboard</span><span class="hub__tile__desc">Needs Attention, KPIs, queues at a glance.</span></a>
+        <a href="admin/02-pending-approvals.html" class="hub__tile" data-preview="admin/02-pending-approvals.html" data-title="Pending Approvals"><span class="hub__tile__num">A2</span><span class="hub__tile__title">Pending Approvals</span><span class="hub__tile__desc">Aging queue across tiers.</span></a>
+        <a href="admin/03-active-enrollments.html" class="hub__tile" data-preview="admin/03-active-enrollments.html" data-title="Active Enrollments"><span class="hub__tile__num">A3</span><span class="hub__tile__title">Active Enrollments</span><span class="hub__tile__desc">Filter by company, level, mode.</span></a>
+        <a href="admin/04-expiring-insurance.html" class="hub__tile" data-preview="admin/04-expiring-insurance.html" data-title="Expiring Insurance"><span class="hub__tile__num">A4</span><span class="hub__tile__title">Expiring Insurance</span><span class="hub__tile__desc">30 / 60 / 90-day buckets.</span></a>
+        <a href="admin/05-backfill-needed.html" class="hub__tile" data-preview="admin/05-backfill-needed.html" data-title="Backfill Needed"><span class="hub__tile__num">A5</span><span class="hub__tile__title">Backfill Needed</span><span class="hub__tile__desc">Legacy-tagged records with missing docs.</span></a>
+        <a href="admin/06-request-review.html" class="hub__tile" data-preview="admin/06-request-review.html" data-title="Request Review"><span class="hub__tile__num">A6</span><span class="hub__tile__title">Request Review</span><span class="hub__tile__desc">Detail view with AI compare + doc viewer.</span></a>
+        <a href="admin/07-equipment-leader-review.html" class="hub__tile" data-preview="admin/07-equipment-leader-review.html" data-title="Equipment Leader"><span class="hub__tile__num">A7</span><span class="hub__tile__title">Equipment Leader Step</span><span class="hub__tile__desc">Pick asset # from synced Dynamics list.</span></a>
+        <a href="admin/08-payroll-view.html" class="hub__tile" data-preview="admin/08-payroll-view.html" data-title="Payroll View"><span class="hub__tile__num">A8</span><span class="hub__tile__title">Payroll View</span><span class="hub__tile__desc">Read-only Payroll Ready queue.</span></a>
+        <a href="admin/09-config-levels.html" class="hub__tile" data-preview="admin/09-config-levels.html" data-title="Config · Levels"><span class="hub__tile__num">A9</span><span class="hub__tile__title">Config · Allowance Levels</span><span class="hub__tile__desc">Effective-dated rows (2025 vs 2026).</span></a>
+        <a href="admin/10-config-eligibility.html" class="hub__tile" data-preview="admin/10-config-eligibility.html" data-title="Config · Eligibility"><span class="hub__tile__num">A10</span><span class="hub__tile__title">Config · Title → Level</span><span class="hub__tile__desc">Max qualifying level mapping.</span></a>
+        <a href="admin/11-config-parameters.html" class="hub__tile" data-preview="admin/11-config-parameters.html" data-title="Config · Parameters"><span class="hub__tile__num">A11</span><span class="hub__tile__title">Config · Program Parameters</span><span class="hub__tile__desc">Deadlines, reminders, thresholds.</span></a>
+        <a href="admin/12-config-legal-entities.html" class="hub__tile" data-preview="admin/12-config-legal-entities.html" data-title="Config · Legal Entities"><span class="hub__tile__num">A12</span><span class="hub__tile__title">Config · Legal Entities</span><span class="hub__tile__desc">Subsidiaries for the endorsement list.</span></a>
+      </div>
+    </section>
+
+    <section class="hub__section">
+      <h2>Design notes</h2>
+      <div class="fui-card">
+        <h3>What this is</h3>
+        <p>Static HTML/CSS wireframes. No React, no Dataverse, no real uploads. The goal is to walk the product before a line of Code App TypeScript is written.</p>
+        <h3>Brand</h3>
+        <p>Clyde Companies core palette (Clyde Blue #0033A1 dominant, Pearl Gray backgrounds, Open Sans throughout). No shadows, no gradients — Clyde rules.</p>
+        <h3>Component language</h3>
+        <p>Every UI pattern maps 1:1 to Fluent UI v9: buttons, inputs, cards, data grids, tab lists, message bars, drawers. The real Code App should be able to adopt <code>@fluentui/react-components</code> without a re-skin.</p>
+        <h3>Responsive</h3>
+        <p>Mobile-first. Breakpoints at 600px (tablet) and 1024px (desktop). On mobile: single column, hamburger drawer, bottom nav, vertical wizard, card-per-row in place of tables. On desktop: persistent left rail, 2-column wizard, inline tables.</p>
+      </div>
+    </section>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pending Approvals</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css"></head><body>
+<div class="chrome chrome--with-bottomnav">
+  <div class="chrome__breadcrumb">Teams &rsaquo; CCI Vehicle Allowance &mdash; Admin</div>
+  <div class="chrome__accent"></div>
+  <div class="chrome__topbar">
+    <button class="nav-hamburger hide-desktop" data-drawer-toggle>&#9776;</button>
+    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Admin</span></div>
+    <div class="chrome__user"><span class="hide-mobile">David Kwon</span><div class="chrome__avatar">DK</div></div>
+  </div>
+  <div class="chrome__body">
+    <aside class="nav-rail">
+      <h4>Queues</h4>
+      <a href="01-landing.html">Dashboard</a>
+      <a href="02-pending-approvals.html" class="is-active">Pending Approvals</a>
+      <a href="03-active-enrollments.html">Active Enrollments</a>
+      <a href="04-expiring-insurance.html">Expiring Insurance</a>
+      <a href="05-backfill-needed.html">Backfill Needed</a>
+      <a href="08-payroll-view.html">Payroll View</a>
+      <div class="nav-rail__divider"></div>
+      <h4>Configuration</h4>
+      <a href="09-config-levels.html">Allowance Levels</a>
+      <a href="10-config-eligibility.html">Title &rarr; Level</a>
+      <a href="11-config-parameters.html">Program Parameters</a>
+      <a href="12-config-legal-entities.html">Legal Entities</a>
+      <div class="nav-rail__divider"></div><a href="../index.html">&larr; Wireframe hub</a>
+    </aside>
+    <div id="mobile-drawer" class="nav-drawer"><div class="nav-drawer__panel">
+      <a href="01-landing.html">Dashboard</a><a href="02-pending-approvals.html" class="is-active">Pending Approvals</a>
+      <a href="03-active-enrollments.html">Active Enrollments</a><a href="04-expiring-insurance.html">Expiring Insurance</a>
+      <a href="05-backfill-needed.html">Backfill Needed</a><a href="08-payroll-view.html">Payroll View</a>
+    </div></div>
+
+    <main class="content">
+      <div class="content__header">
+        <h1 class="content__title">Pending approvals</h1>
+        <div class="content__actions"><button class="fui-btn fui-btn--secondary">Reassign</button></div>
+      </div>
+
+      <div class="fui-tablist">
+        <button class="fui-tab is-active" data-tab="all">All (17)</button>
+        <button class="fui-tab" data-tab="mine">My desk (3)</button>
+        <button class="fui-tab" data-tab="aging">Aging &gt; 5 days (4)</button>
+        <button class="fui-tab" data-tab="legacy">Legacy (2)</button>
+      </div>
+
+      <div class="fui-card" data-panel="all">
+        <div class="row" style="gap:12px; margin-bottom:16px; flex-wrap:wrap;">
+          <select class="fui-select" style="max-width:200px;"><option>All companies</option><option>Geneva Rock</option><option>Suncore</option><option>W.W. Clyde</option><option>Sunpro</option><option>Beehive</option></select>
+          <select class="fui-select" style="max-width:200px;"><option>All stages</option><option>Supervisor</option><option>Equipment Leader</option><option>CCI Director</option></select>
+          <select class="fui-select" style="max-width:200px;"><option>All types</option><option>New Opt-In</option><option>Vehicle Update</option><option>Insurance Renewal</option><option>Company-Car Deferral</option></select>
+          <input class="fui-input" placeholder="Search by name, VIN, request #" style="flex:1; min-width:200px;">
+        </div>
+        <div class="fui-cards-mobile">
+          <a class="fui-cards-mobile__row" href="06-request-review.html"><header><span class="fui-cards-mobile__title">VA-2026-0147 &middot; Maria Alvarez</span><span class="fui-badge fui-badge--warning">3d</span></header><div class="fui-cards-mobile__kv"><span class="k">Type</span><span>New Opt-In</span></div><div class="fui-cards-mobile__kv"><span class="k">Company / Level</span><span>GRP &middot; B</span></div><div class="fui-cards-mobile__kv"><span class="k">Stage</span><span>Equipment Leader</span></div></a>
+          <a class="fui-cards-mobile__row" href="06-request-review.html"><header><span class="fui-cards-mobile__title">VA-2026-0145 &middot; Trey Ogden</span><span class="fui-badge fui-badge--neutral">1d</span></header><div class="fui-cards-mobile__kv"><span class="k">Type</span><span>Vehicle Update</span></div><div class="fui-cards-mobile__kv"><span class="k">Company / Level</span><span>SCR &middot; A</span></div><div class="fui-cards-mobile__kv"><span class="k">Stage</span><span>CCI Director</span></div></a>
+          <a class="fui-cards-mobile__row" href="06-request-review.html"><header><span class="fui-cards-mobile__title">VA-2026-0142 &middot; Nora Patel</span><span class="fui-badge fui-badge--warning">4d</span></header><div class="fui-cards-mobile__kv"><span class="k">Type</span><span>Insurance Renewal</span></div><div class="fui-cards-mobile__kv"><span class="k">Company / Level</span><span>SPC &middot; C</span></div><div class="fui-cards-mobile__kv"><span class="k">Stage</span><span>Equipment Leader</span></div></a>
+          <a class="fui-cards-mobile__row" href="06-request-review.html"><header><span class="fui-cards-mobile__title">VA-2026-0140 &middot; Jim Becker</span><span class="fui-badge fui-badge--neutral">2d</span></header><div class="fui-cards-mobile__kv"><span class="k">Type</span><span>New Opt-In</span></div><div class="fui-cards-mobile__kv"><span class="k">Company / Level</span><span>WWC &middot; B</span></div><div class="fui-cards-mobile__kv"><span class="k">Stage</span><span>Supervisor</span></div></a>
+          <a class="fui-cards-mobile__row" href="06-request-review.html"><header><span class="fui-cards-mobile__title">VA-2026-0138 &middot; Susan Tam</span><span class="fui-badge fui-badge--danger">6d</span></header><div class="fui-cards-mobile__kv"><span class="k">Type</span><span>Company-Car Deferral</span></div><div class="fui-cards-mobile__kv"><span class="k">Company / Level</span><span>GRP &middot; SLT</span></div><div class="fui-cards-mobile__kv"><span class="k">Stage</span><span>CCI Director</span></div></a>
+        </div>
+        <div class="fui-grid-wrap">
+          <table class="fui-grid">
+            <thead><tr><th>Request</th><th>Employee</th><th>Type</th><th>Company</th><th>Level</th><th>Stage</th><th>Age</th></tr></thead>
+            <tbody>
+              <tr onclick="location.href='06-request-review.html'"><td>VA-2026-0147</td><td>Maria Alvarez</td><td>New Opt-In</td><td>GRP</td><td>B</td><td>Equipment Leader</td><td><span class="fui-badge fui-badge--warning">3 days</span></td></tr>
+              <tr onclick="location.href='06-request-review.html'"><td>VA-2026-0145</td><td>Trey Ogden</td><td>Vehicle Update</td><td>SCR</td><td>A</td><td>CCI Director</td><td><span class="fui-badge fui-badge--neutral">1 day</span></td></tr>
+              <tr onclick="location.href='06-request-review.html'"><td>VA-2026-0142</td><td>Nora Patel</td><td>Insurance Renewal</td><td>SPC</td><td>C</td><td>Equipment Leader</td><td><span class="fui-badge fui-badge--warning">4 days</span></td></tr>
+              <tr onclick="location.href='06-request-review.html'"><td>VA-2026-0140</td><td>Jim Becker</td><td>New Opt-In</td><td>WWC</td><td>B</td><td>Supervisor</td><td><span class="fui-badge fui-badge--neutral">2 days</span></td></tr>
+              <tr onclick="location.href='06-request-review.html'"><td>VA-2026-0138</td><td>Susan Tam</td><td>Company-Car Deferral</td><td>GRP</td><td>SLT</td><td>CCI Director</td><td><span class="fui-badge fui-badge--danger">6 days</span></td></tr>
+              <tr onclick="location.href='06-request-review.html'"><td>VA-2026-0135</td><td>Hiro Tanaka</td><td>New Opt-In</td><td>BIA</td><td>C</td><td>Equipment Leader</td><td><span class="fui-badge fui-badge--warning">5 days</span></td></tr>
+              <tr onclick="location.href='06-request-review.html'"><td>VA-2026-0133</td><td>Linda Rojas</td><td>Vehicle Update</td><td>GRP</td><td>C</td><td>Supervisor</td><td><span class="fui-badge fui-badge--neutral">1 day</span></td></tr>
+              <tr onclick="location.href='06-request-review.html'"><td>VA-2026-0131 <span class="fui-badge fui-badge--info">Legacy</span></td><td>Paul Asmar</td><td>Insurance Renewal</td><td>WWC</td><td>B</td><td>Equipment Leader</td><td><span class="fui-badge fui-badge--neutral">2 days</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  <nav class="bottom-nav hide-desktop">
+    <a href="01-landing.html"><span class="bottom-nav__icon">&#127968;</span>Home</a>
+    <a href="02-pending-approvals.html" class="is-active"><span class="bottom-nav__icon">&#9202;</span>Approvals</a>
+    <a href="04-expiring-insurance.html"><span class="bottom-nav__icon">&#128196;</span>Insurance</a>
+    <a href="08-payroll-view.html"><span class="bottom-nav__icon">&#128179;</span>Payroll</a>
+  </nav>
+</div>
+<script src="../assets/app.js"></script>
+</body></html>

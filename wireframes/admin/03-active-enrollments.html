@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Active Enrollments</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css"></head><body>
+<div class="chrome chrome--with-bottomnav">
+  <div class="chrome__breadcrumb">Teams &rsaquo; CCI Vehicle Allowance &mdash; Admin</div>
+  <div class="chrome__accent"></div>
+  <div class="chrome__topbar">
+    <button class="nav-hamburger hide-desktop" data-drawer-toggle>&#9776;</button>
+    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Admin</span></div>
+    <div class="chrome__user"><span class="hide-mobile">David Kwon</span><div class="chrome__avatar">DK</div></div>
+  </div>
+  <div class="chrome__body">
+    <aside class="nav-rail">
+      <h4>Queues</h4>
+      <a href="01-landing.html">Dashboard</a>
+      <a href="02-pending-approvals.html">Pending Approvals</a>
+      <a href="03-active-enrollments.html" class="is-active">Active Enrollments</a>
+      <a href="04-expiring-insurance.html">Expiring Insurance</a>
+      <a href="05-backfill-needed.html">Backfill Needed</a>
+      <a href="08-payroll-view.html">Payroll View</a>
+      <div class="nav-rail__divider"></div>
+      <h4>Configuration</h4>
+      <a href="09-config-levels.html">Allowance Levels</a><a href="10-config-eligibility.html">Title &rarr; Level</a>
+      <a href="11-config-parameters.html">Program Parameters</a><a href="12-config-legal-entities.html">Legal Entities</a>
+      <div class="nav-rail__divider"></div><a href="../index.html">&larr; Wireframe hub</a>
+    </aside>
+    <div id="mobile-drawer" class="nav-drawer"><div class="nav-drawer__panel">
+      <a href="01-landing.html">Dashboard</a><a href="02-pending-approvals.html">Pending Approvals</a>
+      <a href="03-active-enrollments.html" class="is-active">Active Enrollments</a>
+      <a href="04-expiring-insurance.html">Expiring Insurance</a><a href="05-backfill-needed.html">Backfill Needed</a>
+      <a href="08-payroll-view.html">Payroll View</a>
+    </div></div>
+
+    <main class="content">
+      <div class="content__header"><h1 class="content__title">Active enrollments</h1>
+        <div class="content__actions">
+          <button class="fui-btn fui-btn--secondary">Export CSV</button>
+        </div>
+      </div>
+
+      <div class="row" style="gap:12px; margin-bottom:16px; flex-wrap:wrap;">
+        <select class="fui-select" style="max-width:200px;"><option>All companies</option><option>Geneva Rock</option><option>Suncore</option><option>W.W. Clyde</option></select>
+        <select class="fui-select" style="max-width:200px;"><option>All levels</option><option>Level A</option><option>Level B</option><option>Level C</option><option>Level D</option></select>
+        <select class="fui-select" style="max-width:200px;"><option>All modes</option><option>Stipend</option><option>Company Car</option></select>
+        <input class="fui-input" placeholder="Search" style="flex:1; min-width:200px;">
+      </div>
+
+      <div class="fui-cards-mobile">
+        <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Maria Alvarez</span><span class="fui-badge fui-badge--success">Active</span></header><div class="fui-cards-mobile__kv"><span class="k">Company / Level</span><span>GRP &middot; B</span></div><div class="fui-cards-mobile__kv"><span class="k">Vehicle</span><span>2024 F-150 Lariat</span></div><div class="fui-cards-mobile__kv"><span class="k">Monthly</span><span>$850</span></div><div class="fui-cards-mobile__kv"><span class="k">Payroll ack</span><span>&#10003; Apr 1</span></div></div>
+        <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Trey Ogden</span><span class="fui-badge fui-badge--success">Active</span></header><div class="fui-cards-mobile__kv"><span class="k">Company / Level</span><span>SCR &middot; A</span></div><div class="fui-cards-mobile__kv"><span class="k">Vehicle</span><span>2025 Chevy Tahoe LT</span></div><div class="fui-cards-mobile__kv"><span class="k">Monthly</span><span>$1,100</span></div><div class="fui-cards-mobile__kv"><span class="k">Payroll ack</span><span>&#10003; Apr 1</span></div></div>
+        <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Paul Asmar <span class="fui-badge fui-badge--info">Legacy</span></span><span class="fui-badge fui-badge--success">Active</span></header><div class="fui-cards-mobile__kv"><span class="k">Company / Level</span><span>WWC &middot; B</span></div><div class="fui-cards-mobile__kv"><span class="k">Vehicle</span><span>2022 Ford F-250</span></div><div class="fui-cards-mobile__kv"><span class="k">Monthly</span><span>$850</span></div></div>
+      </div>
+
+      <div class="fui-grid-wrap">
+        <table class="fui-grid">
+          <thead><tr><th>Employee</th><th>Company</th><th>Level</th><th>Mode</th><th>Vehicle</th><th>Monthly</th><th>Effective</th><th>Payroll ack</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Maria Alvarez</td><td>GRP</td><td>B</td><td>Stipend</td><td>2024 Ford F-150 Lariat</td><td>$850</td><td>May 1, 2026</td><td>&#10003; Apr 1</td><td><span class="fui-badge fui-badge--success">Active</span></td></tr>
+            <tr><td>Trey Ogden</td><td>SCR</td><td>A</td><td>Stipend</td><td>2025 Chevy Tahoe LT</td><td>$1,100</td><td>Jan 1, 2026</td><td>&#10003; Apr 1</td><td><span class="fui-badge fui-badge--success">Active</span></td></tr>
+            <tr><td>Nora Patel</td><td>SPC</td><td>C</td><td>Stipend</td><td>2023 Toyota Highlander</td><td>$700</td><td>Sep 1, 2025</td><td>&#10003; Apr 1</td><td><span class="fui-badge fui-badge--success">Active</span></td></tr>
+            <tr><td>Jim Becker</td><td>WWC</td><td>B</td><td>Stipend</td><td>2024 GMC Sierra 1500</td><td>$850</td><td>Feb 1, 2026</td><td>&#10003; Apr 1</td><td><span class="fui-badge fui-badge--success">Active</span></td></tr>
+            <tr><td>Susan Tam</td><td>GRP</td><td>&mdash;</td><td>Company Car</td><td>2025 Ford Expedition (fleet)</td><td>&mdash;</td><td>Jan 15, 2026</td><td>n/a</td><td><span class="fui-badge fui-badge--success">Active</span></td></tr>
+            <tr><td>Paul Asmar <span class="fui-badge fui-badge--info">Legacy</span></td><td>WWC</td><td>B</td><td>Stipend</td><td>2022 Ford F-250</td><td>$850</td><td>Jan 1, 2026</td><td>&#10003; Apr 1</td><td><span class="fui-badge fui-badge--success">Active</span></td></tr>
+            <tr><td>Hiro Tanaka</td><td>BIA</td><td>C</td><td>Stipend</td><td>2024 Subaru Outback</td><td>$700</td><td>Apr 1, 2026</td><td><span class="fui-badge fui-badge--warning">Pending</span></td><td><span class="fui-badge fui-badge--success">Active</span></td></tr>
+            <tr><td>Linda Rojas</td><td>GRP</td><td>C</td><td>Stipend</td><td>2023 Honda Pilot</td><td>$700</td><td>Nov 1, 2025</td><td>&#10003; Apr 1</td><td><span class="fui-badge fui-badge--success">Active</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+  <nav class="bottom-nav hide-desktop">
+    <a href="01-landing.html"><span class="bottom-nav__icon">&#127968;</span>Home</a>
+    <a href="02-pending-approvals.html"><span class="bottom-nav__icon">&#9202;</span>Approvals</a>
+    <a href="04-expiring-insurance.html"><span class="bottom-nav__icon">&#128196;</span>Insurance</a>
+    <a href="08-payroll-view.html"><span class="bottom-nav__icon">&#128179;</span>Payroll</a>
+  </nav>
+</div>
+<script src="../assets/app.js"></script>
+</body></html>

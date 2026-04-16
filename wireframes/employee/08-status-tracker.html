@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>My Request Status</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css"></head><body>
+<div class="chrome chrome--with-bottomnav">
+  <div class="chrome__breadcrumb">Teams &rsaquo; CCI Vehicle Allowance &rsaquo; Status</div>
+  <div class="chrome__accent"></div>
+  <div class="chrome__topbar">
+    <button class="nav-hamburger hide-desktop" data-drawer-toggle>&#9776;</button>
+    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Employee</span></div>
+    <div class="chrome__user"><span class="hide-mobile">Maria Alvarez</span><div class="chrome__avatar">MA</div></div>
+  </div>
+  <div class="chrome__body">
+    <aside class="nav-rail">
+      <h4>Menu</h4>
+      <a href="01-eligibility.html">Eligibility</a>
+      <a href="08-status-tracker.html" class="is-active">My Request Status</a>
+      <a href="02-wizard-intent.html">New Request</a>
+      <a href="09-renewal.html">Insurance Renewal</a><a href="10-opt-out.html">Opt-Out</a>
+      <div class="nav-rail__divider"></div><a href="../index.html">&larr; Wireframe hub</a>
+    </aside>
+    <div id="mobile-drawer" class="nav-drawer"><div class="nav-drawer__panel">
+      <a href="01-eligibility.html">Eligibility</a><a href="02-wizard-intent.html">New Request</a>
+      <a href="08-status-tracker.html" class="is-active">My Request Status</a>
+      <a href="09-renewal.html">Insurance Renewal</a><a href="10-opt-out.html">Opt-Out</a>
+    </div></div>
+
+    <main class="content">
+      <div class="content__header">
+        <h1 class="content__title">My request status</h1>
+        <span class="fui-badge fui-badge--warning"><span class="fui-badge__dot"></span>Equipment Leader Review</span>
+      </div>
+
+      <div class="fui-messagebar fui-messagebar--info">
+        <span class="fui-messagebar__icon">&#9201;</span>
+        <div>Submitted 2 days ago. Your supervisor approved. Currently with Geneva Rock&rsquo;s Equipment Leader. Expected: 1&ndash;2 business days.</div>
+      </div>
+
+      <div class="fui-card">
+        <div class="fui-card__header"><h3>Request #VA-2026-0147</h3><a href="07-wizard-review.html" class="fui-btn fui-btn--subtle fui-btn--small">View details</a></div>
+        <dl class="fui-dl">
+          <dt>Type</dt><dd>New Opt-In &middot; Stipend</dd>
+          <dt>Submitted</dt><dd>April 14, 2026 at 9:03 AM</dd>
+          <dt>Vehicle</dt><dd>2024 Ford F-150 Lariat</dd>
+          <dt>Proposed level</dt><dd>Level B &middot; $850/mo</dd>
+          <dt>Effective date (if approved today)</dt><dd>May 1, 2026</dd>
+        </dl>
+
+        <h3 style="margin-top:24px;">Approval chain</h3>
+        <div class="fui-chain">
+          <div class="fui-chain__step fui-chain__step--done">
+            <div class="fui-chain__marker">&#10003;</div>
+            <div class="fui-chain__body">
+              <div class="fui-chain__title">Supervisor &mdash; James Whitaker</div>
+              <div class="fui-chain__meta">Approved April 14 at 4:12 PM &middot; &ldquo;Looks good. Vehicle fits role.&rdquo;</div>
+            </div>
+          </div>
+          <div class="fui-chain__step fui-chain__step--current">
+            <div class="fui-chain__marker">&hellip;</div>
+            <div class="fui-chain__body">
+              <div class="fui-chain__title">Equipment Leader &mdash; Rhonda Ito</div>
+              <div class="fui-chain__meta">In progress since April 15 &middot; assigning asset #</div>
+            </div>
+          </div>
+          <div class="fui-chain__step">
+            <div class="fui-chain__marker">3</div>
+            <div class="fui-chain__body">
+              <div class="fui-chain__title">CCI Director &mdash; David Kwon</div>
+              <div class="fui-chain__meta">Pending &middot; triggers payroll notification on approval</div>
+            </div>
+          </div>
+          <div class="fui-chain__step">
+            <div class="fui-chain__marker">4</div>
+            <div class="fui-chain__body">
+              <div class="fui-chain__title">Payroll notified</div>
+              <div class="fui-chain__meta">Auto-posts on director approval</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:16px;">
+          <button class="fui-btn fui-btn--secondary">Add a comment</button>
+          <button class="fui-btn fui-btn--subtle">Withdraw request</button>
+        </div>
+      </div>
+
+      <div class="fui-card">
+        <h3>Past requests</h3>
+        <div class="fui-cards-mobile">
+          <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">VA-2025-0089</span><span class="fui-badge fui-badge--success">Approved</span></header><div class="fui-cards-mobile__kv"><span class="k">Type</span><span>Insurance Renewal</span></div><div class="fui-cards-mobile__kv"><span class="k">Date</span><span>Aug 2, 2025</span></div></div>
+        </div>
+        <div class="fui-grid-wrap">
+          <table class="fui-grid">
+            <thead><tr><th>Request</th><th>Type</th><th>Submitted</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>VA-2025-0089</td><td>Insurance Renewal</td><td>Aug 2, 2025</td><td><span class="fui-badge fui-badge--success">Approved</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  <nav class="bottom-nav hide-desktop">
+    <a href="01-eligibility.html"><span class="bottom-nav__icon">&#127968;</span>Home</a>
+    <a href="02-wizard-intent.html"><span class="bottom-nav__icon">&#43;</span>New</a>
+    <a href="08-status-tracker.html" class="is-active"><span class="bottom-nav__icon">&#9201;</span>Status</a>
+    <a href="09-renewal.html"><span class="bottom-nav__icon">&#128179;</span>Renew</a>
+  </nav>
+</div>
+<script src="../assets/app.js"></script>
+</body></html>
