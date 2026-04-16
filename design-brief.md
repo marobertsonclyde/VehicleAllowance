@@ -220,9 +220,13 @@ Screens / capabilities:
 
 - "Am I eligible?" landing page pulling from Employee + Eligibility Rule,
   showing a personalized deadline countdown.
-- Guided wizard: Opt-in intent → Vehicle select (year/make/model, VIN, MSRP
-  entry pre-filled by AI Builder) → Upload window sticker → Upload auto
-  dec page → Upload umbrella dec page → Review & Submit.
+- Guided wizard: Opt-in intent → Upload window sticker (AI Builder extracts
+  VIN, MSRP, year, make, model) → Upload auto dec page (AI Builder extracts
+  carrier, policy #, dates, coverage limits) → Upload umbrella dec page (AI
+  extracts effective dates and limit) → **Verify vehicle details** (confirm
+  or correct the AI extraction; add purchase date since it isn't on the
+  sticker) → Review & Submit. Extract-first ordering means employees don't
+  type what the documents already contain.
 - In-app status tracker for in-flight requests.
 - Insurance renewal resubmission flow (one-click if vehicle unchanged).
 - Opt-out action with reason + effective-date preview.
