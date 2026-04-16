@@ -8,7 +8,10 @@
   <div class="chrome__topbar">
     <button class="nav-hamburger hide-desktop" data-drawer-toggle>&#9776;</button>
     <div class="chrome__wordmark">CCI Vehicle Allowance <span>Admin &middot; CCI Director</span></div>
-    <div class="chrome__user"><span class="hide-mobile">David Kwon</span><div class="chrome__avatar">DK</div></div>
+    <div class="chrome__user">
+      <a href="../employee/12-profile.html" class="fui-btn fui-btn--subtle fui-btn--small hide-mobile" title="Available because you also have employee role">My Enrollment &rarr;</a>
+      <span class="hide-mobile">David Kwon</span><div class="chrome__avatar">DK</div>
+    </div>
   </div>
   <div class="chrome__body">
     <aside class="nav-rail">
@@ -65,17 +68,17 @@
           <div class="fui-card" id="needs-attention">
             <div class="fui-card__header"><h3>Needs attention</h3><a href="#" class="fui-btn fui-btn--subtle fui-btn--small">View all 3</a></div>
             <div class="fui-cards-mobile">
-              <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Maria Alvarez &middot; GRP</span><span class="fui-badge fui-badge--danger">No payroll ack (7d)</span></header><div class="fui-cards-mobile__kv"><span class="k">Enrollment</span><span>ENR-2026-0092</span></div></div>
-              <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Trey Ogden &middot; SCR</span><span class="fui-badge fui-badge--danger">Asset # mismatch</span></header><div class="fui-cards-mobile__kv"><span class="k">Enrollment</span><span>ENR-2026-0101</span></div></div>
-              <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Lena Costa &middot; WWC</span><span class="fui-badge fui-badge--warning">No payroll ack (5d)</span></header><div class="fui-cards-mobile__kv"><span class="k">Enrollment</span><span>ENR-2026-0083</span></div></div>
+              <div class="fui-cards-mobile__row" onclick="location.href='13-employee-detail.html'" style="cursor:pointer;"><header><span class="fui-cards-mobile__title">Maria Alvarez &middot; GRP</span><span class="fui-badge fui-badge--danger">No payroll ack (7d)</span></header><div class="fui-cards-mobile__kv"><span class="k">Enrollment</span><span>ENR-2026-0092</span></div></div>
+              <div class="fui-cards-mobile__row" onclick="location.href='13-employee-detail.html'" style="cursor:pointer;"><header><span class="fui-cards-mobile__title">Trey Ogden &middot; SCR</span><span class="fui-badge fui-badge--danger">Asset # mismatch</span></header><div class="fui-cards-mobile__kv"><span class="k">Enrollment</span><span>ENR-2026-0101</span></div></div>
+              <div class="fui-cards-mobile__row" onclick="location.href='13-employee-detail.html'" style="cursor:pointer;"><header><span class="fui-cards-mobile__title">Lena Costa &middot; WWC</span><span class="fui-badge fui-badge--warning">No payroll ack (5d)</span></header><div class="fui-cards-mobile__kv"><span class="k">Enrollment</span><span>ENR-2026-0083</span></div></div>
             </div>
             <div class="fui-grid-wrap">
               <table class="fui-grid">
                 <thead><tr><th>Employee</th><th>Company</th><th>Issue</th><th>Age</th><th>Severity</th></tr></thead>
                 <tbody>
-                  <tr><td>Maria Alvarez</td><td>GRP</td><td>Active enrollment, no payroll ack</td><td>7 days</td><td><span class="fui-badge fui-badge--danger">High</span></td></tr>
-                  <tr><td>Trey Ogden</td><td>SCR</td><td>Asset # mismatch (Dynamics)</td><td>2 days</td><td><span class="fui-badge fui-badge--danger">High</span></td></tr>
-                  <tr><td>Lena Costa</td><td>WWC</td><td>Active enrollment, no payroll ack</td><td>5 days</td><td><span class="fui-badge fui-badge--warning">Med</span></td></tr>
+                  <tr onclick="location.href='13-employee-detail.html'" style="cursor:pointer;"><td>Maria Alvarez</td><td>GRP</td><td>Active enrollment, no payroll ack</td><td>7 days</td><td><span class="fui-badge fui-badge--danger">High</span></td></tr>
+                  <tr onclick="location.href='13-employee-detail.html'" style="cursor:pointer;"><td>Trey Ogden</td><td>SCR</td><td>Asset # mismatch (Dynamics)</td><td>2 days</td><td><span class="fui-badge fui-badge--danger">High</span></td></tr>
+                  <tr onclick="location.href='13-employee-detail.html'" style="cursor:pointer;"><td>Lena Costa</td><td>WWC</td><td>Active enrollment, no payroll ack</td><td>5 days</td><td><span class="fui-badge fui-badge--warning">Med</span></td></tr>
                 </tbody>
               </table>
             </div>

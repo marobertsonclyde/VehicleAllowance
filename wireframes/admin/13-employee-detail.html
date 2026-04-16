@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Employee Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css"></head><body>
+<div class="chrome chrome--with-bottomnav">
+  <div class="chrome__breadcrumb">Teams &rsaquo; CCI Vehicle Allowance &mdash; Admin &rsaquo; Active Enrollments &rsaquo; Maria Alvarez</div>
+  <div class="chrome__accent"></div>
+  <div class="chrome__topbar">
+    <button class="nav-hamburger hide-desktop" data-drawer-toggle>&#9776;</button>
+    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Admin</span></div>
+    <div class="chrome__user">
+      <a href="../employee/12-profile.html" class="fui-btn fui-btn--subtle fui-btn--small hide-mobile" title="Available because you also have employee role">My Enrollment &rarr;</a>
+      <span class="hide-mobile">David Kwon</span><div class="chrome__avatar">DK</div>
+    </div>
+  </div>
+  <div class="chrome__body">
+    <aside class="nav-rail">
+      <h4>Queues</h4>
+      <a href="01-landing.html">Dashboard</a>
+      <a href="02-pending-approvals.html">Pending Approvals</a>
+      <a href="03-active-enrollments.html" class="is-active">Active Enrollments</a>
+      <a href="04-expiring-insurance.html">Expiring Insurance</a>
+      <a href="05-backfill-needed.html">Backfill Needed</a>
+      <a href="08-payroll-view.html">Payroll View</a>
+      <div class="nav-rail__divider"></div>
+      <h4>Configuration</h4>
+      <a href="09-config-levels.html">Allowance Levels</a>
+      <a href="10-config-eligibility.html">Title &rarr; Level</a>
+      <a href="11-config-parameters.html">Program Parameters</a>
+      <a href="12-config-legal-entities.html">Legal Entities</a>
+      <div class="nav-rail__divider"></div><a href="../index.html">&larr; Wireframe hub</a>
+    </aside>
+    <div id="mobile-drawer" class="nav-drawer"><div class="nav-drawer__panel">
+      <a href="01-landing.html">Dashboard</a>
+      <a href="02-pending-approvals.html">Pending Approvals</a>
+      <a href="03-active-enrollments.html" class="is-active">Active Enrollments</a>
+      <a href="04-expiring-insurance.html">Expiring Insurance</a>
+      <a href="05-backfill-needed.html">Backfill Needed</a>
+      <a href="08-payroll-view.html">Payroll View</a>
+    </div></div>
+
+    <main class="content">
+      <div class="content__header">
+        <div>
+          <a href="03-active-enrollments.html" class="fui-btn fui-btn--subtle fui-btn--small">&larr; Active Enrollments</a>
+          <h1 class="content__title" style="margin-top:8px;">Maria Alvarez</h1>
+          <div class="muted" style="margin-top:4px;">Operations Manager &middot; Geneva Rock Products &middot; MLT &middot; Enrollment ENR-2026-0092</div>
+        </div>
+        <div class="content__actions">
+          <span class="fui-badge fui-badge--success">Active</span>
+          <span class="fui-badge fui-badge--brand">Level B</span>
+          <span class="fui-badge fui-badge--neutral">Stipend</span>
+        </div>
+      </div>
+
+      <div class="fui-messagebar fui-messagebar--warning">
+        <span class="fui-messagebar__icon">&#9888;</span>
+        <div><strong>Payroll ack missing for 7 days.</strong> Enrollment became active May 1 but Geneva Rock payroll hasn&rsquo;t confirmed. <a href="08-payroll-view.html" style="margin-left:8px;">Open payroll view &rarr;</a> &middot; <a href="#" style="margin-left:8px;">Send reminder</a></div>
+      </div>
+
+      <div class="two-col two-col--review">
+        <div>
+          <div class="fui-card">
+            <div class="fui-card__header"><h3>Enrollment summary</h3><button class="fui-btn fui-btn--subtle fui-btn--small">Edit</button></div>
+            <dl class="fui-dl">
+              <dt>Mode</dt><dd>Stipend</dd>
+              <dt>Level</dt><dd>B &middot; grandfathered to 2025 MSRP table (purchased Mar 2025)</dd>
+              <dt>Monthly amount</dt><dd>$850</dd>
+              <dt>EV allowance</dt><dd>&mdash; (gasoline vehicle)</dd>
+              <dt>Effective start</dt><dd>May 1, 2026</dd>
+              <dt>Annual opt-in lock</dt><dd>Aug 1, 2026</dd>
+              <dt>Next Jan 1 refresh</dt><dd>Jan 1, 2027 (Level B &rarr; 2026 amount or re-config)</dd>
+              <dt>Asset #</dt><dd>GR-F150-0412 (Dynamics)</dd>
+              <dt>Created via</dt><dd>Employee self-service (VA-2026-0147)</dd>
+            </dl>
+          </div>
+
+          <div class="fui-card">
+            <div class="fui-card__header"><h3>Employee</h3></div>
+            <dl class="fui-dl">
+              <dt>UPN</dt><dd>maria.alvarez@clyde.com</dd>
+              <dt>Hire date</dt><dd>May 14, 2019 (Fabric)</dd>
+              <dt>Title</dt><dd>Operations Manager</dd>
+              <dt>Tier</dt><dd>MLT (eligible for Level B max)</dd>
+              <dt>Supervisor</dt><dd>James Whitaker</dd>
+              <dt>Equipment Leader</dt><dd>Rhonda Ito (Geneva Rock)</dd>
+              <dt>Payroll contact</dt><dd>Brenda Harmon</dd>
+            </dl>
+          </div>
+
+          <div class="fui-card">
+            <div class="fui-card__header"><h3>Vehicle &amp; insurance</h3></div>
+            <dl class="fui-dl">
+              <dt>Vehicle</dt><dd>2024 Ford F-150 Lariat &middot; VIN 1FTFW1E57PFA12345</dd>
+              <dt>Body &middot; fuel</dt><dd>Pickup &middot; Gasoline (ICE)</dd>
+              <dt>Total MSRP</dt><dd>$62,480</dd>
+              <dt>Purchase date</dt><dd>Mar 12, 2025</dd>
+              <dt>Auto policy</dt><dd>State Farm SF-1293-4455-02 &middot; $250k/$500k/$100k &middot; expires Aug 15, 2026 <span class="fui-badge fui-badge--warning">42 days</span></dd>
+              <dt>Umbrella policy</dt><dd>State Farm SF-UMB-9923-17 &middot; $1,000,000 &middot; expires Nov 1, 2026 <span class="fui-badge fui-badge--success">120 days</span></dd>
+              <dt>Endorsement entity</dt><dd>Geneva Rock Products, Inc. (AI on both policies)</dd>
+            </dl>
+          </div>
+
+          <div class="fui-card">
+            <h3>Documents on file</h3>
+            <div class="stack stack--s">
+              <div class="fui-filepreview"><div class="fui-filepreview__icon">IMG</div><div class="fui-filepreview__body"><div class="fui-filepreview__name">window-sticker-f150.jpg</div><div class="fui-filepreview__meta">Uploaded Apr 14, 2026 by employee &middot; 1.8 MB</div></div><a href="#" class="fui-btn fui-btn--subtle fui-btn--small">View</a></div>
+              <div class="fui-filepreview"><div class="fui-filepreview__icon">PDF</div><div class="fui-filepreview__body"><div class="fui-filepreview__name">auto-dec-2026.pdf</div><div class="fui-filepreview__meta">Uploaded Apr 14, 2026 by employee &middot; 340 KB</div></div><a href="#" class="fui-btn fui-btn--subtle fui-btn--small">View</a></div>
+              <div class="fui-filepreview"><div class="fui-filepreview__icon">PDF</div><div class="fui-filepreview__body"><div class="fui-filepreview__name">umbrella-dec-2026.pdf</div><div class="fui-filepreview__meta">Uploaded Apr 14, 2026 by employee &middot; 210 KB</div></div><a href="#" class="fui-btn fui-btn--subtle fui-btn--small">View</a></div>
+            </div>
+          </div>
+
+          <div class="fui-card">
+            <h3>Request history</h3>
+            <div class="fui-grid-wrap">
+              <table class="fui-grid">
+                <thead><tr><th>Request</th><th>Type</th><th>Outcome</th><th>Decided</th><th>By</th></tr></thead>
+                <tbody>
+                  <tr><td><a href="06-request-review.html">VA-2026-0147</a></td><td>Opt-in (new vehicle)</td><td><span class="fui-badge fui-badge--success">Approved</span></td><td>Apr 15, 2026</td><td>David Kwon (CCI Director)</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="muted" style="margin-top:8px; font-size:12px;">Maria is a new enrollee as of the 2026 opt-in window; no prior history.</p>
+          </div>
+
+          <div class="fui-card">
+            <h3>Audit log</h3>
+            <div class="fui-chain">
+              <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#10003;</div><div class="fui-chain__body"><div class="fui-chain__title">Enrollment became Active</div><div class="fui-chain__meta">May 1, 2026 00:00 &middot; system</div></div></div>
+              <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#10003;</div><div class="fui-chain__body"><div class="fui-chain__title">Approved by CCI Director</div><div class="fui-chain__meta">Apr 15, 2026 14:22 &middot; David Kwon</div></div></div>
+              <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#10003;</div><div class="fui-chain__body"><div class="fui-chain__title">Asset number assigned GR-F150-0412</div><div class="fui-chain__meta">Apr 14, 2026 09:15 &middot; Rhonda Ito</div></div></div>
+              <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#10003;</div><div class="fui-chain__body"><div class="fui-chain__title">Supervisor approved</div><div class="fui-chain__meta">Apr 14, 2026 08:02 &middot; James Whitaker</div></div></div>
+              <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#10003;</div><div class="fui-chain__body"><div class="fui-chain__title">Request submitted</div><div class="fui-chain__meta">Apr 14, 2026 07:40 &middot; Maria Alvarez</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="side-panel">
+            <h3>Admin actions</h3>
+            <div class="stack stack--s">
+              <button class="fui-btn fui-btn--secondary">Send payroll reminder</button>
+              <button class="fui-btn fui-btn--secondary">Re-route approval</button>
+              <button class="fui-btn fui-btn--secondary">Message in Teams</button>
+              <a href="../employee/12-profile.html" class="fui-btn fui-btn--subtle">View employee&rsquo;s self-service &rarr;</a>
+              <div class="nav-rail__divider"></div>
+              <button class="fui-btn fui-btn--secondary">Suspend enrollment</button>
+              <button class="fui-btn fui-btn--danger">Terminate enrollment</button>
+            </div>
+            <p class="muted" style="margin-top:12px; font-size:12px;">Destructive actions write an audit entry and notify the employee + supervisor.</p>
+          </div>
+
+          <div class="side-panel">
+            <h3>Flags</h3>
+            <ul style="margin:0; padding-left:18px;">
+              <li><span class="fui-badge fui-badge--warning">Payroll ack &gt; 5d</span></li>
+              <li><span class="fui-badge fui-badge--info">Grandfathered MSRP (2025)</span></li>
+            </ul>
+          </div>
+
+          <div class="side-panel">
+            <h3>Quick stats</h3>
+            <dl class="fui-dl" style="grid-template-columns: 1.5fr 1fr;">
+              <dt>Lifetime requests</dt><dd>1</dd>
+              <dt>Approvals granted</dt><dd>1</dd>
+              <dt>Denials</dt><dd>0</dd>
+              <dt>Insurance renewals</dt><dd>0</dd>
+              <dt>Legacy record</dt><dd>No</dd>
+            </dl>
+          </div>
+
+          <div class="side-panel">
+            <h3>Admin notes</h3>
+            <textarea class="fui-input" rows="4" placeholder="Add an internal note (not visible to the employee)"></textarea>
+            <button class="fui-btn fui-btn--primary" style="margin-top:8px; width:100%;">Save note</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <nav class="bottom-nav hide-desktop">
+    <a href="01-landing.html"><span class="bottom-nav__icon">&#127968;</span>Home</a>
+    <a href="02-pending-approvals.html"><span class="bottom-nav__icon">&#9202;</span>Approvals</a>
+    <a href="03-active-enrollments.html" class="is-active"><span class="bottom-nav__icon">&#128100;</span>Enrollee</a>
+    <a href="08-payroll-view.html"><span class="bottom-nav__icon">&#128179;</span>Payroll</a>
+  </nav>
+</div>
+<script src="../assets/app.js"></script>
+</body></html>
