@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css"></head><body>
+<div class="chrome chrome--with-bottomnav">
+  <div class="chrome__breadcrumb">Teams &rsaquo; CCI Vehicle Allowance &mdash; Admin</div>
+  <div class="chrome__accent"></div>
+  <div class="chrome__topbar">
+    <button class="nav-hamburger hide-desktop" data-drawer-toggle>&#9776;</button>
+    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Admin &middot; CCI Director</span></div>
+    <div class="chrome__user"><span class="hide-mobile">David Kwon</span><div class="chrome__avatar">DK</div></div>
+  </div>
+  <div class="chrome__body">
+    <aside class="nav-rail">
+      <h4>Queues</h4>
+      <a href="01-landing.html" class="is-active">Dashboard</a>
+      <a href="02-pending-approvals.html">Pending Approvals</a>
+      <a href="03-active-enrollments.html">Active Enrollments</a>
+      <a href="04-expiring-insurance.html">Expiring Insurance</a>
+      <a href="05-backfill-needed.html">Backfill Needed</a>
+      <a href="08-payroll-view.html">Payroll View</a>
+      <div class="nav-rail__divider"></div>
+      <h4>Configuration</h4>
+      <a href="09-config-levels.html">Allowance Levels</a>
+      <a href="10-config-eligibility.html">Title &rarr; Level</a>
+      <a href="11-config-parameters.html">Program Parameters</a>
+      <a href="12-config-legal-entities.html">Legal Entities</a>
+      <div class="nav-rail__divider"></div><a href="../index.html">&larr; Wireframe hub</a>
+    </aside>
+    <div id="mobile-drawer" class="nav-drawer"><div class="nav-drawer__panel">
+      <a href="01-landing.html" class="is-active">Dashboard</a>
+      <a href="02-pending-approvals.html">Pending Approvals</a>
+      <a href="03-active-enrollments.html">Active Enrollments</a>
+      <a href="04-expiring-insurance.html">Expiring Insurance</a>
+      <a href="05-backfill-needed.html">Backfill Needed</a>
+      <a href="08-payroll-view.html">Payroll View</a>
+      <a href="09-config-levels.html">Config &middot; Levels</a>
+      <a href="10-config-eligibility.html">Config &middot; Title&rarr;Level</a>
+      <a href="11-config-parameters.html">Config &middot; Parameters</a>
+      <a href="12-config-legal-entities.html">Config &middot; Legal Entities</a>
+    </div></div>
+
+    <main class="content">
+      <div class="content__header"><h1 class="content__title">Dashboard</h1>
+        <div class="content__actions">
+          <button class="fui-btn fui-btn--secondary">Export</button>
+          <button class="fui-btn fui-btn--primary">+ New enrollment</button>
+        </div>
+      </div>
+
+      <div class="fui-messagebar fui-messagebar--danger">
+        <span class="fui-messagebar__icon">!</span>
+        <div><strong>3 exceptions need attention.</strong> Two enrollments are Active with no payroll ack after 5 days, and one asset number is mismatched in Dynamics. <a href="#needs-attention">Review</a></div>
+      </div>
+
+      <div class="fui-kpi-row">
+        <div class="fui-kpi"><div class="fui-kpi__label">Active enrollments</div><div class="fui-kpi__value">142</div><div class="fui-kpi__trend">&#9650; 8 vs. last month</div></div>
+        <div class="fui-kpi"><div class="fui-kpi__label">Pending approvals</div><div class="fui-kpi__value">17</div><div class="fui-kpi__trend">4 aging &gt; 5 days</div></div>
+        <div class="fui-kpi"><div class="fui-kpi__label">Expiring &lt; 30 days</div><div class="fui-kpi__value">6</div><div class="fui-kpi__trend">Insurance reminders sent</div></div>
+        <div class="fui-kpi"><div class="fui-kpi__label">Monthly run-rate</div><div class="fui-kpi__value">$112,450</div><div class="fui-kpi__trend">Apr 2026 stipend + EV allowances</div></div>
+      </div>
+
+      <div class="two-col two-col--review">
+        <div>
+          <div class="fui-card" id="needs-attention">
+            <div class="fui-card__header"><h3>Needs attention</h3><a href="#" class="fui-btn fui-btn--subtle fui-btn--small">View all 3</a></div>
+            <div class="fui-cards-mobile">
+              <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Maria Alvarez &middot; GRP</span><span class="fui-badge fui-badge--danger">No payroll ack (7d)</span></header><div class="fui-cards-mobile__kv"><span class="k">Enrollment</span><span>ENR-2026-0092</span></div></div>
+              <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Trey Ogden &middot; SCR</span><span class="fui-badge fui-badge--danger">Asset # mismatch</span></header><div class="fui-cards-mobile__kv"><span class="k">Enrollment</span><span>ENR-2026-0101</span></div></div>
+              <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Lena Costa &middot; WWC</span><span class="fui-badge fui-badge--warning">No payroll ack (5d)</span></header><div class="fui-cards-mobile__kv"><span class="k">Enrollment</span><span>ENR-2026-0083</span></div></div>
+            </div>
+            <div class="fui-grid-wrap">
+              <table class="fui-grid">
+                <thead><tr><th>Employee</th><th>Company</th><th>Issue</th><th>Age</th><th>Severity</th></tr></thead>
+                <tbody>
+                  <tr><td>Maria Alvarez</td><td>GRP</td><td>Active enrollment, no payroll ack</td><td>7 days</td><td><span class="fui-badge fui-badge--danger">High</span></td></tr>
+                  <tr><td>Trey Ogden</td><td>SCR</td><td>Asset # mismatch (Dynamics)</td><td>2 days</td><td><span class="fui-badge fui-badge--danger">High</span></td></tr>
+                  <tr><td>Lena Costa</td><td>WWC</td><td>Active enrollment, no payroll ack</td><td>5 days</td><td><span class="fui-badge fui-badge--warning">Med</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="fui-card">
+            <div class="fui-card__header"><h3>Pending approvals &mdash; your desk</h3><a href="02-pending-approvals.html" class="fui-btn fui-btn--subtle fui-btn--small">Full queue</a></div>
+            <div class="fui-cards-mobile">
+              <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">VA-2026-0147 &middot; Maria Alvarez</span><span class="fui-badge fui-badge--warning">3 days</span></header><div class="fui-cards-mobile__kv"><span class="k">Stage</span><span>Equipment Leader</span></div><div class="fui-cards-mobile__kv"><span class="k">Company</span><span>GRP</span></div></div>
+              <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">VA-2026-0145 &middot; Trey Ogden</span><span class="fui-badge fui-badge--neutral">1 day</span></header><div class="fui-cards-mobile__kv"><span class="k">Stage</span><span>CCI Director</span></div><div class="fui-cards-mobile__kv"><span class="k">Company</span><span>SCR</span></div></div>
+            </div>
+            <div class="fui-grid-wrap">
+              <table class="fui-grid">
+                <thead><tr><th>Request</th><th>Employee</th><th>Company</th><th>Stage</th><th>Age</th></tr></thead>
+                <tbody>
+                  <tr><td>VA-2026-0147</td><td>Maria Alvarez</td><td>GRP</td><td>Equipment Leader</td><td><span class="fui-badge fui-badge--warning">3 days</span></td></tr>
+                  <tr><td>VA-2026-0145</td><td>Trey Ogden</td><td>SCR</td><td>CCI Director</td><td><span class="fui-badge fui-badge--neutral">1 day</span></td></tr>
+                  <tr><td>VA-2026-0142</td><td>Nora Patel</td><td>SPC</td><td>Equipment Leader</td><td><span class="fui-badge fui-badge--warning">4 days</span></td></tr>
+                  <tr><td>VA-2026-0140</td><td>Jim Becker</td><td>WWC</td><td>Supervisor</td><td><span class="fui-badge fui-badge--neutral">2 days</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="side-panel">
+            <h3>By company</h3>
+            <dl class="fui-dl" style="grid-template-columns: 2fr 1fr;">
+              <dt>Geneva Rock (GRP)</dt><dd>54 active</dd>
+              <dt>Suncore (SCR)</dt><dd>31 active</dd>
+              <dt>W.W. Clyde (WWC)</dt><dd>22 active</dd>
+              <dt>Sunpro (SPC)</dt><dd>19 active</dd>
+              <dt>Beehive Insurance</dt><dd>9 active</dd>
+              <dt>Other</dt><dd>7 active</dd>
+            </dl>
+          </div>
+          <div class="side-panel">
+            <h3>By level</h3>
+            <dl class="fui-dl" style="grid-template-columns: 2fr 1fr;">
+              <dt>Level A</dt><dd>18</dd>
+              <dt>Level B</dt><dd>47</dd>
+              <dt>Level C</dt><dd>58</dd>
+              <dt>Level D</dt><dd>15</dd>
+              <dt>Company car</dt><dd>4</dd>
+            </dl>
+          </div>
+          <div class="side-panel">
+            <h3>Quick actions</h3>
+            <div class="stack stack--s">
+              <a href="09-config-levels.html" class="fui-btn fui-btn--secondary">Edit Allowance Levels</a>
+              <a href="11-config-parameters.html" class="fui-btn fui-btn--secondary">Edit Program Parameters</a>
+              <a href="05-backfill-needed.html" class="fui-btn fui-btn--secondary">Backfill queue</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <nav class="bottom-nav hide-desktop">
+    <a href="01-landing.html" class="is-active"><span class="bottom-nav__icon">&#127968;</span>Home</a>
+    <a href="02-pending-approvals.html"><span class="bottom-nav__icon">&#9202;</span>Approvals</a>
+    <a href="04-expiring-insurance.html"><span class="bottom-nav__icon">&#128196;</span>Insurance</a>
+    <a href="08-payroll-view.html"><span class="bottom-nav__icon">&#128179;</span>Payroll</a>
+  </nav>
+</div>
+<script src="../assets/app.js"></script>
+</body></html>

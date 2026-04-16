@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Insurance Renewal</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css"></head><body>
+<div class="chrome chrome--with-bottomnav">
+  <div class="chrome__breadcrumb">Teams &rsaquo; CCI Vehicle Allowance &rsaquo; Renewal</div>
+  <div class="chrome__accent"></div>
+  <div class="chrome__topbar">
+    <button class="nav-hamburger hide-desktop" data-drawer-toggle>&#9776;</button>
+    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Employee</span></div>
+    <div class="chrome__user"><span class="hide-mobile">Maria Alvarez</span><div class="chrome__avatar">MA</div></div>
+  </div>
+  <div class="chrome__body">
+    <aside class="nav-rail">
+      <h4>Menu</h4>
+      <a href="01-eligibility.html">Eligibility</a><a href="08-status-tracker.html">My Request Status</a>
+      <a href="02-wizard-intent.html">New Request</a>
+      <a href="09-renewal.html" class="is-active">Insurance Renewal</a>
+      <a href="10-opt-out.html">Opt-Out</a>
+      <div class="nav-rail__divider"></div><a href="../index.html">&larr; Wireframe hub</a>
+    </aside>
+    <div id="mobile-drawer" class="nav-drawer"><div class="nav-drawer__panel">
+      <a href="01-eligibility.html">Eligibility</a><a href="02-wizard-intent.html">New Request</a>
+      <a href="08-status-tracker.html">My Request Status</a>
+      <a href="09-renewal.html" class="is-active">Insurance Renewal</a>
+      <a href="10-opt-out.html">Opt-Out</a>
+    </div></div>
+
+    <main class="content">
+      <div class="content__header"><h1 class="content__title">Insurance renewal</h1></div>
+
+      <div class="fui-messagebar fui-messagebar--warning">
+        <span class="fui-messagebar__icon">&#9888;</span>
+        <div><strong>Your auto policy expires in 42 days.</strong> State Farm SF-1293-4455-02 expires August 15, 2026. Renew now to stay in compliance.</div>
+      </div>
+
+      <div class="fui-card">
+        <h3>Is your vehicle still the same?</h3>
+        <p class="muted">If nothing has changed, renewal is one click. If you&rsquo;ve changed vehicles or carriers, you&rsquo;ll go through the full wizard instead.</p>
+
+        <dl class="fui-dl" style="margin-top:16px;">
+          <dt>Vehicle on file</dt><dd>2024 Ford F-150 Lariat &middot; VIN 1FTFW1E57PFA12345</dd>
+          <dt>Carrier on file</dt><dd>State Farm</dd>
+          <dt>Policy #</dt><dd>SF-1293-4455-02</dd>
+        </dl>
+
+        <div class="fui-radio-group" style="margin-top:16px;">
+          <label class="fui-radio fui-radio--selected"><input type="radio" name="same" checked><span class="fui-radio__body"><span class="fui-radio__title">Same vehicle, same carrier</span><span class="fui-radio__desc">Just upload the new dec page and I&rsquo;m done.</span></span></label>
+          <label class="fui-radio"><input type="radio" name="same"><span class="fui-radio__body"><span class="fui-radio__title">Something changed</span><span class="fui-radio__desc">New vehicle, new carrier, or different endorsement. Start a full request.</span></span></label>
+        </div>
+      </div>
+
+      <div class="fui-card">
+        <h3>Upload renewed dec page</h3>
+        <div class="fui-upload">
+          <div class="fui-upload__icon">&#128196;</div>
+          <div><strong>Drag and drop the renewed dec PDF</strong></div>
+          <div class="fui-upload__buttons">
+            <button class="fui-btn fui-btn--primary">&#128247; Take a photo</button>
+            <button class="fui-btn fui-btn--secondary">Choose file</button>
+          </div>
+        </div>
+        <div class="fui-filepreview"><div class="fui-filepreview__icon">PDF</div><div class="fui-filepreview__body"><div class="fui-filepreview__name">state-farm-auto-dec-2026-renewal.pdf</div><div class="fui-filepreview__meta">305 KB &middot; uploaded just now</div></div><span class="fui-badge fui-badge--success">&#10003; Extracted</span></div>
+        <div class="fui-ai-extract">
+          <div class="fui-ai-extract__header"><div class="fui-ai-extract__title">&#129302; AI Builder &mdash; extracted</div><span class="fui-badge fui-badge--brand">Confidence 95%</span></div>
+          <div class="fui-ai-compare">
+            <div class="fui-ai-compare__col"><div class="k">New expiration</div><div class="v">February 15, 2027</div></div>
+            <div class="fui-ai-compare__col"><div class="k">Endorsement</div><div class="v">Geneva Rock Products, Inc. &middot; AI</div></div>
+            <div class="fui-ai-compare__col"><div class="k">Bodily injury</div><div class="v">$300,000 / $500,000</div></div>
+            <div class="fui-ai-compare__col"><div class="k">Property damage</div><div class="v">$100,000</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row row--between">
+        <a href="01-eligibility.html" class="fui-btn fui-btn--subtle">Cancel</a>
+        <a href="08-status-tracker.html" class="fui-btn fui-btn--primary">Submit renewal</a>
+      </div>
+    </main>
+  </div>
+  <nav class="bottom-nav hide-desktop">
+    <a href="01-eligibility.html"><span class="bottom-nav__icon">&#127968;</span>Home</a>
+    <a href="02-wizard-intent.html"><span class="bottom-nav__icon">&#43;</span>New</a>
+    <a href="08-status-tracker.html"><span class="bottom-nav__icon">&#9201;</span>Status</a>
+    <a href="09-renewal.html" class="is-active"><span class="bottom-nav__icon">&#128179;</span>Renew</a>
+  </nav>
+</div>
+<script src="../assets/app.js"></script>
+</body></html>

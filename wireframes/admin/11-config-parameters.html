@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Config · Program Parameters</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css"></head><body>
+<div class="chrome chrome--with-bottomnav">
+  <div class="chrome__breadcrumb">Teams &rsaquo; Admin &rsaquo; Config &rsaquo; Program Parameters</div>
+  <div class="chrome__accent"></div>
+  <div class="chrome__topbar">
+    <button class="nav-hamburger hide-desktop" data-drawer-toggle>&#9776;</button>
+    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Admin &middot; Config</span></div>
+    <div class="chrome__user"><span class="hide-mobile">David Kwon</span><div class="chrome__avatar">DK</div></div>
+  </div>
+  <div class="chrome__body">
+    <aside class="nav-rail">
+      <h4>Queues</h4>
+      <a href="01-landing.html">Dashboard</a>
+      <a href="02-pending-approvals.html">Pending Approvals</a>
+      <a href="03-active-enrollments.html">Active Enrollments</a>
+      <a href="04-expiring-insurance.html">Expiring Insurance</a>
+      <a href="05-backfill-needed.html">Backfill Needed</a>
+      <a href="08-payroll-view.html">Payroll View</a>
+      <div class="nav-rail__divider"></div>
+      <h4>Configuration</h4>
+      <a href="09-config-levels.html">Allowance Levels</a>
+      <a href="10-config-eligibility.html">Title &rarr; Level</a>
+      <a href="11-config-parameters.html" class="is-active">Program Parameters</a>
+      <a href="12-config-legal-entities.html">Legal Entities</a>
+      <div class="nav-rail__divider"></div><a href="../index.html">&larr; Wireframe hub</a>
+    </aside>
+    <div id="mobile-drawer" class="nav-drawer"><div class="nav-drawer__panel">
+      <a href="01-landing.html">Dashboard</a><a href="09-config-levels.html">Config &middot; Levels</a>
+      <a href="10-config-eligibility.html">Config &middot; Title&rarr;Level</a>
+      <a href="11-config-parameters.html" class="is-active">Config &middot; Parameters</a>
+      <a href="12-config-legal-entities.html">Config &middot; Legal Entities</a>
+    </div></div>
+
+    <main class="content">
+      <div class="content__header">
+        <h1 class="content__title">Program parameters</h1>
+        <div class="content__actions">
+          <button class="fui-btn fui-btn--secondary">View audit log</button>
+          <button class="fui-btn fui-btn--primary">Save changes</button>
+        </div>
+      </div>
+
+      <div class="fui-messagebar fui-messagebar--info">
+        <span class="fui-messagebar__icon">&#9432;</span>
+        <div>All changes here are captured in the audit log with your name and timestamp. Changes take effect immediately.</div>
+      </div>
+
+      <div class="two-col">
+        <div class="fui-card">
+          <h3>Deadlines</h3>
+          <div class="fui-field"><label class="fui-field__label">Annual opt-in deadline</label><input class="fui-input" value="August 1"><span class="fui-field__hint">Eligible employees lock in by this date each year.</span></div>
+          <div class="fui-field"><label class="fui-field__label">New-hire opt-in window (days)</label><input class="fui-input" value="60"></div>
+          <div class="fui-field"><label class="fui-field__label">Effective-date cutoff (day of month)</label><input class="fui-input" value="15"><span class="fui-field__hint">Approvals on/before this day take effect the following 1st; after, they roll to the 15th.</span></div>
+        </div>
+
+        <div class="fui-card">
+          <h3>Vehicle rules</h3>
+          <div class="fui-field"><label class="fui-field__label">Vehicle age limit (model years)</label><input class="fui-input" value="5"></div>
+          <div class="fui-field"><label class="fui-field__label">Personal fuel radius (miles)</label><input class="fui-input" value="100"><span class="fui-field__hint">Per policy &sect;7.1 &mdash; fuel card eligibility radius.</span></div>
+          <div class="fui-field"><label class="fui-field__label">EV charging allowance (monthly)</label><input class="fui-input" value="$330"></div>
+        </div>
+
+        <div class="fui-card">
+          <h3>Insurance reminders</h3>
+          <div class="fui-field"><label class="fui-field__label">First reminder (days before expiry)</label><input class="fui-input" value="60"></div>
+          <div class="fui-field"><label class="fui-field__label">Second reminder (days before expiry)</label><input class="fui-input" value="30"></div>
+          <div class="fui-field"><label class="fui-field__label">Final reminder (days before expiry)</label><input class="fui-input" value="7"></div>
+          <div class="fui-field"><label class="fui-field__label">Exception &ldquo;no payroll ack&rdquo; threshold (days)</label><input class="fui-input" value="5"></div>
+        </div>
+
+        <div class="fui-card">
+          <h3>Admin delegates</h3>
+          <p class="muted">People beyond the CCI Director who can edit these config pages and approve at the director tier.</p>
+          <div class="stack stack--s">
+            <div class="fui-filepreview"><div class="fui-filepreview__icon">LB</div><div class="fui-filepreview__body"><div class="fui-filepreview__name">Lauren Briggs</div><div class="fui-filepreview__meta">Executive Assistant, CCI</div></div><button class="fui-btn fui-btn--subtle fui-btn--small">Remove</button></div>
+            <div class="fui-filepreview"><div class="fui-filepreview__icon">SN</div><div class="fui-filepreview__body"><div class="fui-filepreview__name">Sam Nakashima</div><div class="fui-filepreview__meta">Director, Equipment Ops</div></div><button class="fui-btn fui-btn--subtle fui-btn--small">Remove</button></div>
+          </div>
+          <button class="fui-btn fui-btn--secondary" style="margin-top:12px;">+ Add delegate</button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <nav class="bottom-nav hide-desktop">
+    <a href="01-landing.html"><span class="bottom-nav__icon">&#127968;</span>Home</a>
+    <a href="02-pending-approvals.html"><span class="bottom-nav__icon">&#9202;</span>Approvals</a>
+    <a href="04-expiring-insurance.html"><span class="bottom-nav__icon">&#128196;</span>Insurance</a>
+    <a href="08-payroll-view.html"><span class="bottom-nav__icon">&#128179;</span>Payroll</a>
+  </nav>
+</div>
+<script src="../assets/app.js"></script>
+</body></html>
