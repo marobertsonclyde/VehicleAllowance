@@ -1,8 +1,0 @@
-{
-  "$schema": "https://aka.ms/power-apps/code/config-schema",
-  "name": "vehicle-allowance-portal",
-  "version": "1.0.0",
-  "description": "Vehicle Allowance Program portal serving all roles: employee, reviewer, admin, payroll",
-  "entryPoint": "dist/index.html",
-  "dataSources": []
-}
