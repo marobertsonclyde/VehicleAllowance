@@ -34,8 +34,8 @@ leadership/management titles; the 1/1/2026 policy refresh is being used as the
 trigger to move the program off spreadsheets + PDFs and onto Power Platform.
 Today the program is defined by two PDFs:
 
-- `CCI - Vehicle Allowance Policy - Effective 1.1.2026.pdf`
-- `CCI - Vehicle Allowance Checklist - Effective 1.1.2026.pdf`
+- `docs/policy/CCI - Vehicle Allowance Policy - Effective 1.1.2026.pdf`
+- `docs/policy/CCI - Vehicle Allowance Checklist - Effective 1.1.2026.pdf`
 
 We are building a Microsoft Power Platform solution to administer the program end
 to end — self-service intake for employees, a multi-tier approval workflow,
