@@ -167,11 +167,14 @@ gating failure.
   records. Future state (phase 2): auto-create the asset in Dynamics on
   CCI Director approval.
 - **Audit Log** — every state transition, approval decision, parameter
-  change. Also carries `EligibilityDispute` events (reason category,
-  free-text summary, optional attachment reference, Teams chat URL)
-  and `EligibilityRecheck` events (who triggered, diff of changed
-  Fabric fields). No separate entity for disputes — they live entirely
-  in the audit log and in the Teams chat created on submit.
+  change. Also carries `EligibilityDispute` events as **metadata only**
+  (reason category, submitted-by, timestamp, Teams chat URL/thread ID);
+  the employee-submitted note text and any attachment remain only in the
+  access-controlled Teams chat created on submit and are **not** copied
+  into the audit log. Also carries `EligibilityRecheck` events (who
+  triggered, diff of changed Fabric fields). No separate entity for
+  disputes — the audit log records that a dispute was submitted, while
+  the dispute contents live in the Teams chat.
 
 ## Workflows
 
