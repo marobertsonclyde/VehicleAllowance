@@ -25,7 +25,7 @@
       <div class="nav-rail__divider"></div>
       <h4>Configuration</h4>
       <a href="09-config-levels.html">Allowance Levels</a>
-      <a href="10-config-eligibility.html">Title &rarr; Level</a>
+      <a href="10-config-eligibility.html">Eligibility Roster</a>
       <a href="11-config-parameters.html">Program Parameters</a>
       <a href="12-config-legal-entities.html">Legal Entities</a>
       <div class="nav-rail__divider"></div><a href="../index.html">&larr; Wireframe hub</a>
@@ -76,15 +76,22 @@
           </div>
 
           <div class="fui-card">
-            <div class="fui-card__header"><h3>Employee</h3></div>
+            <div class="fui-card__header">
+              <h3>Employee</h3>
+              <button class="fui-btn fui-btn--subtle fui-btn--small" title="Re-read this employee's record from the HR system (Fabric)">&#x21bb; Refresh from HR</button>
+            </div>
+            <p class="muted" style="margin-top:-4px; font-size:12px;">Fields marked <em>from HR</em> are read-only in the app. Corrections go through the upstream HR system.</p>
             <dl class="fui-dl">
               <dt>UPN</dt><dd>maria.alvarez@clyde.com</dd>
-              <dt>Hire date</dt><dd>May 14, 2019 (Fabric)</dd>
-              <dt>Title</dt><dd>Operations Manager</dd>
-              <dt>Tier</dt><dd>MLT (eligible for Level B max)</dd>
+              <dt>Hire date</dt><dd>May 14, 2019 <span class="muted" style="font-size:12px;">&middot; from HR</span></dd>
+              <dt>Title</dt><dd>Operations Manager <span class="muted" style="font-size:12px;">&middot; from HR</span></dd>
+              <dt>Tier</dt><dd>MLT <span class="muted" style="font-size:12px;">&middot; from HR</span></dd>
+              <dt>Max qualifying level</dt><dd>B <span class="muted" style="font-size:12px;">&middot; from HR</span></dd>
+              <dt>Company car eligible</dt><dd>Yes <span class="muted" style="font-size:12px;">&middot; from HR</span></dd>
               <dt>Supervisor</dt><dd>James Whitaker</dd>
               <dt>Equipment Leader</dt><dd>Rhonda Ito (Geneva Rock)</dd>
               <dt>Payroll contact</dt><dd>Brenda Harmon</dd>
+              <dt>Last HR sync</dt><dd>Today 03:00 AM</dd>
             </dl>
           </div>
 
@@ -126,12 +133,15 @@
           <div class="fui-card">
             <h3>Audit log</h3>
             <div class="fui-chain">
+              <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#x21bb;</div><div class="fui-chain__body"><div class="fui-chain__title">Eligibility recheck &middot; no changes</div><div class="fui-chain__meta">Today 09:04 &middot; Maria Alvarez (self-service)</div></div></div>
+              <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#128172;</div><div class="fui-chain__body"><div class="fui-chain__title">Eligibility dispute opened &middot; Max level <a href="#" style="margin-left:6px;">View in Teams &rarr;</a></div><div class="fui-chain__meta">Today 09:02 &middot; Maria Alvarez &middot; group chat with CCI HR</div></div></div>
               <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#10003;</div><div class="fui-chain__body"><div class="fui-chain__title">Enrollment became Active</div><div class="fui-chain__meta">May 1, 2026 00:00 &middot; system</div></div></div>
               <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#10003;</div><div class="fui-chain__body"><div class="fui-chain__title">Approved by CCI Director</div><div class="fui-chain__meta">Apr 15, 2026 14:22 &middot; David Kwon</div></div></div>
               <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#10003;</div><div class="fui-chain__body"><div class="fui-chain__title">Asset number assigned GR-F150-0412</div><div class="fui-chain__meta">Apr 14, 2026 09:15 &middot; Rhonda Ito</div></div></div>
               <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#10003;</div><div class="fui-chain__body"><div class="fui-chain__title">Supervisor approved</div><div class="fui-chain__meta">Apr 14, 2026 08:02 &middot; James Whitaker</div></div></div>
               <div class="fui-chain__step fui-chain__step--done"><div class="fui-chain__marker">&#10003;</div><div class="fui-chain__body"><div class="fui-chain__title">Request submitted</div><div class="fui-chain__meta">Apr 14, 2026 07:40 &middot; Maria Alvarez</div></div></div>
             </div>
+            <p class="muted" style="margin-top:8px; font-size:12px;">Dispute contents live in the Teams chat, not the app &mdash; click <em>View in Teams</em> to open it.</p>
           </div>
         </div>
 

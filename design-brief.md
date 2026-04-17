@@ -50,9 +50,23 @@ gating failure.
 
 ## Decisions (from user)
 
-- **Eligibility source:** SQL endpoint in Microsoft Fabric is the authority
-  for who is eligible. Entra ID is used only to match the signed-in
-  employee's UPN/email to the Fabric record.
+- **Eligibility source:** SQL endpoint in Microsoft Fabric is the single
+  authority for each employee's eligibility flag, **maximum qualifying
+  level**, and **company-car deferral flag**. Entra ID is used only to
+  match the signed-in employee's UPN/email to the Fabric record. There
+  is no admin-editable Title → Level mapping in Dataverse; title is
+  display-only metadata. An on-demand "recheck" action lets an employee
+  pull a recent HR change without waiting for the scheduled sync.
+- **Employee-facing copy rule:** no employee-visible text references
+  backend system names (Fabric, Dataverse, Entra). Use plain language
+  ("your HR record", "from HR", "refresh from HR"). Internal names
+  stay in this brief and on admin screens only.
+- **Eligibility disputes:** the eligibility landing has a "Doesn't look
+  right?" action. Submitting captures a reason category + optional
+  attachment and spawns a Teams group chat (via Graph) between the
+  employee and configured HR recipients. Resolution happens in that
+  chat, outside the app; the app writes a single audit-log entry on
+  the Employee record.
 - **Payroll hand-off:** Teams notification (formatted message to payroll
   channel/recipient) for MVP; a direct payroll-system integration is a later
   phase.
@@ -67,11 +81,15 @@ gating failure.
   business rule on save. Exceptions raised against legacy records surface on
   a "Backfill Needed" list (informational), not on the approval-blocking
   path — they cannot stop payroll for an already-active employee.
-- **Level hierarchy (step-down):** Title determines an employee's **maximum
-  qualifying level**. Actual level is the highest level whose min-MSRP their
-  chosen vehicle meets, capped at that maximum. A Level A-eligible employee
-  who buys a car that only meets Level C's MSRP gets Level C; a Level B
-  employee can never receive Level A regardless of vehicle price.
+- **Level hierarchy (step-down):** Fabric tells us each employee's
+  **maximum qualifying level** directly. Actual level is the highest
+  level whose min-MSRP their chosen vehicle meets, capped at that
+  maximum. A Level A-eligible employee who buys a car that only meets
+  Level C's MSRP gets Level C; a Level B employee can never receive
+  Level A regardless of vehicle price. The employee's eligibility
+  landing shows every level at or below their max with its min MSRP
+  and monthly stipend, so the step-down outcome is visible before they
+  pick a vehicle.
 - **Grandfathered MSRP thresholds:** On each Jan 1 the monthly payroll
   amounts refresh to the new year's Allowance Level values, but MSRP
   thresholds are evaluated against the level config that was in effect on
@@ -97,13 +115,15 @@ gating failure.
 ## Dataverse Entities
 
 - **Employee** — mirror of Fabric roster; keyed by Entra UPN. Fields: name,
-  email/UPN, title, leadership team (SLT/MLT), operating company (legal
-  entity), supervisor UPN, hire date, eligibility flag, eligibility effective
-  date, **max qualifying level** (derived from Eligibility Rule),
-  **company-car deferral eligible** (true for MLT+).
-- **Eligibility Rule** — title → **max** allowance level mapping (admin-
-  editable). The request engine still chooses the actual level via the
-  step-down rule.
+  email/UPN, title (display-only metadata), leadership team (SLT/MLT),
+  operating company (legal entity), supervisor UPN, hire date,
+  **eligibility flag** (from Fabric), eligibility effective date, **max
+  qualifying level** (from Fabric), **company-car deferral eligible**
+  (from Fabric), `last_hr_sync_at` (timestamp of the most recent
+  successful read of this row, shown to the employee as "last updated
+  from HR"). No field on this entity is admin-editable — Fabric is
+  authoritative; admins who need to correct data must fix it in the
+  upstream HR system.
 - **Allowance Level (A/B/C/D)** — min total MSRP, monthly amount, **effective-
   from / effective-to** dates so historical configs can be looked up by
   purchase date. Admin edits create a new effective-dated row rather than
@@ -146,7 +166,15 @@ gating failure.
   a lookup list from SQL so they can match against existing Dynamics
   records. Future state (phase 2): auto-create the asset in Dynamics on
   CCI Director approval.
-- **Audit Log** — every state transition, approval decision, parameter change.
+- **Audit Log** — every state transition, approval decision, parameter
+  change. Also carries `EligibilityDispute` events as **metadata only**
+  (reason category, submitted-by, timestamp, Teams chat URL/thread ID);
+  the employee-submitted note text and any attachment remain only in the
+  access-controlled Teams chat created on submit and are **not** copied
+  into the audit log. Also carries `EligibilityRecheck` events (who
+  triggered, diff of changed Fabric fields). No separate entity for
+  disputes — the audit log records that a dispute was submitted, while
+  the dispute contents live in the Teams chat.
 
 ## Workflows
 
@@ -164,6 +192,8 @@ gating failure.
 | 10 | Jan 1 payroll rate refresh | For every Active enrollment, set the monthly amount to the level's new effective-dated value; MSRP thresholds are NOT re-evaluated (grandfathered to purchase-date config); post a single roll-up Teams notice to payroll |
 | 11 | Initial bulk migration (one-time) | Import existing enrollees as Legacy-tagged Active enrollments; open Backfill task per record for missing docs; do NOT block payroll |
 | 12 | MLT+ company-car deferral | Request with `Mode=CompanyCar` skips MSRP/insurance checks; on final approval routes a vehicle-assignment task to the Equipment team instead of a payroll Teams notice |
+| 13 | Employee taps "Refresh from HR" | On-demand HTTP-triggered flow re-reads the employee's Fabric row, upserts Employee, stamps `last_hr_sync_at`, returns refreshed eligibility + max level + company-car flag to the client; writes an `EligibilityRecheck` audit entry if any field changed |
+| 14 | Employee opens an eligibility dispute | Form submit triggers a flow that creates a Teams group chat via Graph (`Chat.Create` + `ChatMessage.Send`) with the employee + configured HR recipients, seeds it with the reason/description/attachment, writes an `EligibilityDispute` audit entry on the Employee, returns the chat deep link to the client. Resolution happens in-chat; the app does not track it |
 
 ## Power Platform Architecture
 
@@ -178,8 +208,10 @@ employee's operating company.
 **Level selection (step-down):** on submit, compute the actual level as
 `min(employee.max_qualifying_level, highest_level_whose_MSRP_floor_is_met)`
 using the effective-dated Allowance Level config from the vehicle's purchase
-date. A Level A employee with a Level C vehicle books a Level C enrollment;
-a Level B employee can never book Level A regardless of vehicle price.
+date. `employee.max_qualifying_level` is mirrored from Fabric — there is no
+Dataverse lookup table in between. A Level A employee with a Level C vehicle
+books a Level C enrollment; a Level B employee can never book Level A
+regardless of vehicle price.
 
 **Legacy bypass:** when `Legacy/Migrated = true`, the "required docs" and
 vehicle-age rules are relaxed to warnings so payroll continuity is preserved
@@ -218,8 +250,16 @@ generated SDK clients; Entra SSO is handled by the Code App host.
 
 Screens / capabilities:
 
-- "Am I eligible?" landing page pulling from Employee + Eligibility Rule,
-  showing a personalized deadline countdown.
+- "Am I eligible?" landing page pulling from the Employee mirror of
+  Fabric, showing a personalized deadline countdown, a
+  `Refresh` action with the `last_hr_sync_at` timestamp ("last
+  updated from HR · <time>"), a "Doesn't look right?" entry point
+  into the dispute flow, and an **available-levels card** listing
+  every level at or below the employee's max with that level's min
+  total MSRP and monthly stipend so the step-down is visible before
+  vehicle selection. Employee-facing copy refers to "your HR record"
+  / "from HR"; the words Fabric/Dataverse/Entra never appear in
+  employee UI.
 - Guided wizard: Opt-in intent → Upload window sticker (AI Builder extracts
   VIN, MSRP, year, make, model) → Upload auto dec page (AI Builder extracts
   carrier, policy #, dates, coverage limits) → Upload umbrella dec page (AI
@@ -228,6 +268,13 @@ Screens / capabilities:
   sticker) → Review & Submit. Extract-first ordering means employees don't
   type what the documents already contain.
 - In-app status tracker for in-flight requests.
+- **Eligibility dispute flow** — reached from the eligibility landing
+  and the enrollment profile. Short form: reason category (Title,
+  Tier, Operating company, Max level, Company-car eligibility,
+  Supervisor, Other), free-text description, optional attachment.
+  Submit spawns the Teams group chat with HR and lands the employee
+  on a confirmation screen with a deep link to the chat. The app
+  does not track resolution; HR closes the chat manually.
 - Insurance renewal resubmission flow (one-click if vehicle unchanged).
 - Opt-out action with reason + effective-date preview.
 - Indemnification: MVP captures an in-app attestation checkbox recorded
@@ -282,8 +329,15 @@ targeting reviewers and admins. Screens:
 - Request form with inline document viewer + AI-extracted field comparison;
   Equipment Leader step includes Asset # picker sourced from the synced
   Dynamics asset list.
-- Config pages (admin-only): Allowance Levels, Title→Level mapping,
-  Program Parameters, Legal Entities.
+- Config pages (admin-only): Allowance Levels, Program Parameters,
+  Legal Entities. (No Title→Level mapping — eligibility and max level
+  are Fabric-owned and not admin-editable.)
+- **Eligibility Roster** view (replaces the old Title→Level page) —
+  read-only list of every employee Fabric marks eligible, with
+  columns Name, Title, Tier, Company, Max level, Company-car flag,
+  In-app status (Enrolled / Not enrolled / Opted out / Company car /
+  Legacy), Last HR sync. Search + filter by company / tier / status.
+  Row click opens the existing employee detail page.
 - **Responsive across phone and desktop**, same codebase as the employee
   app. Phone-primary surfaces: Needs Attention queue, Pending Approvals,
   individual Request Review (approve/reject with comment), Payroll Ack.
@@ -314,6 +368,19 @@ Flows delivered in MVP:
   thresholds; sends reminders; opens a Renewal Required sub-request.
 - **Annual cadence** — Aug 1 lockouts; Jan 1 rollovers; admin annual-review
   ticket.
+- **On-demand eligibility recheck** — HTTP-triggered flow, called from
+  the employee eligibility screen and the admin employee detail page;
+  re-reads the specific employee's Fabric row, upserts the Employee
+  record, stamps `last_hr_sync_at`, logs any changed fields to the
+  audit log, returns the refreshed record to the caller.
+- **Eligibility dispute** — HTTP-triggered flow; creates a Teams group
+  chat via Microsoft Graph (`Chat.Create` + `ChatMessage.Send`) with
+  the employee and configured HR recipients, posts a seed message
+  carrying the reason, description, snapshot of the disputed HR
+  fields, and attachment (when supplied), writes an
+  `EligibilityDispute` audit entry, returns the chat deep link.
+  Required Graph app permissions: `Chat.Create`, `ChatMessage.Send`,
+  `User.Read.All` for HR-recipient lookup.
 - **Jan 1 payroll rate refresh** — sweep all Active enrollments, set
   monthly amount to the new effective year's Allowance Level amount for the
   enrollment's level; write audit-log entries; post single roll-up payroll
@@ -370,8 +437,11 @@ record that was Active at migration time.
 - Dataverse security roles: Employee, Supervisor, Equipment Leader (scoped
   by operating company via business unit or row-level filter), CCI Director,
   Program Admin, Payroll (read-only).
-- Only Program Admins can edit Allowance Level, Title→Level, and Program
-  Parameters tables.
+- Only Program Admins can edit Allowance Level and Program Parameters
+  tables. Eligibility, max qualifying level, and company-car deferral
+  are **Fabric-owned and not editable from the app by any role**;
+  corrections go through the upstream HR system (typically via a
+  dispute initiated by the employee).
 - Audit columns + dedicated Audit Log table for state transitions and
   parameter changes.
 - Solution-based ALM across Dev / Test / Prod environments.
@@ -414,7 +484,19 @@ Expected repo layout when build starts:
      lapse termination path.
 - **Admin dry run:** change Level D monthly amount; confirm audit log entry
   and that only enrollments effective after the change pick up the new value
-  (historical enrollments unchanged).
+  (historical enrollments unchanged). Open the Eligibility Roster;
+  confirm it is read-only and lists every Fabric-eligible employee
+  with correct in-app status.
+- **Eligibility recheck test:** mutate a mock Fabric row, trigger the
+  employee-facing Refresh, confirm the eligibility landing updates
+  (max level and company-car flag re-displayed, `last_hr_sync_at`
+  bumped, `EligibilityRecheck` audit entry written).
+- **Dispute flow test:** open the dispute form, pick a reason, attach
+  a PDF, submit. Confirm a Teams group chat is created with the
+  employee + HR recipients, the seed message includes the disputed
+  snapshot and attachment, the deep link returned to the client opens
+  that chat, and an `EligibilityDispute` entry appears on the
+  employee detail page audit log.
 - **Step-down test:** submit a request for a Level A-eligible employee with
   a vehicle whose MSRP only meets Level C; confirm the enrollment is booked
   at Level C. Submit for a Level B employee with an A-priced vehicle;

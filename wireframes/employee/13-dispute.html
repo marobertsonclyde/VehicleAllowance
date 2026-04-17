@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Something doesn&rsquo;t look right? &middot; CCI Vehicle Allowance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="chrome chrome--with-bottomnav">
+  <div class="chrome__breadcrumb">Teams &rsaquo; CCI Vehicle Allowance &rsaquo; Eligibility &rsaquo; Dispute</div>
+  <div class="chrome__accent"></div>
+  <div class="chrome__topbar">
+    <button class="nav-hamburger hide-desktop" data-drawer-toggle aria-label="Menu">&#9776;</button>
+    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Employee</span></div>
+    <div class="chrome__user"><span class="hide-mobile">Maria Alvarez</span><div class="chrome__avatar">MA</div></div>
+  </div>
+  <div class="chrome__body">
+    <aside class="nav-rail">
+      <h4>Menu</h4>
+      <a href="01-eligibility.html" class="is-active">Eligibility</a>
+      <a href="08-status-tracker.html">My Request Status</a>
+      <a href="02-wizard-intent.html">New Request</a>
+      <a href="09-renewal.html">Insurance Renewal</a>
+      <a href="10-opt-out.html">Opt-Out</a>
+      <div class="nav-rail__divider"></div>
+      <a href="../index.html">&larr; Back to wireframe hub</a>
+    </aside>
+
+    <div id="mobile-drawer" class="nav-drawer">
+      <div class="nav-drawer__panel">
+        <h4 style="padding:0 16px;">Menu</h4>
+        <a href="01-eligibility.html" class="is-active">Eligibility</a>
+        <a href="08-status-tracker.html">My Request Status</a>
+        <a href="02-wizard-intent.html">New Request</a>
+        <a href="09-renewal.html">Insurance Renewal</a>
+        <a href="10-opt-out.html">Opt-Out</a>
+        <a href="../index.html">&larr; Wireframe hub</a>
+      </div>
+    </div>
+
+    <main class="content">
+      <div class="content__header">
+        <div>
+          <a href="01-eligibility.html" class="fui-btn fui-btn--subtle fui-btn--small">&larr; Eligibility</a>
+          <h1 class="content__title" style="margin-top:8px;">Something doesn&rsquo;t look right?</h1>
+          <div class="muted" style="margin-top:4px;">Tell HR what&rsquo;s off. Submitting will start a Teams group chat with HR so you can sort it out together.</div>
+        </div>
+      </div>
+
+      <div class="fui-messagebar fui-messagebar--info">
+        <span class="fui-messagebar__icon">&#9432;</span>
+        <div>This doesn&rsquo;t change anything in the app. HR will update your record in their system; when they do, tap <strong>Refresh</strong> on your Eligibility page to pull it through.</div>
+      </div>
+
+      <div class="two-col two-col--review">
+        <div>
+          <div class="fui-card">
+            <h3>What HR will see</h3>
+            <p class="muted" style="margin-top:-4px;">This snapshot of your current record goes into the chat so HR knows what you&rsquo;re looking at.</p>
+            <dl class="fui-dl">
+              <dt>Name</dt><dd>Maria Alvarez</dd>
+              <dt>Title</dt><dd>Operations Manager</dd>
+              <dt>Leadership tier</dt><dd>MLT</dd>
+              <dt>Operating company</dt><dd>Geneva Rock Products</dd>
+              <dt>Supervisor</dt><dd>James Whitaker</dd>
+              <dt>Max level</dt><dd>B</dd>
+              <dt>Company car eligible</dt><dd>Yes</dd>
+              <dt>Last updated from HR</dt><dd>Today at 8:14 AM</dd>
+            </dl>
+          </div>
+
+          <div class="fui-card">
+            <h3>What looks wrong?</h3>
+            <div class="stack stack--s">
+              <label class="fui-field">
+                <span class="fui-field__label">Pick the field that&rsquo;s off</span>
+                <select class="fui-select">
+                  <option>Title</option>
+                  <option>Leadership tier</option>
+                  <option>Operating company</option>
+                  <option selected>Max level</option>
+                  <option>Company car eligibility</option>
+                  <option>Supervisor</option>
+                  <option>Something else</option>
+                </select>
+              </label>
+
+              <label class="fui-field">
+                <span class="fui-field__label">Tell HR what should be different</span>
+                <textarea class="fui-input" rows="5" placeholder="Example: My title changed to Senior Operations Manager on April 1 but the app still shows Operations Manager. My max level should be A."></textarea>
+                <span class="fui-field__hint">Plain language is fine &mdash; whoever you work with in HR will see this.</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="fui-card">
+            <h3>Attach a document (optional)</h3>
+            <p class="muted" style="margin-top:-4px;">Offer letter, promotion memo, org chart &mdash; anything that helps HR confirm the change.</p>
+            <div class="fui-upload">
+              <div class="fui-upload__icon">&#128206;</div>
+              <div><strong>Drag and drop a file here</strong></div>
+              <div class="fui-upload__hint">Or choose a method</div>
+              <div class="fui-upload__buttons">
+                <button class="fui-btn fui-btn--primary">&#128247; Take a photo</button>
+                <button class="fui-btn fui-btn--secondary">Choose file</button>
+              </div>
+              <div class="fui-upload__hint">JPG, PNG, PDF &middot; max 10 MB &middot; optional</div>
+            </div>
+
+            <div class="fui-filepreview">
+              <div class="fui-filepreview__icon">PDF</div>
+              <div class="fui-filepreview__body">
+                <div class="fui-filepreview__name">promotion-memo-apr-2026.pdf</div>
+                <div class="fui-filepreview__meta">420 KB &middot; uploaded just now</div>
+              </div>
+              <button class="fui-btn fui-btn--subtle fui-btn--small">Remove</button>
+            </div>
+          </div>
+
+          <div class="row row--between">
+            <a href="01-eligibility.html" class="fui-btn fui-btn--secondary">Cancel</a>
+            <a href="14-dispute-submitted.html" class="fui-btn fui-btn--primary">Submit &amp; open chat with HR</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="side-panel">
+            <h3>How this works</h3>
+            <ol style="margin:0; padding-left:18px;">
+              <li style="margin-bottom:8px;">You describe what&rsquo;s wrong and, if you have one, attach a document.</li>
+              <li style="margin-bottom:8px;">We create a Teams group chat with you and HR and drop your note + attachment into it.</li>
+              <li style="margin-bottom:8px;">HR fixes it in their system. You&rsquo;ll chat with them directly there if they need more info.</li>
+              <li>Back on the Eligibility page, tap <strong>Refresh</strong> to pull the correction into the app.</li>
+            </ol>
+          </div>
+
+          <div class="side-panel">
+            <h3>Who sees this</h3>
+            <dl class="fui-dl" style="grid-template-columns: 1fr 1.2fr;">
+              <dt>You</dt><dd>Maria Alvarez</dd>
+              <dt>HR</dt><dd>CCI HR distribution</dd>
+              <dt>Visible to your supervisor?</dt><dd>No</dd>
+              <dt>Visible to Equipment Leaders?</dt><dd>No</dd>
+            </dl>
+            <p class="muted" style="margin-top:12px; font-size:12px;">Admins will see an entry in the audit log noting that a dispute was opened, but not the contents of your chat.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <nav class="bottom-nav hide-desktop">
+    <a href="01-eligibility.html" class="is-active"><span class="bottom-nav__icon">&#127968;</span>Home</a>
+    <a href="02-wizard-intent.html"><span class="bottom-nav__icon">&#43;</span>New</a>
+    <a href="08-status-tracker.html"><span class="bottom-nav__icon">&#9201;</span>Status</a>
+    <a href="09-renewal.html"><span class="bottom-nav__icon">&#128179;</span>Renew</a>
+  </nav>
+</div>
+<script src="../assets/app.js"></script>
+</body></html>
