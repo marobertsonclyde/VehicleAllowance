@@ -48,7 +48,7 @@
 
       <div class="fui-messagebar fui-messagebar--success">
         <span class="fui-messagebar__icon">&#10003;</span>
-        <div><strong>You&rsquo;re eligible.</strong> Based on your title (Operations Manager, Geneva Rock Products), you qualify for <strong>Level B</strong>. Opt in before the annual deadline to begin receiving your vehicle allowance.</div>
+        <div><strong>You&rsquo;re eligible.</strong> Your HR record (Operations Manager, Geneva Rock Products) qualifies you up to <strong>Level B</strong>. Opt in before the annual deadline to begin receiving your vehicle allowance.</div>
       </div>
 
       <div class="fui-countdown">
@@ -59,20 +59,70 @@
 
       <div class="fui-kpi-row">
         <div class="fui-kpi">
-          <div class="fui-kpi__label">Max qualifying level</div>
+          <div class="fui-kpi__label">Your max level</div>
           <div class="fui-kpi__value">B</div>
-          <div class="fui-kpi__trend">Title-based cap. Actual level depends on vehicle MSRP.</div>
-        </div>
-        <div class="fui-kpi">
-          <div class="fui-kpi__label">Monthly stipend (Level B, 2026)</div>
-          <div class="fui-kpi__value">$850</div>
-          <div class="fui-kpi__trend">Set each Jan 1. Pre-tax stipend via payroll.</div>
+          <div class="fui-kpi__trend">Set by HR. Your actual level depends on your vehicle&rsquo;s MSRP.</div>
         </div>
         <div class="fui-kpi">
           <div class="fui-kpi__label">EV charging allowance</div>
           <div class="fui-kpi__value">$330</div>
           <div class="fui-kpi__trend">Added if you choose an EV.</div>
         </div>
+      </div>
+
+      <div class="fui-card">
+        <div class="fui-card__header">
+          <h3>Your available levels</h3>
+          <span class="fui-badge fui-badge--brand">Max: Level B</span>
+        </div>
+        <p class="muted" style="margin-top:0;">Your monthly stipend is set by your vehicle&rsquo;s total MSRP &mdash; whichever level its price meets, up to your max. Levels above your max aren&rsquo;t available to you.</p>
+        <div class="fui-cards-mobile">
+          <div class="fui-cards-mobile__row" style="opacity:0.55;">
+            <header>
+              <span class="fui-cards-mobile__title">Level A</span>
+              <span class="fui-badge fui-badge--neutral">Not available</span>
+            </header>
+            <div class="fui-cards-mobile__kv"><span class="k">Min total MSRP</span><span>$75,000</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Monthly stipend</span><span>$1,100</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Why</span><span>Above your max</span></div>
+          </div>
+          <div class="fui-cards-mobile__row" style="border-left:3px solid var(--clyde-blue);">
+            <header>
+              <span class="fui-cards-mobile__title">Level B</span>
+              <span class="fui-badge fui-badge--brand">Your max</span>
+            </header>
+            <div class="fui-cards-mobile__kv"><span class="k">Min total MSRP</span><span>$60,000</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Monthly stipend</span><span>$850</span></div>
+          </div>
+          <div class="fui-cards-mobile__row">
+            <header>
+              <span class="fui-cards-mobile__title">Level C</span>
+              <span class="fui-badge fui-badge--success">Available</span>
+            </header>
+            <div class="fui-cards-mobile__kv"><span class="k">Min total MSRP</span><span>$40,000</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Monthly stipend</span><span>$650</span></div>
+          </div>
+          <div class="fui-cards-mobile__row">
+            <header>
+              <span class="fui-cards-mobile__title">Level D</span>
+              <span class="fui-badge fui-badge--success">Available</span>
+            </header>
+            <div class="fui-cards-mobile__kv"><span class="k">Min total MSRP</span><span>$25,000</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Monthly stipend</span><span>$450</span></div>
+          </div>
+        </div>
+        <div class="fui-grid-wrap">
+          <table class="fui-grid">
+            <thead><tr><th>Level</th><th>Min total MSRP</th><th>Monthly stipend</th><th>Available to you</th></tr></thead>
+            <tbody>
+              <tr style="opacity:0.55;"><td>Level A</td><td>$75,000</td><td>$1,100</td><td><span class="fui-badge fui-badge--neutral">Above your max</span></td></tr>
+              <tr style="background:#F3F6FC;"><td><strong>Level B</strong></td><td>$60,000</td><td>$850</td><td><span class="fui-badge fui-badge--brand">Your max</span></td></tr>
+              <tr><td>Level C</td><td>$40,000</td><td>$650</td><td><span class="fui-badge fui-badge--success">Yes</span></td></tr>
+              <tr><td>Level D</td><td>$25,000</td><td>$450</td><td><span class="fui-badge fui-badge--success">Yes</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="muted" style="margin-top:12px; font-size:12px;">Amounts shown are the 2026 values. EV charging allowance of $330/month is added on top if your vehicle is an EV. Grandfathered amounts apply if your vehicle was purchased before the current config took effect.</p>
       </div>
 
       <div class="fui-card">
@@ -98,7 +148,11 @@
       </div>
 
       <div class="fui-card">
-        <h3>Your profile</h3>
+        <div class="fui-card__header">
+          <h3>Your profile</h3>
+          <button class="fui-btn fui-btn--subtle fui-btn--small" title="Re-read your record from HR">&#x21bb; Refresh</button>
+        </div>
+        <p class="muted" style="margin-top:-4px; font-size:12px;">Last updated from HR &middot; today at 8:14 AM</p>
         <dl class="fui-dl">
           <dt>Name</dt><dd>Maria Alvarez</dd>
           <dt>Title</dt><dd>Operations Manager</dd>
@@ -107,8 +161,13 @@
           <dt>Supervisor</dt><dd>James Whitaker</dd>
           <dt>Hire date</dt><dd>May 14, 2019</dd>
           <dt>Eligibility effective</dt><dd>Jan 1, 2026</dd>
+          <dt>Max level</dt><dd>B <span class="muted" style="font-size:12px;">&middot; set by HR</span></dd>
+          <dt>Company car eligible</dt><dd>Yes <span class="muted" style="font-size:12px;">&middot; set by HR</span></dd>
         </dl>
-        <p class="muted" style="margin-top:12px;">Something wrong? Profile comes from Fabric. Contact HR to update.</p>
+        <div class="row row--between" style="margin-top:16px; align-items:center;">
+          <p class="muted" style="margin:0; max-width:60%;">Something look wrong? Tell HR and we&rsquo;ll start a group chat with them.</p>
+          <a href="13-dispute.html" class="fui-btn fui-btn--secondary">Doesn&rsquo;t look right?</a>
+        </div>
       </div>
     </main>
   </div>

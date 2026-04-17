@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Config · Title → Level</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Eligibility Roster &middot; Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/styles.css"></head><body>
 <div class="chrome chrome--with-bottomnav">
-  <div class="chrome__breadcrumb">Teams &rsaquo; Admin &rsaquo; Config &rsaquo; Title &rarr; Level</div>
+  <div class="chrome__breadcrumb">Teams &rsaquo; Admin &rsaquo; Eligibility Roster</div>
   <div class="chrome__accent"></div>
   <div class="chrome__topbar">
     <button class="nav-hamburger hide-desktop" data-drawer-toggle>&#9776;</button>
-    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Admin &middot; Config</span></div>
+    <div class="chrome__wordmark">CCI Vehicle Allowance <span>Admin &middot; Eligibility Roster</span></div>
     <div class="chrome__user"><span class="hide-mobile">David Kwon</span><div class="chrome__avatar">DK</div></div>
   </div>
   <div class="chrome__body">
@@ -22,60 +22,137 @@
       <div class="nav-rail__divider"></div>
       <h4>Configuration</h4>
       <a href="09-config-levels.html">Allowance Levels</a>
-      <a href="10-config-eligibility.html" class="is-active">Title &rarr; Level</a>
+      <a href="10-config-eligibility.html" class="is-active">Eligibility Roster</a>
       <a href="11-config-parameters.html">Program Parameters</a>
       <a href="12-config-legal-entities.html">Legal Entities</a>
       <div class="nav-rail__divider"></div><a href="../index.html">&larr; Wireframe hub</a>
     </aside>
     <div id="mobile-drawer" class="nav-drawer"><div class="nav-drawer__panel">
-      <a href="01-landing.html">Dashboard</a><a href="09-config-levels.html">Config &middot; Levels</a>
-      <a href="10-config-eligibility.html" class="is-active">Config &middot; Title&rarr;Level</a>
+      <a href="01-landing.html">Dashboard</a>
+      <a href="09-config-levels.html">Config &middot; Levels</a>
+      <a href="10-config-eligibility.html" class="is-active">Eligibility Roster</a>
       <a href="11-config-parameters.html">Config &middot; Parameters</a>
       <a href="12-config-legal-entities.html">Config &middot; Legal Entities</a>
     </div></div>
 
     <main class="content">
       <div class="content__header">
-        <h1 class="content__title">Title &rarr; Level mapping</h1>
-        <div class="content__actions"><button class="fui-btn fui-btn--primary">+ Add title</button></div>
-      </div>
-
-      <div class="fui-messagebar fui-messagebar--warning hide-desktop">
-        <span class="fui-messagebar__icon">&#9888;</span>
-        <div>Configuration is easier on a larger screen.</div>
+        <h1 class="content__title">Eligibility Roster</h1>
+        <div class="content__actions">
+          <button class="fui-btn fui-btn--subtle">&#x21bb; Refresh from HR</button>
+          <button class="fui-btn fui-btn--secondary">Export CSV</button>
+        </div>
       </div>
 
       <div class="fui-messagebar fui-messagebar--info">
         <span class="fui-messagebar__icon">&#9432;</span>
-        <div>Each row defines the <strong>maximum qualifying level</strong> for a title. The actual level an employee receives is stepped down based on their vehicle&rsquo;s MSRP, never up.</div>
+        <div>Read-only view. Eligibility, max level, and company-car flag are owned by the upstream HR system. Corrections go through HR &mdash; employees can start a dispute from their Eligibility page; the fix flows back here on the next sync.</div>
+      </div>
+
+      <div class="fui-kpi-row">
+        <div class="fui-kpi"><div class="fui-kpi__label">Eligible employees</div><div class="fui-kpi__value">168</div><div class="fui-kpi__trend">&#9650; 3 since last sync</div></div>
+        <div class="fui-kpi"><div class="fui-kpi__label">Enrolled</div><div class="fui-kpi__value">142</div><div class="fui-kpi__trend">Stipend or company car</div></div>
+        <div class="fui-kpi"><div class="fui-kpi__label">Not enrolled</div><div class="fui-kpi__value">22</div><div class="fui-kpi__trend">Opt-in window still open</div></div>
+        <div class="fui-kpi"><div class="fui-kpi__label">Opted out</div><div class="fui-kpi__value">4</div><div class="fui-kpi__trend">Locked until Jan 1, 2027</div></div>
       </div>
 
       <div class="row" style="gap:12px; margin-bottom:16px; flex-wrap:wrap;">
-        <input class="fui-input" placeholder="Search by title" style="flex:1; min-width:220px;">
-        <select class="fui-select" style="max-width:200px;"><option>All tiers</option><option>SLT</option><option>MLT</option><option>Management</option></select>
+        <input class="fui-input" placeholder="Search by name, title, or UPN" style="flex:1; min-width:220px;">
+        <select class="fui-select" style="max-width:200px;">
+          <option>All companies</option>
+          <option>Geneva Rock (GRP)</option>
+          <option>Suncore (SCR)</option>
+          <option>W.W. Clyde (WWC)</option>
+          <option>Sunpro (SPC)</option>
+          <option>Beehive Insurance</option>
+        </select>
+        <select class="fui-select" style="max-width:180px;">
+          <option>All tiers</option><option>SLT</option><option>MLT</option><option>Management</option>
+        </select>
+        <select class="fui-select" style="max-width:180px;">
+          <option>All statuses</option>
+          <option>Enrolled</option>
+          <option>Not enrolled</option>
+          <option>Opted out</option>
+          <option>Company car</option>
+          <option>Legacy</option>
+        </select>
       </div>
 
       <div class="fui-card">
-        <div class="fui-cards-mobile">
-          <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">President / CEO</span><span class="fui-badge fui-badge--brand">Level A</span></header><div class="fui-cards-mobile__kv"><span class="k">Tier</span><span>SLT</span></div><div class="fui-cards-mobile__kv"><span class="k">Company car eligible</span><span>Yes</span></div></div>
-          <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Vice President</span><span class="fui-badge fui-badge--brand">Level A</span></header><div class="fui-cards-mobile__kv"><span class="k">Tier</span><span>SLT</span></div><div class="fui-cards-mobile__kv"><span class="k">Company car eligible</span><span>Yes</span></div></div>
-          <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Operations Manager</span><span class="fui-badge fui-badge--brand">Level B</span></header><div class="fui-cards-mobile__kv"><span class="k">Tier</span><span>MLT</span></div><div class="fui-cards-mobile__kv"><span class="k">Company car eligible</span><span>Yes</span></div></div>
-          <div class="fui-cards-mobile__row"><header><span class="fui-cards-mobile__title">Project Manager</span><span class="fui-badge fui-badge--brand">Level C</span></header><div class="fui-cards-mobile__kv"><span class="k">Tier</span><span>Management</span></div><div class="fui-cards-mobile__kv"><span class="k">Company car eligible</span><span>No</span></div></div>
+        <div class="fui-card__header">
+          <h3>All eligible employees</h3>
+          <span class="muted" style="font-size:12px;">Last sync from HR &middot; today 03:00 AM</span>
         </div>
+
+        <div class="fui-cards-mobile">
+          <div class="fui-cards-mobile__row" onclick="location.href='13-employee-detail.html'" style="cursor:pointer;">
+            <header><span class="fui-cards-mobile__title">Maria Alvarez &middot; GRP</span><span class="fui-badge fui-badge--success">Enrolled</span></header>
+            <div class="fui-cards-mobile__kv"><span class="k">Title</span><span>Operations Manager &middot; MLT</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Max level</span><span>B</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Company car</span><span>Yes</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Last HR sync</span><span>today 03:00 AM</span></div>
+          </div>
+          <div class="fui-cards-mobile__row" onclick="location.href='13-employee-detail.html'" style="cursor:pointer;">
+            <header><span class="fui-cards-mobile__title">Trey Ogden &middot; SCR</span><span class="fui-badge fui-badge--success">Enrolled</span></header>
+            <div class="fui-cards-mobile__kv"><span class="k">Title</span><span>General Manager &middot; MLT</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Max level</span><span>B</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Company car</span><span>Yes</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Last HR sync</span><span>today 03:00 AM</span></div>
+          </div>
+          <div class="fui-cards-mobile__row" onclick="location.href='13-employee-detail.html'" style="cursor:pointer;">
+            <header><span class="fui-cards-mobile__title">Ellen Briggs &middot; GRP</span><span class="fui-badge fui-badge--brand">Company car</span></header>
+            <div class="fui-cards-mobile__kv"><span class="k">Title</span><span>Vice President &middot; SLT</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Max level</span><span>A</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Company car</span><span>Yes</span></div>
+          </div>
+          <div class="fui-cards-mobile__row" onclick="location.href='13-employee-detail.html'" style="cursor:pointer;">
+            <header><span class="fui-cards-mobile__title">Nora Patel &middot; SPC</span><span class="fui-badge fui-badge--warning">Not enrolled</span></header>
+            <div class="fui-cards-mobile__kv"><span class="k">Title</span><span>Superintendent &middot; Management</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Max level</span><span>C</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Company car</span><span>No</span></div>
+          </div>
+          <div class="fui-cards-mobile__row" onclick="location.href='13-employee-detail.html'" style="cursor:pointer;">
+            <header><span class="fui-cards-mobile__title">Jim Becker &middot; WWC</span><span class="fui-badge fui-badge--neutral">Opted out</span></header>
+            <div class="fui-cards-mobile__kv"><span class="k">Title</span><span>Project Manager &middot; Management</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Max level</span><span>C</span></div>
+            <div class="fui-cards-mobile__kv"><span class="k">Company car</span><span>No</span></div>
+          </div>
+        </div>
+
         <div class="fui-grid-wrap">
           <table class="fui-grid">
-            <thead><tr><th>Title</th><th>Tier</th><th>Max level</th><th>Company car eligible</th><th></th></tr></thead>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Title</th>
+                <th>Tier</th>
+                <th>Company</th>
+                <th>Max level</th>
+                <th>Company car</th>
+                <th>In-app status</th>
+                <th>Last HR sync</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr><td>President / CEO</td><td>SLT</td><td><select class="fui-select" style="max-width:120px;"><option>A</option><option>B</option><option>C</option><option>D</option></select></td><td><input type="checkbox" checked></td><td><button class="fui-btn fui-btn--subtle fui-btn--small">&hellip;</button></td></tr>
-              <tr><td>Vice President</td><td>SLT</td><td><select class="fui-select" style="max-width:120px;"><option>A</option></select></td><td><input type="checkbox" checked></td><td><button class="fui-btn fui-btn--subtle fui-btn--small">&hellip;</button></td></tr>
-              <tr><td>Chief Financial Officer</td><td>SLT</td><td><select class="fui-select" style="max-width:120px;"><option>A</option></select></td><td><input type="checkbox" checked></td><td><button class="fui-btn fui-btn--subtle fui-btn--small">&hellip;</button></td></tr>
-              <tr><td>General Manager</td><td>MLT</td><td><select class="fui-select" style="max-width:120px;"><option>B</option></select></td><td><input type="checkbox" checked></td><td><button class="fui-btn fui-btn--subtle fui-btn--small">&hellip;</button></td></tr>
-              <tr><td>Operations Manager</td><td>MLT</td><td><select class="fui-select" style="max-width:120px;"><option>B</option></select></td><td><input type="checkbox" checked></td><td><button class="fui-btn fui-btn--subtle fui-btn--small">&hellip;</button></td></tr>
-              <tr><td>Project Manager</td><td>Management</td><td><select class="fui-select" style="max-width:120px;"><option>C</option></select></td><td><input type="checkbox"></td><td><button class="fui-btn fui-btn--subtle fui-btn--small">&hellip;</button></td></tr>
-              <tr><td>Superintendent</td><td>Management</td><td><select class="fui-select" style="max-width:120px;"><option>C</option></select></td><td><input type="checkbox"></td><td><button class="fui-btn fui-btn--subtle fui-btn--small">&hellip;</button></td></tr>
-              <tr><td>Foreman</td><td>Management</td><td><select class="fui-select" style="max-width:120px;"><option>D</option></select></td><td><input type="checkbox"></td><td><button class="fui-btn fui-btn--subtle fui-btn--small">&hellip;</button></td></tr>
+              <tr onclick="location.href='13-employee-detail.html'"><td>Maria Alvarez</td><td>Operations Manager</td><td>MLT</td><td>GRP</td><td><span class="fui-badge fui-badge--brand">B</span></td><td>Yes</td><td><span class="fui-badge fui-badge--success">Enrolled</span></td><td>today 03:00 AM</td></tr>
+              <tr onclick="location.href='13-employee-detail.html'"><td>Trey Ogden</td><td>General Manager</td><td>MLT</td><td>SCR</td><td><span class="fui-badge fui-badge--brand">B</span></td><td>Yes</td><td><span class="fui-badge fui-badge--success">Enrolled</span></td><td>today 03:00 AM</td></tr>
+              <tr onclick="location.href='13-employee-detail.html'"><td>Ellen Briggs</td><td>Vice President</td><td>SLT</td><td>GRP</td><td><span class="fui-badge fui-badge--brand">A</span></td><td>Yes</td><td><span class="fui-badge fui-badge--brand">Company car</span></td><td>today 03:00 AM</td></tr>
+              <tr onclick="location.href='13-employee-detail.html'"><td>Nora Patel</td><td>Superintendent</td><td>Management</td><td>SPC</td><td><span class="fui-badge fui-badge--brand">C</span></td><td>No</td><td><span class="fui-badge fui-badge--warning">Not enrolled</span></td><td>today 03:00 AM</td></tr>
+              <tr onclick="location.href='13-employee-detail.html'"><td>Jim Becker</td><td>Project Manager</td><td>Management</td><td>WWC</td><td><span class="fui-badge fui-badge--brand">C</span></td><td>No</td><td><span class="fui-badge fui-badge--neutral">Opted out</span></td><td>today 03:00 AM</td></tr>
+              <tr onclick="location.href='13-employee-detail.html'"><td>Lena Costa</td><td>Foreman</td><td>Management</td><td>WWC</td><td><span class="fui-badge fui-badge--brand">D</span></td><td>No</td><td><span class="fui-badge fui-badge--success">Enrolled</span></td><td>today 03:00 AM</td></tr>
+              <tr onclick="location.href='13-employee-detail.html'"><td>Ray Holliman</td><td>Operations Manager</td><td>MLT</td><td>SCR</td><td><span class="fui-badge fui-badge--brand">B</span></td><td>Yes</td><td><span class="fui-badge fui-badge--warning">Not enrolled</span></td><td>today 03:00 AM</td></tr>
+              <tr onclick="location.href='13-employee-detail.html'"><td>Dana Yu</td><td>Project Manager</td><td>Management</td><td>GRP</td><td><span class="fui-badge fui-badge--brand">C</span></td><td>No</td><td><span class="fui-badge fui-badge--info">Legacy</span></td><td>today 03:00 AM</td></tr>
             </tbody>
           </table>
+        </div>
+
+        <div class="row row--between" style="margin-top:12px; align-items:center;">
+          <span class="muted" style="font-size:12px;">Showing 8 of 168 eligible employees.</span>
+          <div>
+            <button class="fui-btn fui-btn--subtle fui-btn--small">&larr; Prev</button>
+            <button class="fui-btn fui-btn--subtle fui-btn--small">Next &rarr;</button>
+          </div>
         </div>
       </div>
     </main>
@@ -83,7 +160,7 @@
   <nav class="bottom-nav hide-desktop">
     <a href="01-landing.html"><span class="bottom-nav__icon">&#127968;</span>Home</a>
     <a href="02-pending-approvals.html"><span class="bottom-nav__icon">&#9202;</span>Approvals</a>
-    <a href="04-expiring-insurance.html"><span class="bottom-nav__icon">&#128196;</span>Insurance</a>
+    <a href="10-config-eligibility.html" class="is-active"><span class="bottom-nav__icon">&#128101;</span>Roster</a>
     <a href="08-payroll-view.html"><span class="bottom-nav__icon">&#128179;</span>Payroll</a>
   </nav>
 </div>
