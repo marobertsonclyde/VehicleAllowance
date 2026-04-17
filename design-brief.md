@@ -17,15 +17,14 @@ from this repo (`skills/`):
   Code App screen, adaptive card, Teams message, and admin view so the app
   ships on-brand.
 - **`power-automate`** — programmatic creation of Power Automate flows via the
-  REST API (Node.js + MSAL). Use for every flow in §5 (Fabric sync, approval
-  routing, payroll notification, insurance watcher, Jan 1 rate refresh,
-  migration flow) so they are scripted, versioned, and reproducible across
-  Dev / Test / Prod.
+  REST API (Node.js + MSAL). Use for every flow in §4 (Fabric sync, approval
+  routing, payroll notification, insurance watcher, Jan 1 rate refresh) so
+  they are scripted, versioned, and reproducible across Dev / Test / Prod.
 - **`dataverse-codeapp-upload`** — file upload + Dataverse CRUD patterns for
   Power Apps Code Apps (generated service classes, `AnnotationsService` for
   file attachments). Use for the window-sticker / auto-dec / umbrella-dec
   uploads in the employee self-service wizard and for reading/writing all
-  Dataverse records from both Code Apps.
+  Dataverse records in the Code App.
 
 ## Context
 
@@ -55,8 +54,8 @@ gating failure.
   level**, and **company-car deferral flag**. Entra ID is used only to
   match the signed-in employee's UPN/email to the Fabric record. There
   is no admin-editable Title → Level mapping in Dataverse; title is
-  display-only metadata. An on-demand "recheck" action lets an employee
-  pull a recent HR change without waiting for the scheduled sync.
+  display-only metadata. Eligibility refreshes on the scheduled Fabric
+  sync; there is no on-demand recheck action in MVP.
 - **Employee-facing copy rule:** no employee-visible text references
   backend system names (Fabric, Dataverse, Entra). Use plain language
   ("your HR record", "from HR", "refresh from HR"). Internal names
@@ -75,12 +74,14 @@ gating failure.
   automated fuel-card flow, and e-signature are phase 2.
 - **Admin scope:** CCI Director of Equipment + a small set of named delegates
   can edit program parameters. Equipment Leaders are reviewers, not admins.
-- **Legacy data import:** First-time bulk import of existing enrollees is
-  allowed to land with incomplete documentation. Imported records are tagged
+- **Legacy data import:** A one-time SQL/Dataverse import script lands
+  existing enrollees at cutover. Imported records are tagged
   `Legacy/Migrated = true` and bypass the normal "required docs present"
-  business rule on save. Exceptions raised against legacy records surface on
-  a "Backfill Needed" list (informational), not on the approval-blocking
-  path — they cannot stop payroll for an already-active employee.
+  business rule on save. Exceptions raised against legacy records are
+  tagged informational (see §6) and sort lower in Needs Attention — they
+  cannot stop payroll for an already-active employee. No separate
+  "Backfill Needed" admin view; missing documents are worked from the
+  same queue.
 - **Level hierarchy (step-down):** Fabric tells us each employee's
   **maximum qualifying level** directly. Actual level is the highest
   level whose min-MSRP their chosen vehicle meets, capped at that
@@ -171,10 +172,9 @@ gating failure.
   (reason category, submitted-by, timestamp, Teams chat URL/thread ID);
   the employee-submitted note text and any attachment remain only in the
   access-controlled Teams chat created on submit and are **not** copied
-  into the audit log. Also carries `EligibilityRecheck` events (who
-  triggered, diff of changed Fabric fields). No separate entity for
-  disputes — the audit log records that a dispute was submitted, while
-  the dispute contents live in the Teams chat.
+  into the audit log. No separate entity for disputes — the audit log
+  records that a dispute was submitted, while the dispute contents live
+  in the Teams chat.
 
 ## Workflows
 
@@ -190,10 +190,9 @@ gating failure.
 | 8 | Opt-out (by Aug 1) | Notify CCI Director; schedule Company Vehicle reissue next Jan 1 |
 | 9 | Annual parameter review | Admin updates allowance amounts; history preserved via audit log and effective-dated Allowance Level records |
 | 10 | Jan 1 payroll rate refresh | For every Active enrollment, set the monthly amount to the level's new effective-dated value; MSRP thresholds are NOT re-evaluated (grandfathered to purchase-date config); post a single roll-up Teams notice to payroll |
-| 11 | Initial bulk migration (one-time) | Import existing enrollees as Legacy-tagged Active enrollments; open Backfill task per record for missing docs; do NOT block payroll |
+| 11 | Initial bulk migration (one-time SQL import, not a Power Automate flow) | Insert existing enrollees as Legacy-tagged Active enrollments; missing docs surface as informational exceptions in §6; do NOT block payroll |
 | 12 | MLT+ company-car deferral | Request with `Mode=CompanyCar` skips MSRP/insurance checks; on final approval routes a vehicle-assignment task to the Equipment team instead of a payroll Teams notice |
-| 13 | Employee taps "Refresh from HR" | On-demand HTTP-triggered flow re-reads the employee's Fabric row, upserts Employee, stamps `last_hr_sync_at`, returns refreshed eligibility + max level + company-car flag to the client; writes an `EligibilityRecheck` audit entry if any field changed |
-| 14 | Employee opens an eligibility dispute | Form submit triggers a flow that creates a Teams group chat via Graph (`Chat.Create` + `ChatMessage.Send`) with the employee + configured HR recipients, seeds it with the reason/description/attachment, writes an `EligibilityDispute` audit entry on the Employee, returns the chat deep link to the client. Resolution happens in-chat; the app does not track it |
+| 13 | Employee opens an eligibility dispute | Form submit triggers a flow that creates a Teams group chat via Graph (`Chat.Create` + `ChatMessage.Send`) with the employee + configured HR recipients, seeds it with the reason/description/attachment, writes an `EligibilityDispute` audit entry on the Employee, returns the chat deep link to the client. Resolution happens in-chat; the app does not track it |
 
 ## Power Platform Architecture
 
@@ -241,20 +240,27 @@ their review step (no auto-create in MVP). Match key TBD during build (likely
 asset # + assignee). Phase 2 replaces manual selection with auto-create of the
 Dynamics asset on final approval.
 
-### 3. Power Apps Code App — employee self-service
+### 3. Power Apps Code App
 
 Built as a Power Apps Code App (TypeScript/React via the Code Apps SDK),
 authored in VS Code using the Code App MCP, deployed to the Power Platform
 environment, and surfaced in a Teams tab. Dataverse is accessed through the
-generated SDK clients; Entra SSO is handled by the Code App host.
+generated SDK clients; Entra SSO is handled by the Code App host. A single
+codebase serves both audiences — employees on self-service intake/status and
+reviewers/admins on approvals, queues, and configuration — with route-level
+role gating.
 
-Screens / capabilities:
+**Audiences:** Eligible Employee (self-service), Supervisor / Equipment
+Leader / CCI Director (reviewers), CCI Director + named delegates
+(Program Admin), Payroll (read-only, filtered to "Payroll Ready").
+
+**Employee screens:**
 
 - "Am I eligible?" landing page pulling from the Employee mirror of
-  Fabric, showing a personalized deadline countdown, a
-  `Refresh` action with the `last_hr_sync_at` timestamp ("last
-  updated from HR · <time>"), a "Doesn't look right?" entry point
-  into the dispute flow, and an **available-levels card** listing
+  Fabric, showing a personalized deadline countdown, the
+  `last_hr_sync_at` timestamp as "last updated from HR · <time>",
+  a "Doesn't look right?" entry point into the dispute flow, and
+  an **available-levels card** listing
   every level at or below the employee's max with that level's min
   total MSRP and monthly stipend so the step-down is visible before
   vehicle selection. Employee-facing copy refers to "your HR record"
@@ -279,34 +285,55 @@ Screens / capabilities:
 - Opt-out action with reason + effective-date preview.
 - Indemnification: MVP captures an in-app attestation checkbox recorded
   in the audit log; DocuSign/Adobe Sign is a phase-2 swap-in.
-- **Responsive across phone and desktop.** Same codebase is deployed to a
-  Teams tab (desktop) and surfaced in the Power Apps mobile app
-  (iOS/Android). Employees will frequently use this from a phone — e.g.,
-  snapping a window sticker or dec page photo at a dealership — so the
-  upload, wizard, and status screens must be first-class on mobile, not
-  an afterthought.
+
+**Admin / reviewer screens:**
+
+- Views: active enrollments, pending approvals aging, expiring insurance
+  (30/60/90), terminations, requests by status/company/level, Needs
+  Attention (exceptions from §6).
+- Request form with inline document viewer + AI-extracted field comparison;
+  Equipment Leader step includes Asset # picker sourced from the synced
+  Dynamics asset list.
+- Config pages (admin-only): Allowance Levels, Program Parameters,
+  Legal Entities. (No Title→Level mapping — eligibility and max level
+  are Fabric-owned and not admin-editable.)
+- **Eligibility Roster** view (replaces the old Title→Level page) —
+  read-only list of every employee Fabric marks eligible, with columns
+  Name, Title, Tier, Company, Max level, Company-car flag, In-app status
+  (Enrolled / Not enrolled / Opted out / Company car / Legacy), Last HR
+  sync. Search + filter by company / tier / status. Row click opens the
+  employee detail page.
 
 Internal users only → Teams tab avoids Power Pages licensing and uses Entra
-SSO natively.
+SSO natively. Role gating is enforced server-side via Dataverse security
+roles + route-level guards; the Code App only hides UI affordances as a UX
+nicety, not a security boundary.
 
 ### 3a. Responsive / platform targets
 
-Both Code Apps (employee self-service and admin/reviewer) must be responsive
-and ship from a single codebase. Form-factor expectations:
+The Code App is responsive across employee self-service and admin/reviewer
+surfaces from a single codebase. Form-factor expectations:
 
 - **Mobile (< 600px)** — single-column layout, hamburger drawer for primary
   navigation, a fixed bottom tab bar for top-level destinations, vertical
   wizard stepper, data grids collapse to card-per-row with label:value
   pairs. Tap targets ≥ 44×44px; form inputs ≥ 16px font-size to prevent
-  iOS zoom on focus. Employee app is expected to be used primarily on
-  mobile; admin app is expected to be used on mobile for triage (queues,
-  approvals, payroll ack) while configuration pages are desktop-primary.
+  iOS zoom on focus. Employee surfaces are expected to be used primarily
+  on mobile; admin surfaces are expected to be used on mobile for triage
+  (queues, approvals, payroll ack) while configuration pages are
+  desktop-primary.
 - **Tablet (600–1024px)** — two-column forms where it helps; drawer becomes
   a persistent narrow rail; tables resume tabular layout with horizontal
   scroll if needed.
 - **Desktop (≥ 1024px)** — full persistent left rail, tables inline, the
   6-step wizard uses a 2-column layout (stepper on the left, form on the
   right), admin queues get a filter panel on the right.
+
+Phone-primary admin surfaces: Needs Attention queue, Pending Approvals,
+individual Request Review (approve/reject with comment), Payroll Ack.
+Desktop-primary admin surfaces: Config pages and bulk Active Enrollments
+views. Config pages may degrade to a "open on a larger screen" message on
+narrow viewports rather than attempting dense mobile layouts.
 
 Component style should map cleanly to **Fluent UI v9** (primary buttons with
 4px radius, underline-style inputs that thicken to brand color on focus,
@@ -316,40 +343,7 @@ This keeps the design portable between the Teams tab host and the Power
 Apps mobile app, and means the eventual React implementation can adopt
 `@fluentui/react-components` without a re-skin.
 
-### 4. Power Apps Code App — admin + reviewer
-
-Second Code App (same project / shared component library where practical)
-targeting reviewers and admins. Screens:
-
-- Audiences: CCI Director (admin), Equipment Leaders (per-company reviewer),
-  named admin delegates, payroll (read-only, filtered to "Payroll Ready").
-- Views: active enrollments, pending approvals aging, expiring insurance
-  (30/60/90), terminations, requests by status/company/level, Needs
-  Attention (exceptions from §7).
-- Request form with inline document viewer + AI-extracted field comparison;
-  Equipment Leader step includes Asset # picker sourced from the synced
-  Dynamics asset list.
-- Config pages (admin-only): Allowance Levels, Program Parameters,
-  Legal Entities. (No Title→Level mapping — eligibility and max level
-  are Fabric-owned and not admin-editable.)
-- **Eligibility Roster** view (replaces the old Title→Level page) —
-  read-only list of every employee Fabric marks eligible, with
-  columns Name, Title, Tier, Company, Max level, Company-car flag,
-  In-app status (Enrolled / Not enrolled / Opted out / Company car /
-  Legacy), Last HR sync. Search + filter by company / tier / status.
-  Row click opens the existing employee detail page.
-- **Responsive across phone and desktop**, same codebase as the employee
-  app. Phone-primary surfaces: Needs Attention queue, Pending Approvals,
-  individual Request Review (approve/reject with comment), Payroll Ack.
-  Desktop-primary surfaces: all Config pages, bulk views of Active
-  Enrollments and Backfill Needed. Configuration pages are allowed to
-  degrade to a "open on a larger screen" message on narrow viewports
-  rather than attempting dense mobile layouts.
-
-Role gating is enforced server-side via Dataverse security roles; the Code
-App only hides UI affordances as a UX nicety.
-
-### 5. Power Automate — automation backbone
+### 4. Power Automate — automation backbone
 
 Flows delivered in MVP:
 
@@ -368,11 +362,6 @@ Flows delivered in MVP:
   thresholds; sends reminders; opens a Renewal Required sub-request.
 - **Annual cadence** — Aug 1 lockouts; Jan 1 rollovers; admin annual-review
   ticket.
-- **On-demand eligibility recheck** — HTTP-triggered flow, called from
-  the employee eligibility screen and the admin employee detail page;
-  re-reads the specific employee's Fabric row, upserts the Employee
-  record, stamps `last_hr_sync_at`, logs any changed fields to the
-  audit log, returns the refreshed record to the caller.
 - **Eligibility dispute** — HTTP-triggered flow; creates a Teams group
   chat via Microsoft Graph (`Chat.Create` + `ChatMessage.Send`) with
   the employee and configured HR recipients, posts a seed message
@@ -386,11 +375,11 @@ Flows delivered in MVP:
   enrollment's level; write audit-log entries; post single roll-up payroll
   Teams notice. MSRP thresholds are NOT re-applied — existing vehicles stay
   grandfathered to their purchase-date config.
-- **One-time migration flow** — bulk-load existing enrollees as Legacy-
-  tagged Active enrollments, generate Backfill tasks per record for any
-  missing documents, and index them on the "Backfill Needed" admin view.
 
-### 6. AI Builder (MVP)
+The one-time legacy import (workflow #11) is a SQL/Dataverse script, not a
+Power Automate flow, and is run once at cutover.
+
+### 5. AI Builder (MVP)
 
 - **Document Processing** model for auto dec pages → extract policy
   dates, coverage limits, endorsement text → pre-fill request, flag
@@ -402,7 +391,7 @@ Flows delivered in MVP:
 - Human review retained; AI removes the keying burden and gives reviewers
   a side-by-side confidence view.
 
-### 7. Exception / Issue Flagging
+### 6. Exception / Issue Flagging
 
 A daily "Exceptions" scan (Power Automate against Dataverse) surfaces data-
 integrity problems on a dedicated model-driven app view and pings the CCI
@@ -428,11 +417,10 @@ These same checks power a "Needs Attention" tile on the admin landing page
 and are written to the Audit Log when raised and when resolved.
 
 **Legacy handling:** issues on `Legacy/Migrated = true` records are tagged
-`Severity = Informational` and routed to a separate "Backfill Needed" view
-instead of the main Needs Attention tile. They never gate payroll for a
-record that was Active at migration time.
+`Severity = Informational` and sort lower in the Needs Attention queue.
+They never gate payroll for a record that was Active at migration time.
 
-### 8. Security / Governance
+### 7. Security / Governance
 
 - Dataverse security roles: Employee, Supervisor, Equipment Leader (scoped
   by operating company via business unit or row-level filter), CCI Director,
@@ -449,7 +437,7 @@ record that was Active at migration time.
   The Power Apps mobile shell inherits Entra SSO from the Code App host;
   no separate auth model, no device-specific permission table.
 
-### 9. Explicit Phase-2 items (deferred)
+### 8. Explicit Phase-2 items (deferred)
 
 - Power BI dashboard (program analytics, spend run-rate, compliance).
 - Automated fuel-card / EV-allowance workflow (task to Exec Assistant,
@@ -487,10 +475,6 @@ Expected repo layout when build starts:
   (historical enrollments unchanged). Open the Eligibility Roster;
   confirm it is read-only and lists every Fabric-eligible employee
   with correct in-app status.
-- **Eligibility recheck test:** mutate a mock Fabric row, trigger the
-  employee-facing Refresh, confirm the eligibility landing updates
-  (max level and company-car flag re-displayed, `last_hr_sync_at`
-  bumped, `EligibilityRecheck` audit entry written).
 - **Dispute flow test:** open the dispute form, pick a reason, attach
   a PDF, submit. Confirm a Teams group chat is created with the
   employee + HR recipients, the seed message includes the disputed
@@ -504,9 +488,10 @@ Expected repo layout when build starts:
 - **Grandfathering test:** book a vehicle under the current Level A MSRP
   floor, then raise the Level A floor; confirm the existing enrollment is
   unaffected and the Jan 1 refresh only changes the dollar amount.
-- **Migration dry run:** import a batch of legacy enrollees with missing
-  docs; confirm they land as Active, appear on Backfill Needed, do NOT
-  appear on Needs Attention, and continue receiving payroll amounts.
+- **Migration dry run:** run the one-time SQL import against a batch of
+  legacy enrollees with missing docs; confirm they land as Active, surface
+  on Needs Attention with `Severity = Informational` (sorted below blocking
+  items), and continue receiving payroll amounts.
 - **Company-car deferral test:** MLT+ employee submits a `Mode=CompanyCar`
   request; confirm MSRP/insurance/doc rules are skipped, approval chain
   still runs, and approval fires an Equipment-team assignment task with no
