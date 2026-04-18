@@ -2,9 +2,13 @@
 
 ## Deliverable
 
-This document is a **design brief**, not an implementation. The app itself will
-be built as a **Power Apps Code App** via the Code App MCP in VS Code — this
-brief is the spec the developer (and MCP) work from. No code, solution zips, or
+This document is a **design brief**, not an implementation. The app itself
+will be built as a **Power Apps Code App** using the `code-apps` plugin
+from [`microsoft/power-platform-skills`](https://github.com/microsoft/power-platform-skills)
+(manifest `code-apps-preview`, v1.0.0), invoked from **Claude Code or
+GitHub Copilot CLI**. Code Apps (the product) are generally available as
+of February 2026; the `code-apps` plugin is in preview. This brief is the
+spec the developer (and agent) work from. No code, solution zips, or
 Dataverse artifacts are produced here.
 
 ## Skills to Use
@@ -19,7 +23,10 @@ from this repo (`skills/`):
 - **`power-automate`** — programmatic creation of Power Automate flows via the
   REST API (Node.js + MSAL). Use for every flow in §4 (Fabric sync, approval
   routing, payroll notification, insurance watcher, Jan 1 rate refresh) so
-  they are scripted, versioned, and reproducible across Dev / Test / Prod.
+  they are scripted, versioned, and reproducible. The program currently
+  has a single Power Platform environment (`clyde-bi`); flows are still
+  scripted so promotion to additional environments is a config change
+  later.
 - **`dataverse-codeapp-upload`** — file upload + Dataverse CRUD patterns for
   Power Apps Code Apps (generated service classes, `AnnotationsService` for
   file attachments). Use for the window-sticker / auto-dec / umbrella-dec
@@ -242,13 +249,22 @@ Dynamics asset on final approval.
 
 ### 3. Power Apps Code App
 
-Built as a Power Apps Code App (TypeScript/React via the Code Apps SDK),
-authored in VS Code using the Code App MCP, deployed to the Power Platform
-environment, and surfaced in a Teams tab. Dataverse is accessed through the
-generated SDK clients; Entra SSO is handled by the Code App host. A single
-codebase serves both audiences — employees on self-service intake/status and
-reviewers/admins on approvals, queues, and configuration — with route-level
-role gating.
+Built as a Power Apps Code App — **React + Vite + TypeScript** scaffold
+from `microsoft/PowerAppsCodeApps/templates/vite`, authored via the
+`code-apps` plugin (`microsoft/power-platform-skills`, manifest
+`code-apps-preview`) in Claude Code or GitHub Copilot CLI, deployed with
+`pac code push`, and surfaced in a Teams tab. Dataverse is accessed
+through the generated `src/generated/` service classes; Entra SSO is
+handled by the Code App host. A single codebase serves both audiences —
+employees on self-service intake/status and reviewers/admins on
+approvals, queues, and configuration — with route-level role gating.
+
+**Runtime sandbox constraint:** Code Apps run in a sandbox; direct
+`fetch` / Graph SDK calls from the client fail at runtime. All external
+data access is connector-only. Dataverse reads/writes go through the
+generated services; Microsoft Graph work (e.g. the dispute flow's
+`Chat.Create`) runs inside HTTP-triggered Power Automate flows (see
+§4), never in the client.
 
 **Audiences:** Eligible Employee (self-service), Supervisor / Equipment
 Leader / CCI Director (reviewers), CCI Director + named delegates
@@ -432,7 +448,9 @@ They never gate payroll for a record that was Active at migration time.
   dispute initiated by the employee).
 - Audit columns + dedicated Audit Log table for state transitions and
   parameter changes.
-- Solution-based ALM across Dev / Test / Prod environments.
+- Solution-based packaging in the single `clyde-bi` environment for
+  MVP. Changes land via solution import; no Dev → Test → Prod pipeline
+  until additional environments are provisioned.
 - Mobile and desktop share a single Dataverse-role-based authorization model.
   The Power Apps mobile shell inherits Entra SSO from the Code App host;
   no separate auth model, no device-specific permission table.
@@ -447,11 +465,14 @@ They never gate payroll for a record that was Active at migration time.
 
 ## Critical Files
 
-This brief is the artifact. Implementation happens in a Code Apps project in
-VS Code (driven by the Code App MCP) and a companion Power Platform solution.
-Expected repo layout when build starts:
+This brief is the artifact. Implementation happens in a Code Apps project
+driven from Claude Code or GitHub Copilot CLI by the `code-apps` plugin,
+with a companion Power Platform solution for Dataverse + flows. Expected
+repo layout when build starts:
 
-- `/app` — Power Apps Code App source (TypeScript/React, Code Apps SDK).
+- `/app` — Power Apps Code App source — React + Vite + TypeScript,
+  scaffolded from the `microsoft/PowerAppsCodeApps/templates/vite`
+  template, deployed via `pac code push`.
 - `/solution` — exported Dataverse solution zip (tables, business rules,
   security roles, flows).
 - `/fabric` — SQL view definitions feeding eligibility + asset sync.
@@ -460,7 +481,7 @@ Expected repo layout when build starts:
 
 ## Verification Plan
 
-- **End-to-end dry run (Dev env):**
+- **End-to-end dry run (`clyde-bi` env):**
   1. Seed a test eligible employee in a mock Fabric view.
   2. Run eligibility sync; confirm Employee + 60-day deadline set.
   3. Walk through opt-in wizard with sample dec pages + window sticker;

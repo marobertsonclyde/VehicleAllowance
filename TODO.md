@@ -6,14 +6,28 @@ listed in `design-brief.md` → *Skills to Use*.
 
 ## Phase 0 — Environment
 
-- [ ] Provision Dev / Test / Prod Power Platform environments with Dataverse.
+- [ ] Confirm Dataverse is provisioned in the single Power Platform
+      environment **`clyde-bi`**. (No Dev/Test/Prod split in MVP;
+      additional environments can be added later without schema changes.)
 - [ ] Confirm access to Fabric workspace + SQL endpoint; capture connection.
 - [ ] Confirm access to Dynamics SQL DB for the asset register.
 - [ ] Register Azure AD app for Graph (`Chat.Create`, `ChatMessage.Send`,
       `User.Read.All`); grant admin consent.
 - [ ] Register Azure AD app for Power Automate REST (used by `power-automate`
       skill); grant admin consent.
-- [ ] Install Power Apps Code Apps CLI + Code App MCP in VS Code.
+- [ ] Install **Node.js v22+** on each dev machine.
+- [ ] Install **`pac` CLI** (auto-installed by the plugin script below).
+      On Windows, always invoke via PowerShell:
+      `pwsh -NoProfile -Command "pac …"`.
+- [ ] Run `pac auth create` against the `clyde-bi` environment.
+- [ ] Install the **`code-apps` plugin** from
+      `microsoft/power-platform-skills` in Claude Code or GitHub Copilot
+      CLI. Either run the install script
+      (`curl -fsSL https://raw.githubusercontent.com/microsoft/power-platform-skills/main/scripts/install.js | node`
+      on macOS/Linux; PowerShell equivalent on Windows) **or** use the
+      marketplace path: `/plugin marketplace add microsoft/power-platform-skills`
+      then `/plugin install code-apps@power-platform-skills`.
+      Plugin is in preview (`code-apps-preview` v1.0.0).
 - [ ] Scaffold repo layout: `/app`, `/solution`, `/fabric`, `/flows`.
 
 ## Phase 1 — Dataverse schema
@@ -51,12 +65,19 @@ listed in `design-brief.md` → *Skills to Use*.
 
 ## Phase 3 — Code App shell (single app, role-gated)
 
-- [ ] `/app` scaffold: TypeScript/React Code App, Code Apps SDK, Entra SSO,
-      Fluent UI v9.
+- [ ] `/app` scaffold via the plugin's `/create-code-app` slash command
+      (**React + Vite + TypeScript** from
+      `microsoft/PowerAppsCodeApps/templates/vite`). Entra SSO is handled
+      by the Code App host; layer Fluent UI v9 on top.
+- [ ] Confirm runtime sandbox constraint: no direct `fetch` or Graph
+      calls from the Code App. Route any Graph work through
+      HTTP-triggered Power Automate flows (see Phase 7).
 - [ ] Route structure with role guards (Employee / Reviewer / Admin /
       Payroll) backed by Dataverse role checks.
-- [ ] Generated Dataverse service clients + `AnnotationsService` for file
-      attachments (via `dataverse-codeapp-upload` skill).
+- [ ] Generated Dataverse service clients in `src/generated/` +
+      `AnnotationsService` for file attachments (via
+      `dataverse-codeapp-upload` skill). Use these — never hand-written
+      HTTP calls.
 - [ ] Apply `clyde-style-guide` theme (colors, typography, component rules).
 - [ ] Responsive baseline per §3a (mobile <600px, tablet 600–1024px,
       desktop ≥1024px). Tap targets ≥44px; inputs ≥16px.
@@ -149,7 +170,14 @@ Run every bullet in `design-brief.md` → *Verification Plan*:
 - [ ] Fabric sync test (missing UPN reconciliation).
 - [ ] Mobile layout check at 375px (employee happy path + admin triage).
 
-## Phase 10 — ALM promotion
+## Phase 10 — Cutover in `clyde-bi`
 
-- [ ] Export solution from Dev → import to Test → smoke test.
-- [ ] Import to Prod; run the Phase 8 legacy import at cutover.
+Single-environment MVP: no Dev/Test/Prod promotion pipeline. All work lands
+in `clyde-bi`.
+
+- [ ] Package the Dataverse + flows solution; import/update it in
+      `clyde-bi`.
+- [ ] Deploy the Code App to `clyde-bi` with `pac code push`.
+- [ ] Run the Phase 8 legacy import at cutover.
+- [ ] Keep solution exports versioned in `/solution` so a future Test/Prod
+      split is an import operation, not a rebuild.
