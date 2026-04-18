@@ -5,8 +5,10 @@ Power Apps Code App (employee self-service + admin) that replaces the existing
 spreadsheet-and-PDF process for the 1/1/2026 policy refresh.
 
 This repo holds the **design brief, reference policies, brand skills, and
-wireframes**. No app code lives here — the Code App itself is built separately
-via the Code App MCP in VS Code, working from `design-brief.md`.
+wireframes**. No app code lives here — the Code App itself is built
+separately using the [`code-apps`](https://github.com/microsoft/power-platform-skills/tree/main/plugins/code-apps)
+plugin from `microsoft/power-platform-skills` (preview) in **Claude Code
+or GitHub Copilot CLI**, working from `design-brief.md`.
 
 ## Layout
 
