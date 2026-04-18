@@ -6,7 +6,9 @@ listed in `design-brief.md` → *Skills to Use*.
 
 ## Phase 0 — Environment
 
-- [ ] Provision Dev / Test / Prod Power Platform environments with Dataverse.
+- [ ] Confirm Dataverse is provisioned in the single Power Platform
+      environment **`clyde-bi`**. (No Dev/Test/Prod split in MVP;
+      additional environments can be added later without schema changes.)
 - [ ] Confirm access to Fabric workspace + SQL endpoint; capture connection.
 - [ ] Confirm access to Dynamics SQL DB for the asset register.
 - [ ] Register Azure AD app for Graph (`Chat.Create`, `ChatMessage.Send`,
@@ -17,7 +19,7 @@ listed in `design-brief.md` → *Skills to Use*.
 - [ ] Install **`pac` CLI** (auto-installed by the plugin script below).
       On Windows, always invoke via PowerShell:
       `pwsh -NoProfile -Command "pac …"`.
-- [ ] Run `pac auth create` against the Dev environment.
+- [ ] Run `pac auth create` against the `clyde-bi` environment.
 - [ ] Install the **`code-apps` plugin** from
       `microsoft/power-platform-skills` in Claude Code or GitHub Copilot
       CLI. Either run the install script
@@ -168,9 +170,14 @@ Run every bullet in `design-brief.md` → *Verification Plan*:
 - [ ] Fabric sync test (missing UPN reconciliation).
 - [ ] Mobile layout check at 375px (employee happy path + admin triage).
 
-## Phase 10 — ALM promotion
+## Phase 10 — Cutover in `clyde-bi`
 
-- [ ] Export Dataverse + flows solution from Dev → import to Test →
-      smoke test. Deploy the Code App per environment with
-      `pac code push`.
-- [ ] Promote to Prod; run the Phase 8 legacy import at cutover.
+Single-environment MVP: no Dev/Test/Prod promotion pipeline. All work lands
+in `clyde-bi`.
+
+- [ ] Package the Dataverse + flows solution; import/update it in
+      `clyde-bi`.
+- [ ] Deploy the Code App to `clyde-bi` with `pac code push`.
+- [ ] Run the Phase 8 legacy import at cutover.
+- [ ] Keep solution exports versioned in `/solution` so a future Test/Prod
+      split is an import operation, not a rebuild.

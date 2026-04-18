@@ -23,7 +23,10 @@ from this repo (`skills/`):
 - **`power-automate`** — programmatic creation of Power Automate flows via the
   REST API (Node.js + MSAL). Use for every flow in §4 (Fabric sync, approval
   routing, payroll notification, insurance watcher, Jan 1 rate refresh) so
-  they are scripted, versioned, and reproducible across Dev / Test / Prod.
+  they are scripted, versioned, and reproducible. The program currently
+  has a single Power Platform environment (`clyde-bi`); flows are still
+  scripted so promotion to additional environments is a config change
+  later.
 - **`dataverse-codeapp-upload`** — file upload + Dataverse CRUD patterns for
   Power Apps Code Apps (generated service classes, `AnnotationsService` for
   file attachments). Use for the window-sticker / auto-dec / umbrella-dec
@@ -445,7 +448,9 @@ They never gate payroll for a record that was Active at migration time.
   dispute initiated by the employee).
 - Audit columns + dedicated Audit Log table for state transitions and
   parameter changes.
-- Solution-based ALM across Dev / Test / Prod environments.
+- Solution-based packaging in the single `clyde-bi` environment for
+  MVP. Changes land via solution import; no Dev → Test → Prod pipeline
+  until additional environments are provisioned.
 - Mobile and desktop share a single Dataverse-role-based authorization model.
   The Power Apps mobile shell inherits Entra SSO from the Code App host;
   no separate auth model, no device-specific permission table.
@@ -476,7 +481,7 @@ repo layout when build starts:
 
 ## Verification Plan
 
-- **End-to-end dry run (Dev env):**
+- **End-to-end dry run (`clyde-bi` env):**
   1. Seed a test eligible employee in a mock Fabric view.
   2. Run eligibility sync; confirm Employee + 60-day deadline set.
   3. Walk through opt-in wizard with sample dec pages + window sticker;
